@@ -62,10 +62,10 @@ int write_buffer(const char *file_path, u8 *buf, size_t size)
 	return 0;
 }
 
-void crypt_64bit_up(const u32* keybuf, u32* a, u32* b)
+void crypt_64bit_up(const u32* keybuf, u32* ptr)
 {
-	u32 x = *a;
-	u32 y = *b;
+	u32 x = ptr[0];
+	u32 y = ptr[1];
 	u32 z;
 	int i;
 
@@ -79,14 +79,14 @@ void crypt_64bit_up(const u32* keybuf, u32* a, u32* b)
 		y = z;
 	}
 
-	*b = x ^ keybuf[0x10];
-	*a = y ^ keybuf[0x11];
+	ptr[1] = x ^ keybuf[0x10];
+	ptr[0] = y ^ keybuf[0x11];
 }
 
-void crypt_64bit_down(const u32* keybuf, u32* a, u32* b)
+void crypt_64bit_down(const u32* keybuf, u32* ptr)
 {
-	u32 x = *a;
-	u32 y = *b;
+	u32 x = ptr[0];
+	u32 y = ptr[1];
 	u32 z;
 	int i;
 
@@ -100,15 +100,14 @@ void crypt_64bit_down(const u32* keybuf, u32* a, u32* b)
 		y = z;
 	}
 
-	*b = x ^ keybuf[0x01];
-	*a = y ^ keybuf[0x00];
+	ptr[1] = x ^ keybuf[0x01];
+	ptr[0] = y ^ keybuf[0x00];
 }
 
 void apply_keycode(u32* keybuf, const u8* keydata, const char* keycode)
 {
 	int i;
-	u32 x = 0;
-	u32 y = 0;
+	u32 scratch[2] = {0, 0};
 	char tmp[4];
 	int len = strlen(keycode);
 
@@ -127,20 +126,16 @@ void apply_keycode(u32* keybuf, const u8* keydata, const char* keycode)
 
 	for (i = 0; i < 0x412; i += 2)
 	{
-		crypt_64bit_up(keybuf, &x, &y);
-		keybuf[i] = x;
-		keybuf[i+1] = y;
+		crypt_64bit_up(keybuf, scratch);
+		keybuf[i] = scratch[0];
+		keybuf[i+1] = scratch[1];
 	}
-
-	write_buffer("./key.3", (u8*) keybuf, 0x1048);
-
-	return;
 }
 
 void decrypt_data(const u32* key_buffer, u32* data, u32 size)
 {
 	int i;
-	u32 x, y;
+	u32 buf[2];
 
     printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
     size = size/4;
@@ -150,11 +145,12 @@ void decrypt_data(const u32* key_buffer, u32* data, u32 size)
 
 	for (i = 0; i < size; i+= 2)
 	{
-		x = ES32(data[i]);
-		y = ES32(data[i+1]);
-		crypt_64bit_down(key_buffer, &x, &y);
-		data[i] = ES32(x);
-		data[i+1] = ES32(y);
+		buf[0] = ES32(data[i]);
+		buf[1] = ES32(data[i+1]);
+		crypt_64bit_down(key_buffer, buf);
+
+		data[i] = ES32(buf[0]);
+		data[i+1] = ES32(buf[1]);
 	}
 
     printf("[*] Decrypted File Successfully!\n\n");
@@ -164,7 +160,7 @@ void decrypt_data(const u32* key_buffer, u32* data, u32 size)
 void encrypt_data(const u32* key_buffer, u32* data, u32 size)
 {
 	int i;
-	u32 x, y;
+	u32 buf[2];
 
     printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
     size = size/4;
@@ -174,11 +170,12 @@ void encrypt_data(const u32* key_buffer, u32* data, u32 size)
 
 	for (i = 0; i < size; i+= 2)
 	{
-		x = ES32(data[i]);
-		y = ES32(data[i+1]);
-		crypt_64bit_up(key_buffer, &x, &y);
-		data[i] = ES32(x);
-		data[i+1] = ES32(y);
+		buf[0] = ES32(data[i]);
+		buf[1] = ES32(data[i+1]);
+		crypt_64bit_up(key_buffer, buf);
+
+		data[i] = ES32(buf[0]);
+		data[i+1] = ES32(buf[1]);
 	}
 
     printf("[*] Encrypted File Successfully!\n\n");
@@ -201,7 +198,7 @@ int main(int argc, char **argv)
 	u32 dsize;
 	char *opt, *bak;
 
-	printf("\nnaughtydog-ps3save-decrypter 0.1.0 - 2020 by Bucanero\n\n");
+	printf("\nnaughtydog-ps3save-decrypter 0.1.0 - (c) 2020 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{
