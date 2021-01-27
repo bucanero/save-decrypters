@@ -4,9 +4,8 @@
 *
 * This tool is based (reversed) on the original tlou_save_data_decrypter by Red-EyeX32 and aerosoul94
 *
-* Information about the encryption method:
-*	- https://github.com/RocketRobz/NTR_Launcher_3D/blob/master/twlnand-side/BootLoader/source/encryption.c
-*	- http://www.ssugames.org/pluginfile.php/998/mod_resource/content/0/gbatek.htm#dsencryptionbygamecodeidcodekey1
+* Information about the Blowfish encryption method:
+*	- https://www.geeksforgeeks.org/blowfish-algorithm-with-examples/
 *
 */
 
@@ -104,7 +103,7 @@ void crypt_64bit_down(const u32* keybuf, u32* ptr)
 	ptr[0] = y ^ keybuf[0x00];
 }
 
-void apply_keycode(u32* keybuf, const u8* keydata, const char* keycode)
+void apply_keycode(u32* keybuf, const u32* keydata, const char* keycode)
 {
 	int i;
 	u32 scratch[2] = {0, 0};
@@ -121,7 +120,7 @@ void apply_keycode(u32* keybuf, const u8* keydata, const char* keycode)
 	    tmp[1]=keycode[(i*4 +2) % len];
 	    tmp[0]=keycode[(i*4 +3) % len];
 
-	    keybuf[i] = *(u32*)(keydata + 0x1000 + i*4) ^ *(u32*)tmp;
+	    keybuf[i] = keydata[0x400 + i] ^ *(u32*)tmp;
 	}
 
 	for (i = 0; i < 0x412; i += 2)
@@ -217,7 +216,7 @@ int main(int argc, char **argv)
 	if (!key_table)
 		return -1;
 
-	apply_keycode((u32*) key_table, KEY_DATA, SECRET_KEY);
+	apply_keycode((u32*) key_table, (u32*) KEY_DATA, SECRET_KEY);
 
 	if (read_buffer(argv[2], &data, &len) != 0)
 	{
