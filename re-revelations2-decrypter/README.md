@@ -3,7 +3,7 @@
 A tool to decrypt Resident Evil: Revelations 2 PS3 save-games.
 
 ```
-USAGE: ./dmc-ps3save-decrypter [option] filename
+USAGE: ./re-revelations2-decrypter [option] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File
@@ -14,12 +14,16 @@ OPTIONS        Explanation:
 
 **Note:** this tool doesn't fix the DWADD/SHA1 integrity hashes.
 
+#### DWADD
+
 ```
 [Update DWADD for DATA0.DAT (Required)]
 set [csum]:0
 set [csum]:dwadd(0x000010,0x12758F)
 write at 0x000008:[csum]
 ```
+
+#### SHA1
 
 ```
 [Update SHA1 for DATA0.DAT (Required)]
