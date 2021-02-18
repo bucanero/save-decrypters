@@ -10,3 +10,7 @@ OPTIONS        Explanation:
  -d            Decrypt File
  -e            Encrypt File
 ```
+
+### Credits
+
+This tool is based (reversed) on the original `tlou_save_data_decrypter` by Red-EyeX32 and aerosoul94
