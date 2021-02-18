@@ -11,3 +11,7 @@ OPTIONS        Explanation:
  -d            Decrypt File
  -e            Encrypt File
 ```
+
+### Credits
+
+This tool is based (reversed) on the original Devil May Cry 5 Crypto Toolkit by fairchild
