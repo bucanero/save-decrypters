@@ -9,3 +9,7 @@ OPTIONS        Explanation:
  -d            Decrypt File
  -e            Encrypt File
 ```
+
+### Credits
+
+This tool is based (reversed) on the original need_for_speed_rivals_save_decrypter by Red-EyeX32
