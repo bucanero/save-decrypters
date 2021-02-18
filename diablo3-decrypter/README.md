@@ -9,3 +9,7 @@ OPTIONS        Explanation:
  -d            Decrypt File
  -e            Encrypt File
 ```
+
+### Credits
+
+This tool is based (reversed) on the original `diablo_3_save_data_decrypter` by Red-EyeX32
