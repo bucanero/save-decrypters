@@ -9,3 +9,7 @@ OPTIONS        Explanation:
  -d            Decrypt File
  -e            Encrypt File
 ```
+
+### Credits
+
+This tool is based (reversed) on the original re_remaster_save_decrypter by Red-EyeX32
