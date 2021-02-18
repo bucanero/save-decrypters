@@ -31,3 +31,7 @@ set range:0x000010,0x12758F
 set [hash]:SHA1
 write at 0x127590:[hash]
 ```
+
+### Credits
+
+This tool is based (reversed) on the original RE Revelations 2 Decrypter by forjador123
