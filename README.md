@@ -11,6 +11,8 @@ Tools to decrypt specific PS3 save-games:
   - The Last of Us
   - Uncharted 2
   - Uncharted 3
+- [nfs-undercover-decrypter](./nfs-undercover-decrypter)
+  - Need For Speed: Undercover
 - [nfs-rivals-decrypter](./nfs-rivals-decrypter)
   - Need For Speed: Rivals
 - [re-remaster-decrypter](./re-remaster-decrypter)
