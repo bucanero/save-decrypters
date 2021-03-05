@@ -87,8 +87,8 @@ void decrypt_data(u8* data, u32 size)
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
 	// init xor key
-	memcpy(xor_key, data, BLOCK_SIZE);
-	xor_block(NFS_XOR_KEY, xor_key);
+	memcpy(xor_key, NFS_XOR_KEY, BLOCK_SIZE);
+	xor_block(data, xor_key);
 	md5_block(xor_key, xor_key);
 
 	size /= BLOCK_SIZE;
@@ -113,8 +113,8 @@ void encrypt_data(u8* data, u32 size)
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
 	// init xor key
-	memcpy(xor_key, data, BLOCK_SIZE);
-	xor_block(NFS_XOR_KEY, xor_key);
+	memcpy(xor_key, NFS_XOR_KEY, BLOCK_SIZE);
+	xor_block(data, xor_key);
 	md5_block(xor_key, xor_key);
 
 	size /= BLOCK_SIZE;
