@@ -64,21 +64,21 @@ int write_buffer(const char *file_path, u8 *buf, size_t size)
 void decrypt_data(u8* data, u32 size)
 {
 	u32 out;
-    u64 input, key2 = SH3_KEY2;
+	u64 input, key2 = SH3_KEY2;
 
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
 	size /= 4;
 
-    while (size--)
-    {
-        input = ES32(*(u32*)data);
-        out = ES32((u32)((input ^ key2 - SH3_KEY1) & 0xFFFFFFFF));
-        memcpy(data, &out, sizeof(u32));
+	while (size--)
+	{
+	    input = ES32(*(u32*)data);
+	    out = ES32((u32)((input ^ key2 - SH3_KEY1) & 0xFFFFFFFF));
+	    memcpy(data, &out, sizeof(u32));
 
-        key2 = (input << 5 | input >> 27) + (u64)SH3_KEY2;
-        data += 4;
-    }
+	    key2 = (input << 5 | input >> 27) + (u64)SH3_KEY2;
+	    data += 4;
+	}
 
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
@@ -86,43 +86,43 @@ void decrypt_data(u8* data, u32 size)
 
 u32 checksum_data(u8* data, u32 size)
 {
-    u32 crc = 0;
+	u32 crc = 0;
 
 	// clear the CRC
 	*(u32*)(data + 0x10) = 0;
 	size /= 4;
 
-    while (size--)
-    {
-        crc += ES32(*(u32*)data);
-        data += 4;
-    }
+	while (size--)
+	{
+	    crc += ES32(*(u32*)data);
+	    data += 4;
+	}
 
-    crc = (crc * 2) + 1;
-    
-    printf("[*] New Checksum %08X\n", crc);
-    return(ES32(crc));
+	crc = (crc * 2) + 1;
+
+	printf("[*] New Checksum %08X\n", crc);
+	return(ES32(crc));
 }
 
 void encrypt_data(u8* data, u32 size)
 {
 	u32 out, tmp;
-    u64 input, key2 = SH3_KEY2;
+	u64 input, key2 = SH3_KEY2;
 
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
 	size /= 4;
 
-    while (size--)
-    {
-        input = ES32(*(u32*)data);
-        out = (u32)((input ^ key2 - SH3_KEY1) & 0xFFFFFFFF);
-        tmp = ES32(out);
-        memcpy(data, &tmp, sizeof(u32));
+	while (size--)
+	{
+	    input = ES32(*(u32*)data);
+	    out = (u32)((input ^ key2 - SH3_KEY1) & 0xFFFFFFFF);
+	    tmp = ES32(out);
+	    memcpy(data, &tmp, sizeof(u32));
 
-        key2 = (u64)(out << 5 | out >> 27) + (u64)SH3_KEY2;
+	    key2 = (u64)(out << 5 | out >> 27) + (u64)SH3_KEY2;
 		data += 4;
-    }
+	}
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
