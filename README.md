@@ -13,6 +13,8 @@ Tools to decrypt specific PS3 save-games:
   - Uncharted 3
 - [nfs-rivals-decrypter](./nfs-rivals-decrypter)
   - Need For Speed: Rivals
+- [nfs-undercover-decrypter](./nfs-undercover-decrypter)
+  - Need For Speed: Undercover
 - [re-remaster-decrypter](./re-remaster-decrypter)
   - Resident Evil HD Remaster
   - Resident Evil 0 (Zero)
