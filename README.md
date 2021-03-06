@@ -1,6 +1,9 @@
 # ps3-save-decrypters
 
 Tools to decrypt specific PS3 save-games:
+- [cod-blackops-decrypter](./cod-blackops-decrypter)
+  - Call of Duty: Black Ops
+  - Call of Duty: Black Ops 2
 - [diablo3-decrypter](./diablo3-decrypter)
   - Diablo 3
 - [dmc-decrypter](./dmc-decrypter)
@@ -20,6 +23,8 @@ Tools to decrypt specific PS3 save-games:
   - Resident Evil 0 (Zero)
 - [re-revelations2-decrypter](./re-revelations2-decrypter)
   - Resident Evil Revelations 2
+- [silent-hill3-decrypter](./silent-hill3-decrypter)
+  - Silent Hill 3 HD
 
 Tools to fix checksums for specific PS3 saves:
 - [deadspace-checksum-fixer](./deadspace-checksum-fixer)
