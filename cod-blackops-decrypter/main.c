@@ -68,8 +68,8 @@ void decrypt_data(u8* data, u32 size)
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
 	memcpy(iv, COD_DES3_IV, 8);
-    mbedtls_des3_init(&ctx3);
-    mbedtls_des3_set3key_dec(&ctx3, (u8*) COD_DES3_KEY);
+	mbedtls_des3_init(&ctx3);
+	mbedtls_des3_set3key_dec(&ctx3, (u8*) COD_DES3_KEY);
 
 	size /= 8;
 
@@ -91,8 +91,8 @@ void encrypt_data(u8* data, u32 size)
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
 	memcpy(iv, COD_DES3_IV, 8);
-    mbedtls_des3_init(&ctx3);
-    mbedtls_des3_set3key_enc(&ctx3, (u8*) COD_DES3_KEY);
+	mbedtls_des3_init(&ctx3);
+	mbedtls_des3_set3key_enc(&ctx3, (u8*) COD_DES3_KEY);
 
 	size /= 8;
 
