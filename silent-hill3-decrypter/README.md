@@ -1,4 +1,4 @@
-# diablo3-ps3save-decrypter
+# silent-hill3-decrypter
 
 A tool to decrypt Silent Hill 3 HD PS3 save-games
 
