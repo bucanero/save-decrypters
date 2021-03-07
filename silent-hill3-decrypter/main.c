@@ -121,7 +121,7 @@ void encrypt_data(u8* data, u32 size)
 	    memcpy(data, &tmp, sizeof(u32));
 
 	    key2 = (u64)(out << 5 | out >> 27) + (u64)SH3_KEY2;
-		data += 4;
+	    data += 4;
 	}
 
 	printf("[*] Encrypted File Successfully!\n\n");
