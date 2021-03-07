@@ -1,5 +1,7 @@
 # ps3-save-decrypters
 
+## Decrypters
+
 Tools to decrypt specific PS3 save-games:
 - [cod-blackops-decrypter](./cod-blackops-decrypter)
   - Call of Duty: Black Ops
@@ -26,10 +28,15 @@ Tools to decrypt specific PS3 save-games:
 - [silent-hill3-decrypter](./silent-hill3-decrypter)
   - Silent Hill 3 HD
 
+## Checksum fixers
+
 Tools to fix checksums for specific PS3 saves:
 - [deadspace-checksum-fixer](./deadspace-checksum-fixer)
   - Dead Space 2
   - Dead Space 3
+- [ffxhd-checksum-fixer](./ffxhd-checksum-fixer)
+  - Final Fantasy X HD
+  - Final Fantasy X-2 HD
 - [prototype-checksum-fixer](./prototype-checksum-fixer)
   - Prototype 1
   - Prototype 2
