@@ -62,22 +62,16 @@ int write_buffer(const char *file_path, u8 *buf, size_t size)
 
 void decrypt_data(u8* data, u32 size)
 {
-    unsigned char iv[8];
+    u8 iv[MBEDTLS_DES_KEY_SIZE];
     mbedtls_des3_context ctx3;
 
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-	memcpy(iv, COD_DES3_IV, 8);
+	memcpy(iv, COD_DES3_IV, MBEDTLS_DES_KEY_SIZE);
 	mbedtls_des3_init(&ctx3);
 	mbedtls_des3_set3key_dec(&ctx3, (u8*) COD_DES3_KEY);
 
-	size /= 8;
-
-	while (size--)
-	{
-		mbedtls_des3_crypt_cbc(&ctx3, MBEDTLS_DES_DECRYPT, 8, iv, data, data);
-		data += 8;
-	}
+	mbedtls_des3_crypt_cbc(&ctx3, MBEDTLS_DES_DECRYPT, size, iv, data, data);
 
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
@@ -85,22 +79,16 @@ void decrypt_data(u8* data, u32 size)
 
 void encrypt_data(u8* data, u32 size)
 {
-    unsigned char iv[8];
+    u8 iv[MBEDTLS_DES_KEY_SIZE];
     mbedtls_des3_context ctx3;
 
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-	memcpy(iv, COD_DES3_IV, 8);
+	memcpy(iv, COD_DES3_IV, MBEDTLS_DES_KEY_SIZE);
 	mbedtls_des3_init(&ctx3);
 	mbedtls_des3_set3key_enc(&ctx3, (u8*) COD_DES3_KEY);
 
-	size /= 8;
-
-	while (size--)
-	{
-		mbedtls_des3_crypt_cbc(&ctx3, MBEDTLS_DES_ENCRYPT, 8, iv, data, data);
-		data += 8;
-	}
+	mbedtls_des3_crypt_cbc(&ctx3, MBEDTLS_DES_ENCRYPT, size, iv, data, data);
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
