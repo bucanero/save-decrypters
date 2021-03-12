@@ -10,6 +10,10 @@ Tools to decrypt specific PS3 save-games:
   - Diablo 3
 - [dmc-decrypter](./dmc-decrypter)
   - DmC: Devil May Cry
+- [ff13-decrypter](./ff13-decrypter)
+  - Final Fantasy XIII
+  - Final Fantasy XIII-2
+  - Lightning Returns: Final Fantasy XIII
 - [gta5-decrypter](./gta5-decrypter)
   - Grand Theft Auto 5
 - [naughtydog-decrypter](./naughtydog-decrypter)
