@@ -73,7 +73,7 @@ void decrypt_data(u8* data, u32 size)
 	while (size--)
 	{
 	    input = ES32(*(u32*)data);
-	    out = ES32((u32)((input ^ key2 - SH3_KEY1) & 0xFFFFFFFF));
+	    out = ES32((u32)((input ^ (key2 - SH3_KEY1)) & 0xFFFFFFFF));
 	    memcpy(data, &out, sizeof(u32));
 
 	    key2 = (input << 5 | input >> 27) + (u64)SH3_KEY2;
@@ -116,7 +116,7 @@ void encrypt_data(u8* data, u32 size)
 	while (size--)
 	{
 	    input = ES32(*(u32*)data);
-	    out = (u32)((input ^ key2 - SH3_KEY1) & 0xFFFFFFFF);
+	    out = (u32)((input ^ (key2 - SH3_KEY1)) & 0xFFFFFFFF);
 	    tmp = ES32(out);
 	    memcpy(data, &tmp, sizeof(u32));
 
