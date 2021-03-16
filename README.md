@@ -1,5 +1,7 @@
 # ps3-save-decrypters
 
+A collection of custom save-game decrypters and checksum fixers for PS3.
+
 ## Decrypters
 
 Tools to decrypt specific PS3 save-games:
@@ -41,6 +43,9 @@ Tools to fix checksums for specific PS3 saves:
 - [ffxhd-checksum-fixer](./ffxhd-checksum-fixer)
   - Final Fantasy X HD
   - Final Fantasy X-2 HD
+- [kh25-checksum-fixer](./kh25-checksum-fixer)
+  - Kingdom Hearts HD 2.5 ReMIX
+  - Kingdom Hearts HD Birth by Sleep (BBS)
 - [prototype-checksum-fixer](./prototype-checksum-fixer)
   - Prototype 1
   - Prototype 2
