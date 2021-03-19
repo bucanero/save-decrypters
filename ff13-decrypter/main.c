@@ -2,7 +2,8 @@
 *
 *	Final Fantasy XIII (1/2/3) PS3 Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
 *
-* This tool is based (reversed) on the original FFXIII Encryptor by Jappi88
+* This tool is based (reversed) on the original FFXIII Encryptor by Jappi88, and McDirge Save editor source by Shademp
+*	https://thelifestream.net/forums/threads/dcffvii-research-thread.15951/page-42#post-884518
 *
 */
 
@@ -30,11 +31,12 @@
 	       ((((u64)_val) & 0x000000000000ff00ull) << 40) | \
 	       ((((u64)_val) & 0x00000000000000ffull) << 56)))
 
+#define Read_u32_le(buf)    (*(u32*)(buf))
+#define Write_u32_le(a, b)  memcpy(a, b, sizeof(uint32_t))
 #define read_u64(bytes)     ES64(*(u64*)(bytes))
 #define bswap64(a)          ES64((a))
 #define bswap32(a)          ES32((a) & 0xFFFFFFFF);
-#define shift_bits(base, bits, ulong)			((u64)(ulong) << bits | (u64)(ulong) >> (base - bits))
-
+#define shift_bits(base, bits, value)			((u64)(value) << bits | (u64)(value) >> (base - bits))
 
 #define FFXIII_KEY          0x1317fb09b9b42080L
 #define FFXIII_2_KEY        0x9B1F01011A6438B0L
@@ -47,6 +49,7 @@
 // Xbox FFXIII_2_KEY        0x6920c2168106440fL
 // Xbox FFXIII_3_KEY        0x09f0d55db8ea4bfdL
 
+uint8_t KeyBlocksArray[32][8] = {0};
 
 int read_buffer(const char *file_path, u8 **buf, size_t *size)
 {
@@ -100,68 +103,14 @@ u64 read_key_file(char ff_game)
     return (key);
 }
 
-void ff_init_key_value(u64 ulong_0, u64 ulong_1, u64* ulong_2, u64 ulong_3, u64* ulong_4, u8* byte_0, u64 ulong_5)
+// keygen reversed from FFXIII Encryptor by Jappi88
+void ff_init_key_value(u8* byte_0, u64 ulong_1, u64* ulong_2, u64* ulong_4, u64 ulong_5)
 {
-	ulong_3 = ((((ulong_1 + 0xD4) ^ ulong_5) & 0xFF) ^ 0x45);
+	u64 ulong_3 = ((((ulong_1 + 0xD4) ^ ulong_5) & 0xFF) ^ 0x45);
 	*byte_0 = (u8)ulong_3;
-	*ulong_2 = ulong_0 + ulong_3;
+	*ulong_2 = byte_0[1] + ulong_3;
 	*ulong_4 = (shift_bits(32, 2, ulong_3) & 0x3FC);
 }
-
-u32 ff_decrypt_data(const u8* key_table, u8* data, int len)
-{
-	u8 sub_table[256];
-	u64 block[3] = {0};
-	u64 tmp;
-
-	u32 ff_pos = 0;
-	u32 ff_csum = 0;
-	
-	len /= 8;
-	
-	for (int i = 0; i < 256; i++)
-		sub_table[i] = (0x78 + i) & 0xFF;
-
-	for (int i = 0; i < len; i++)
-	{
-		ff_pos = i << 3;
-		block[0] = (u64)((shift_bits(32, 29, ff_pos) & 0xFF) ^ 0x45);
-
-		for (int j = 0; j < 8; j++)
-		{
-			tmp = (block[0] & 0xFF);
-			block[0] = data[ff_pos + j];
-			block[2] = sub_table[(block[0] ^ tmp) & 0xFF] - key_table[(0xF8 & ff_pos)];
-			block[1] = sub_table[block[2] & 0xFF] - key_table[(0xF8 & ff_pos) + 1];
-			tmp = sub_table[block[1] & 0xFF] - key_table[(0xF8 & ff_pos) + 2];
-			block[1] = sub_table[tmp & 0xFF] - key_table[(0xF8 & ff_pos) + 3];
-			tmp = sub_table[block[1] & 0xFF] - key_table[(0xF8 & ff_pos) + 4];
-			block[1] = sub_table[tmp & 0xFF] - key_table[(0xF8 & ff_pos) + 5];
-			tmp = sub_table[block[1] & 0xFF] - key_table[(0xF8 & ff_pos) + 6];
-			data[ff_pos + j] = sub_table[tmp & 0xFF] - key_table[(0xF8 & ff_pos) + 7];
-		}
-
-		block[0] = (u64)((shift_bits(64, 10, shift_bits(64, 10, ff_pos) | ff_pos) & FFXIII_MASK_1) | ff_pos);
-		tmp = (u64)(((shift_bits(64, 10, block[0]) & FFXIII_MASK_1) | ff_pos) + 0xA1652347);
-
-		block[2] = read_u64(&key_table[0xF8 & ff_pos]);
-		block[0] = bswap64(bswap64(read_u64(data + ff_pos)) - bswap64(block[2]));
-
-		block[1] = bswap32((tmp & 0xFFFFFFFF));
-		tmp = bswap32((u64)(tmp >> 32));
-
-		block[1] = (u64)(block[2] ^ (block[0] ^ ((tmp & 0xFFFFFFFF) | (shift_bits(64, 32, block[1]) & FFXIII_MASK_2))));
-		
-		tmp = ES64((block[1] >> 32 & 0xFFFFFFFF) | (shift_bits(64, 32, block[1]) & FFXIII_MASK_2));
-		memcpy(data + ff_pos, &tmp, 8);
-		
-		if (i + 1 < len)
-			ff_csum += data[4 + ff_pos] + data[ff_pos];
-	}
-
-	return (ff_csum);
-}
-
 
 void ff_init_key(u8* key_table, u64 ff_key)
 {
@@ -180,12 +129,12 @@ void ff_init_key(u8* key_table, u64 ff_key)
 	memcpy(key_table, &tmp, 8);
 
 	key_table[0] += 69;
-	ff_init_key_value(key_table[2], key_table[0] + key_table[1], &init[3], init[0], &init[0], &key_table[1], shift_bits(64, 2, (u64)key_table[0]));
-	ff_init_key_value(key_table[3], init[3], &init[3], init[0], &init[0], &key_table[2], init[0]);
-	ff_init_key_value(key_table[4], init[3], &init[2], init[0], &tmp, &key_table[3], init[0]);
-	ff_init_key_value(key_table[5], init[2], &tmp, init[0], &init[1], &key_table[4], tmp);
-	ff_init_key_value(key_table[6], tmp, &tmp, init[0], &init[3], &key_table[5], init[1]);
-	ff_init_key_value(key_table[7], tmp, &init[2], tmp, &tmp, &key_table[6], init[3]);
+	ff_init_key_value(&key_table[1], key_table[0] + key_table[1], &init[3], &init[0], shift_bits(64, 2, (u64)key_table[0]));
+	ff_init_key_value(&key_table[2], init[3], &init[3], &init[0], init[0]);
+	ff_init_key_value(&key_table[3], init[3], &init[2], &tmp, init[0]);
+	ff_init_key_value(&key_table[4], init[2], &tmp, &init[1], tmp);
+	ff_init_key_value(&key_table[5], tmp, &tmp, &init[3], init[1]);
+	ff_init_key_value(&key_table[6], tmp, &init[2], &tmp, init[3]);
 	key_table[7] = (u8)((((init[2] + 0xD4) ^ tmp) & 0xFF) ^ 0x45);
 
 	for (int j = 0; j < 31; j++)
@@ -202,86 +151,204 @@ void ff_init_key(u8* key_table, u64 ff_key)
 u32 ff_xiii_checksum(u8* bytes, u32 len)
 {
 	u32 ff_csum = 0;
+	len /= 4;
 
-	len /= 8;
-	
 	while (len--)
 	{
-		ff_csum += (u32)bytes[4] + bytes[0];
-		bytes += 8;
+		ff_csum += bytes[0];
+		bytes += 4;
 	}
 
 	return (ff_csum);
 }
 
-void ff_encrypt_data(const u8* key_table, u8* data, int len)
+// decryption from McDirge by Shademp
+void ff_decrypt_data(uint8_t *MemBlock, size_t size)
 {
-	u8 add_table[256];
-	u64 block[3] = {0};
-	u64 tmp = 0;
-	u32 ff_pos = 0;
+    ///DECODING THE ENCODED INFORMATION NOW IN MemBlock
+    uint32_t ByteCounter = 0, BlockCounter = 0, KeyBlockCtr = 0;
+    uint32_t Gear1 = 0, Gear2 = 0;
+    uint32_t TBlockA = 0, TBlockB = 0, KBlockA = 0, KBlockB = 0;
+    uint8_t CarryFlag1 = 0, CarryFlag2 = 0;
+    uint8_t IntermediateCarrier = 0;
+    uint8_t OldMemblockValue = 0;
+
+    union u {
+        uint64_t Cog64B;
+        uint32_t Cog32BArray[2];
+    } o;
+
+    ///OUTERMOST LOOP OF THE DECODER
+    for (; ByteCounter < size; BlockCounter++, KeyBlockCtr++)
+    {
+        if(KeyBlockCtr > 31)
+            KeyBlockCtr = 0;
+
+        o.Cog64B = (uint64_t)ByteCounter << 0x14;
+        Gear1 = o.Cog32BArray[0] | (ByteCounter << 0x0A) | ByteCounter; ///Will this work badly when Gear1 becomes higher than 7FFFFFFF?
+
+        CarryFlag1 = (Gear1 > ~0xA1652347) ? 1 : 0;
+
+        Gear1 = Gear1 + 0xA1652347;
+        Gear2 = (BlockCounter*2 | o.Cog32BArray[1]) + CarryFlag1;
+
+        ///THE INNER LOOP OF THE DECODER
+        for(int iterate = 0, BlockwiseByteCounter = 0; BlockwiseByteCounter < 8; )
+        {
+            if(iterate==0 && BlockwiseByteCounter==0)
+            {
+                OldMemblockValue = MemBlock[ByteCounter];
+                MemBlock[ByteCounter] = 0x45 ^ BlockCounter ^ MemBlock[ByteCounter];
+                iterate++;
+            }
+            else if(iterate==0 && BlockwiseByteCounter < 8)
+            {
+                IntermediateCarrier = MemBlock[ByteCounter] ^ OldMemblockValue;
+                OldMemblockValue = MemBlock[ByteCounter];
+                MemBlock[ByteCounter] = IntermediateCarrier;
+                iterate++;
+            }
+            else if(iterate < 9 && BlockwiseByteCounter < 8)
+            {
+                MemBlock[ByteCounter] = 0x78 + MemBlock[ByteCounter] - KeyBlocksArray[KeyBlockCtr][iterate-1];
+                iterate++;
+            }
+            else if(iterate==9)
+            {
+                iterate = 0;
+                ByteCounter++;
+                BlockwiseByteCounter++;
+            }
+        }
+        ///EXITING THE INNER LOOP OF THE DECOER
+
+	    ///RESUMING THE OUTER LOOP
+	    ByteCounter -=8;
 	
-	len /= 8;
+	    TBlockA = Read_u32_le(&MemBlock[ByteCounter]);
+	    TBlockB = Read_u32_le(&MemBlock[ByteCounter+4]);
+	
+	    KBlockA = Read_u32_le(&KeyBlocksArray[KeyBlockCtr][0]);
+	    KBlockB = Read_u32_le(&KeyBlocksArray[KeyBlockCtr][4]);
+	
+	    CarryFlag2 = (TBlockA < KBlockA) ? 1 : 0;
 
-	for (int i = 0; i < 256; i++)
-		add_table[i] = (0x88 + i) & 0xFF;
+	    TBlockA = TBlockA - KBlockA;
+	    TBlockB = TBlockB - KBlockB - CarryFlag2;
+	
+	    TBlockA = TBlockA ^ Gear1;
+	    TBlockB = TBlockB ^ Gear2;
+	
+	    TBlockA = KBlockA ^ TBlockA;
+	    TBlockB = KBlockB ^ TBlockB;
 
-	for (int i = 0; i < len; i++)
-	{
-		ff_pos = (i << 3);
+	    Write_u32_le(&MemBlock[ByteCounter],   &TBlockB);
+	    Write_u32_le(&MemBlock[ByteCounter+4], &TBlockA);
 
-		tmp = read_u64(data + ff_pos);
-		block[1] = (u64)((shift_bits(64, 10, shift_bits(64, 10, ff_pos) | ff_pos) & FFXIII_MASK_1) | ff_pos);
-		block[2] = (u64)(0xA1652347 + ((shift_bits(64, 10, block[1]) & FFXIII_MASK_1) | ff_pos));
-		block[0] = bswap32((block[2] >> 32));
-		block[1] = bswap32((block[2] & 0xFFFFFFFF));
-
-		block[2] = read_u64(&key_table[0xF8 & ff_pos]);
-
-		tmp = (((block[0] & 0xFFFFFFFF) | (shift_bits(64, 32, block[1]) & FFXIII_MASK_2)) ^ block[2] ^ ((shift_bits(64, 32, tmp) & 0xFFFFFFFF) | (shift_bits(64, 32, tmp) & FFXIII_MASK_2)));
-
-		tmp = ES64(bswap64(bswap64(tmp) + bswap64(block[2])));
-		memcpy(data + ff_pos, &tmp, 8);
-
-		block[0] = (u64)((shift_bits(32, 29, ff_pos) & 0xFF) ^ 0x45);
-
-		for (int j = 0; j < 8; j++)
-		{
-			tmp = (block[0] & 0xFF);
-			block[0] = (u64)((u64)key_table[(0xF8 & ff_pos)] + (u64)data[ff_pos + j]);
-			for (int k = 1; k < 8; k++)
-				block[0] = add_table[(block[0] & 0xFF)] + key_table[(0xF8 & ff_pos) + k];
-
-			block[0] = (add_table[(block[0] & 0xFF)] ^ tmp);
-			data[ff_pos + j] = (u8)block[0];
-		}
-	}
+	    ByteCounter +=8;
+    }
+    ///EXITING THE OUTER LOOP. FILE HAS NOW BEEN FULLY DECODED.
 }
 
+// encryption from McDirge by Shademp
+void ff_encrypt_data(uint8_t *MemBlock, size_t size)
+{
+    ///ENCODE the file, now that all the changes have been made and the checksum has been updated.
+    uint32_t ByteCounter = 0, BlockCounter = 0, KeyBlockCtr = 0;
+    uint32_t Gear1 = 0, Gear2 = 0;
+    uint32_t TBlockA = 0, TBlockB = 0, KBlockA = 0, KBlockB = 0;
+    uint8_t CarryFlag1 = 0, CarryFlag2 = 0;
+    uint8_t OldMemblockValue = 0;
+
+    union u {
+        uint64_t Cog64B;
+        uint32_t Cog32BArray[2];
+    } o;
+
+    ///OUTERMOST LOOP OF THE ENCODER
+    for (; ByteCounter < size; BlockCounter++, KeyBlockCtr++)
+    {
+        if(KeyBlockCtr > 31)
+            KeyBlockCtr = 0;
+
+        o.Cog64B = (uint64_t)ByteCounter << 0x14;
+
+        Gear1 = o.Cog32BArray[0] | (ByteCounter << 0x0A) | ByteCounter; ///Will this work badly when Gear1 becomes higher than 7FFFFFFF?
+
+        CarryFlag1 = (Gear1 > ~0xA1652347) ? 1 : 0;
+
+	    Gear1 = Gear1 + 0xA1652347;
+	    Gear2 = (BlockCounter*2 | o.Cog32BArray[1]) + CarryFlag1;
+	
+	    TBlockB = Read_u32_le(&MemBlock[ByteCounter]);
+	    TBlockA = Read_u32_le(&MemBlock[ByteCounter+4]);
+
+	    KBlockA = Read_u32_le(&KeyBlocksArray[KeyBlockCtr][0]);
+	    KBlockB = Read_u32_le(&KeyBlocksArray[KeyBlockCtr][4]);
+	
+	    TBlockB = KBlockB ^ TBlockB;
+	    TBlockA = KBlockA ^ TBlockA;
+	
+	    TBlockB = TBlockB ^ Gear2;
+	    TBlockA = TBlockA ^ Gear1;
+	
+	    ///Reverse of TBlockA < KBlockA from the Decoder.
+	    CarryFlag2 = (TBlockA > ~KBlockA) ? 1 : 0;
+
+	    TBlockB = TBlockB + KBlockB + CarryFlag2;       ///Reversed from subtraction to addition.
+	    TBlockA = TBlockA + KBlockA;                    ///Reversed from subtraction to addition.
+	
+	    Write_u32_le(&MemBlock[ByteCounter],   &TBlockA);
+	    Write_u32_le(&MemBlock[ByteCounter+4], &TBlockB);
+
+        ///INNER LOOP OF ENCODER
+        for(int iterate = 8, BlockwiseByteCounter = 0; BlockwiseByteCounter < 8; )
+        {
+            if(iterate != 0 && BlockwiseByteCounter < 8)
+            {
+                MemBlock[ByteCounter] = MemBlock[ByteCounter] + KeyBlocksArray[KeyBlockCtr][iterate-1] - 0x78;
+                iterate--;
+            }
+            else if(iterate == 0 && BlockwiseByteCounter==0)
+            {
+                MemBlock[ByteCounter] = 0x45 ^ BlockCounter ^ MemBlock[ByteCounter];
+                OldMemblockValue = MemBlock[ByteCounter];
+                BlockwiseByteCounter++;
+                ByteCounter++;
+                iterate = 8;
+            }
+            else if(iterate == 0 && BlockwiseByteCounter < 8)
+            {
+                MemBlock[ByteCounter] = MemBlock[ByteCounter] ^ OldMemblockValue;
+                OldMemblockValue = MemBlock[ByteCounter];
+                iterate = 8;
+                BlockwiseByteCounter++;
+                ByteCounter++;
+            }
+        }
+        ///EXITING INNER LOOP OF ENCODER
+    }
+    ///EXITING OUTER LOOP
+    ///ENCODING FINISHED
+}
 
 void decrypt_data(u8* data, u32 size, u64 key)
 {
-	u8 key_table[272];
-	u8 ffgame = 1;
 	u32 csum, ff_csum;
 
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-	memset(key_table, 0, sizeof(key_table));
-	ff_init_key(key_table, key);
+	ff_init_key(&KeyBlocksArray[0][0], key);
+	ff_decrypt_data(data, size);
 
-	if (ffgame == 3 && size > 547904)
-	{
-		size = 547904;
-	}
+//	if (ffgame == 3 && size > 547904)
+//		size = 547904;
 
-	ff_csum = ff_decrypt_data(key_table, data, size);
-
+	ff_csum = ff_xiii_checksum(data, size - 8);
 	csum = *(u32*)(data + size - 4);
+
 	if (csum != ff_csum)
-	{
 		printf("[!] Decrypted data did not pass file integrity check. (Expected: %08X Got: %08X)\n", csum, ff_csum);
-	}
 
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
@@ -289,8 +356,6 @@ void decrypt_data(u8* data, u32 size, u64 key)
 
 void encrypt_data(u8* data, u32 size, u64 key)
 {
-	u8 key_table[272];
-	u8 ffgame = 1;
 	u32 csum;
 
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
@@ -298,14 +363,11 @@ void encrypt_data(u8* data, u32 size, u64 key)
 	csum = ff_xiii_checksum(data, size - 8);
 	memcpy(data + size - 4, &csum, 4);
 
-	memset(key_table, 0, sizeof(key_table));
-	ff_init_key(key_table, key);
-	ff_encrypt_data(key_table, data, size);
+	ff_init_key(&KeyBlocksArray[0][0], key);
+	ff_encrypt_data(data, size);
 
-	if (ffgame == 3 && size == 547904)
-	{
+//	if (ffgame == 3 && size == 547904)
 //		Array.Resize<byte>(ref array3, 560736);
-	}
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
@@ -373,7 +435,6 @@ int main(int argc, char **argv)
 	else
 		encrypt_data(data, len, ff_key);
 
-//	write_buffer("out.bin", data, len);
 	write_buffer(argv[3], data, len);
 
 	free(bak);
