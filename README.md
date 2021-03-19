@@ -36,7 +36,7 @@ Tools to decrypt specific PS3 save-games:
 
 ## Checksum fixers
 
-Tools to fix checksums for specific PS3 saves:
+Tools to fix checksums for specific PS3 save-games:
 - [deadspace-checksum-fixer](./deadspace-checksum-fixer)
   - Dead Space 2
   - Dead Space 3
@@ -46,6 +46,7 @@ Tools to fix checksums for specific PS3 saves:
 - [kh25-checksum-fixer](./kh25-checksum-fixer)
   - Kingdom Hearts HD 2.5 ReMIX
   - Kingdom Hearts HD Birth by Sleep (BBS)
+  - Kingdom Hearts Re: Chain of Memories (CoM)
 - [prototype-checksum-fixer](./prototype-checksum-fixer)
   - Prototype 1
   - Prototype 2

@@ -1,6 +1,6 @@
 # kh25remix-checksum-fixer
 
-Kingdom Hearts HD 2.5 ReMIX Checksum Fixer (PS3)
+Kingdom Hearts HD 2.5 ReMIX, Birth by Sleep, Chain of Memories Checksum Fixer (PS3)
 
 ```
 USAGE: ./kh25remix-checksum-fixer [option] filename
@@ -8,6 +8,7 @@ USAGE: ./kh25remix-checksum-fixer [option] filename
 OPTIONS        Explanation:
  -1            Kingdom Hearts HD 2.5 ReMIX
  -2            Kingdom Hearts HD Birth by Sleep (BBS)
+ -3            Kingdom Hearts Re: Chain of Memories (CoM)
 ```
 
 ### Credits

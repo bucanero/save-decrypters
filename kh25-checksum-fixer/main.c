@@ -97,12 +97,26 @@ u32 dwadd_le(const u32* data, u32 len)
     return checksum;
 }
 
+u32 kh_com_checksum(u8* data, u32 len)
+{
+    int checksum = CRC32_INIT;
+
+    while (len--)
+    {
+        checksum ^= (*data++ << 31);
+        checksum = (checksum << 1) ^ (checksum < 0 ? CRC32_POLY : 0);
+    }
+
+    return (~checksum);
+}
+
 void print_usage(const char* argv0)
 {
 	printf("USAGE: %s [option] filename\n\n", argv0);
 	printf("OPTIONS        Explanation:\n");
 	printf(" -1            Kingdom Hearts HD 2.5 ReMIX\n");
-	printf(" -2            Kingdom Hearts HD Birth by Sleep (BBS)\n\n");
+	printf(" -2            Kingdom Hearts HD Birth by Sleep (BBS)\n");
+	printf(" -3            Kingdom Hearts Re: Chain of Memories (CoM)\n\n");
 	return;
 }
 
@@ -113,7 +127,7 @@ int main(int argc, char **argv)
 	u32 checksum;
 	char *opt, *bak;
 
-	printf("\nKingdom Hearts HD 2.5 ReMIX Checksum Fixer 0.1.0 - (c) 2021 by Bucanero\n\n");
+	printf("\nKingdom Hearts HD 2.5 ReMIX+ Checksum Fixer 0.1.0 - (c) 2021 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{
@@ -122,7 +136,7 @@ int main(int argc, char **argv)
 	}
 
 	opt = argv[1];
-	if (*opt++ != '-' || (*opt != '1' && *opt != '2'))
+	if (*opt++ != '-' || (*opt != '1' && *opt != '2' && *opt != '3'))
 	{
 		print_usage(argv[0]);
 		return -1;
@@ -146,12 +160,19 @@ int main(int argc, char **argv)
 		printf("[*] Stored Checksum    : %08X\n", *(u32*)(data+8));
 		memcpy(data + 8, &checksum, sizeof(u32));
 	}
-	else
+	else if (*opt == '2')
 	{
 		checksum = dwadd_le((u32*) (data + 0x10), len - 0x10);
 
 		printf("[*] Stored Checksum    : %08X\n", *(u32*)(data+12));
 		memcpy(data + 12, &checksum, sizeof(u32));
+	}
+	else
+	{
+		checksum = ES32(kh_com_checksum(data + 0x10, len - 0x10));
+
+		printf("[*] Stored Checksum    : %08X\n", *(u32*)(data+4));
+		memcpy(data + 4, &checksum, sizeof(u32));
 	}
 
 	printf("[*] Calculated Checksum: %08X\n", checksum);
