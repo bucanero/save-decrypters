@@ -1,0 +1,70 @@
+name: Build Windows binaries
+
+on:
+  push:
+  pull_request:
+  repository_dispatch:
+    types: [run_build]
+
+jobs:
+  msys:
+    runs-on: windows-2019
+    strategy:
+      matrix:
+        mingw: ["MINGW32", "MINGW64"]
+        include:
+          - mingw: "MINGW32"
+            package: "mingw-w64-i686"
+          - mingw: "MINGW64"
+            package: "mingw-w64-x86_64"
+    defaults:
+      run:
+        shell: bash.exe --login -eo pipefail "{0}"
+    env:
+      MSYSTEM: ${{ matrix.mingw }}
+      CHERE_INVOKING: 1
+    name: MSYS2 ${{ matrix.mingw }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up shell
+        run: echo "C:\msys64\usr\bin\" >> $GITHUB_PATH
+        shell: pwsh
+      - name: Print system version
+        run: |
+          uname
+      - name: Install MinGW requirements
+        run: |
+          echo "$GITHUB_WORKSPACE"
+          #pacman -S --noconfirm ${{ matrix.package }}-python3-setuptools
+          # build the project
+          #python3 setup.py install
+      - name: Build binaries
+        run: |
+          make
+
+      - name: Get short SHA
+        id: slug
+        run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+    
+      - name: Compress output
+        run: |
+          tar -zcvf build.tar.gz diablo3-decrypter/diablo3-ps3save-decrypter \
+            kh25-checksum-fixer/kh25remix-checksum-fixer \
+            re-remaster-decrypter/re-remaster-decrypter \
+            dmc-decrypter/dmc-ps3save-decrypter \
+            naughtydog-decrypter/naughtydog-ps3save-decrypter \
+            re-revelations2-decrypter/re-revelations2-decrypter \
+            ff13-decrypter/ff13-ps3save-decrypter \
+            nfs-rivals-decrypter/nfsrivals-ps3save-decrypter \
+            silent-hill3-decrypter/silent-hill3-decrypter \
+            cod-blackops-decrypter/cod-blackops-decrypter \
+            ffxhd-checksum-fixer/ffxhd-checksum-fixer \
+            nfs-undercover-decrypter/nfs-undercover-decrypter \
+            deadspace-checksum-fixer/ds-checksum-fixer \
+            gta5-decrypter/gta5-ps3save-decrypter \
+            prototype-checksum-fixer/prototype-checksum-fixer
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: build-${{ steps.slug.outputs.sha8 }}-${{matrix.mingw}}
+          path: build.tar.gz
