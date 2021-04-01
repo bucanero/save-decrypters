@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o re-revelations2-decrypter main.c
+	gcc -D _GNU_SOURCE -o re-revelations2-decrypter main.c
 
 clean:
 	-rm -f re-revelations2-decrypter
