@@ -1,0 +1,62 @@
+name: Build binaries
+
+on:
+  push:
+  pull_request:
+  repository_dispatch:
+    types: [run_build]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Install Ubuntu requirements
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        echo "No requirements"
+        #sudo apt-get update
+        #sudo apt-get -y install autoconf automake bison flex gcc libelf-dev make texinfo libncurses5-dev patch python subversion wget zlib1g-dev libtool-bin python-dev bzip2 libgmp3-dev pkg-config
+    
+    - name: Install macOS requirements
+      if: matrix.os == 'macos-latest'
+      run: |
+        echo "No requirements"
+        #brew update
+        #brew install autoconf automake openssl libelf ncurses zlib gmp wget pkg-config
+
+    - name: Runs all the stages in the shell
+      run: |
+        make
+
+    - name: Get short SHA
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+    
+    - name: Compress output
+      run: |
+        tar -zcvf build.tar.gz diablo3-decrypter/diablo3-ps3save-decrypter \
+            kh25-checksum-fixer/kh25remix-checksum-fixer \
+            re-remaster-decrypter/re-remaster-decrypter \
+            dmc-decrypter/dmc-ps3save-decrypter \
+            naughtydog-decrypter/naughtydog-ps3save-decrypter \
+            re-revelations2-decrypter/re-revelations2-decrypter \
+            ff13-decrypter/ff13-ps3save-decrypter \
+            nfs-rivals-decrypter/nfsrivals-ps3save-decrypter \
+            silent-hill3-decrypter/silent-hill3-decrypter \
+            cod-blackops-decrypter/cod-blackops-decrypter \
+            ffxhd-checksum-fixer/ffxhd-checksum-fixer \
+            nfs-undercover-decrypter/nfs-undercover-decrypter \
+            deadspace-checksum-fixer/ds-checksum-fixer \
+            gta5-decrypter/gta5-ps3save-decrypter \
+            prototype-checksum-fixer/prototype-checksum-fixer
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: build-${{ steps.slug.outputs.sha8 }}-${{matrix.os}}
+        path: build.tar.gz
