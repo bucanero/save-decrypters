@@ -41,6 +41,22 @@ jobs:
       - name: Build binaries
         run: |
           make
+          # add .exe extension to binaries
+          mv diablo3-decrypter/diablo3-ps3save-decrypter diablo3-ps3save-decrypter.exe
+          mv re-remaster-decrypter/re-remaster-decrypter re-remaster-decrypter.exe
+          mv dmc-decrypter/dmc-ps3save-decrypter dmc-ps3save-decrypter.exe
+          mv naughtydog-decrypter/naughtydog-ps3save-decrypter naughtydog-ps3save-decrypter.exe
+          mv re-revelations2-decrypter/re-revelations2-decrypter re-revelations2-decrypter.exe
+          mv ff13-decrypter/ff13-ps3save-decrypter ff13-ps3save-decrypter.exe
+          mv nfs-rivals-decrypter/nfsrivals-ps3save-decrypter nfsrivals-ps3save-decrypter.exe
+          mv silent-hill3-decrypter/silent-hill3-decrypter silent-hill3-decrypter.exe
+          mv cod-blackops-decrypter/cod-blackops-decrypter cod-blackops-decrypter.exe
+          mv nfs-undercover-decrypter/nfs-undercover-decrypter nfs-undercover-decrypter.exe
+          mv gta5-decrypter/gta5-ps3save-decrypter gta5-ps3save-decrypter.exe
+          mv deadspace-checksum-fixer/ds-checksum-fixer ds-checksum-fixer.exe
+          mv ffxhd-checksum-fixer/ffxhd-checksum-fixer ffxhd-checksum-fixer.exe
+          mv kh25-checksum-fixer/kh25remix-checksum-fixer kh25remix-checksum-fixer.exe
+          mv prototype-checksum-fixer/prototype-checksum-fixer prototype-checksum-fixer.exe
 
       - name: Get short SHA
         id: slug
@@ -48,21 +64,21 @@ jobs:
     
       - name: Compress output
         run: |
-          tar -zcvf build.tar.gz diablo3-decrypter/diablo3-ps3save-decrypter \
-            kh25-checksum-fixer/kh25remix-checksum-fixer \
-            re-remaster-decrypter/re-remaster-decrypter \
-            dmc-decrypter/dmc-ps3save-decrypter \
-            naughtydog-decrypter/naughtydog-ps3save-decrypter \
-            re-revelations2-decrypter/re-revelations2-decrypter \
-            ff13-decrypter/ff13-ps3save-decrypter \
-            nfs-rivals-decrypter/nfsrivals-ps3save-decrypter \
-            silent-hill3-decrypter/silent-hill3-decrypter \
-            cod-blackops-decrypter/cod-blackops-decrypter \
-            ffxhd-checksum-fixer/ffxhd-checksum-fixer \
-            nfs-undercover-decrypter/nfs-undercover-decrypter \
-            deadspace-checksum-fixer/ds-checksum-fixer \
-            gta5-decrypter/gta5-ps3save-decrypter \
-            prototype-checksum-fixer/prototype-checksum-fixer
+          tar -zcvf build.tar.gz diablo3-ps3save-decrypter.exe \
+            kh25remix-checksum-fixer.exe \
+            re-remaster-decrypter.exe \
+            dmc-ps3save-decrypter.exe \
+            naughtydog-ps3save-decrypter.exe \
+            re-revelations2-decrypter.exe \
+            ff13-ps3save-decrypter.exe \
+            nfsrivals-ps3save-decrypter.exe \
+            silent-hill3-decrypter.exe \
+            cod-blackops-decrypter.exe \
+            ffxhd-checksum-fixer.exe \
+            nfs-undercover-decrypter.exe \
+            ds-checksum-fixer.exe \
+            gta5-ps3save-decrypter.exe \
+            prototype-checksum-fixer.exe
 
       - uses: actions/upload-artifact@v2
         with:
