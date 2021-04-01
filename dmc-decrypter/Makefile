@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o dmc-ps3save-decrypter main.c
+	gcc -D _GNU_SOURCE -o dmc-ps3save-decrypter main.c
 
 clean:
 	-rm -f dmc-ps3save-decrypter

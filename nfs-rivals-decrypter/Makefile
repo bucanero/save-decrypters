@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o nfsrivals-ps3save-decrypter main.c
+	gcc -D _GNU_SOURCE -o nfsrivals-ps3save-decrypter main.c
 
 clean:
 	-rm -f nfsrivals-ps3save-decrypter

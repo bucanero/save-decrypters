@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o ffxhd-checksum-fixer main.c
+	gcc -D _GNU_SOURCE -o ffxhd-checksum-fixer main.c
 
 clean:
 	-rm -f ffxhd-checksum-fixer

@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o nfs-undercover-decrypter main.c
+	gcc -D _GNU_SOURCE -o nfs-undercover-decrypter main.c
 
 clean:
 	-rm -f nfs-undercover-decrypter

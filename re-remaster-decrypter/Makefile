@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o re-remaster-decrypter main.c
+	gcc -D _GNU_SOURCE -o re-remaster-decrypter main.c
 
 clean:
 	-rm -f re-remaster-decrypter

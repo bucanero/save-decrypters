@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o naughtydog-ps3save-decrypter main.c
+	gcc -D _GNU_SOURCE -o naughtydog-ps3save-decrypter main.c
 
 clean:
 	-rm -f naughtydog-ps3save-decrypter

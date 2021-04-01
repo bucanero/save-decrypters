@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o cod-blackops-decrypter main.c
+	gcc -D _GNU_SOURCE -o cod-blackops-decrypter main.c
 
 clean:
 	-rm -f cod-blackops-decrypter
