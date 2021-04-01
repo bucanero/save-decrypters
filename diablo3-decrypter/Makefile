@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o diablo3-ps3save-decrypter main.c
+	gcc -D _GNU_SOURCE -o diablo3-ps3save-decrypter main.c
 
 clean:
 	-rm -f diablo3-ps3save-decrypter
