@@ -40,8 +40,7 @@
 #define FFXIII_2_KEY        0x9B1F01011A6438B0L
 #define FFXIII_3_KEY        0x36545e6ceb9a705fL
 
-#define FFXIII_MASK_1       0xFFFFFFFFFFFFFC00
-#define FFXIII_MASK_2       0xFFFFFFFF00000000
+#define FFXIII_CONST        0xA1652347
 
 // Xbox FFXIII_KEY          0x035ce4275cee246aL
 // Xbox FFXIII_2_KEY        0x6920c2168106440fL
@@ -162,7 +161,7 @@ void ff_decrypt_data(uint8_t *MemBlock, size_t size)
     } o;
 
     ///OUTERMOST LOOP OF THE DECODER
-    for (; ByteCounter < size; BlockCounter++, KeyBlockCtr++)
+    for (; ByteCounter < size; BlockCounter++, KeyBlockCtr++, ByteCounter +=8)
     {
         if(KeyBlockCtr > 31)
             KeyBlockCtr = 0;
@@ -170,35 +169,35 @@ void ff_decrypt_data(uint8_t *MemBlock, size_t size)
         o.Cog64B = (uint64_t)ByteCounter << 0x14;
         Gear1 = o.Cog32BArray[0] | (ByteCounter << 0x0A) | ByteCounter; ///Will this work badly when Gear1 becomes higher than 7FFFFFFF?
 
-        CarryFlag1 = (Gear1 > ~0xA1652347) ? 1 : 0;
+        CarryFlag1 = (Gear1 > ~FFXIII_CONST) ? 1 : 0;
 
-        Gear1 = Gear1 + 0xA1652347;
+        Gear1 = Gear1 + FFXIII_CONST;
         Gear2 = (BlockCounter*2 | o.Cog32BArray[1]) + CarryFlag1;
 
         ///THE INNER LOOP OF THE DECODER
-        for(int iterate = 0, BlockwiseByteCounter = 0; BlockwiseByteCounter < 8; )
+        for(int i = 0, BlockwiseByteCounter = 0; BlockwiseByteCounter < 8;)
         {
-            if(iterate==0 && BlockwiseByteCounter==0)
+            if(i == 0 && BlockwiseByteCounter == 0)
             {
                 OldMemblockValue = MemBlock[ByteCounter];
                 MemBlock[ByteCounter] = 0x45 ^ BlockCounter ^ MemBlock[ByteCounter];
-                iterate++;
+                i++;
             }
-            else if(iterate==0 && BlockwiseByteCounter < 8)
+            else if(i == 0 && BlockwiseByteCounter < 8)
             {
                 IntermediateCarrier = MemBlock[ByteCounter] ^ OldMemblockValue;
                 OldMemblockValue = MemBlock[ByteCounter];
                 MemBlock[ByteCounter] = IntermediateCarrier;
-                iterate++;
+                i++;
             }
-            else if(iterate < 9 && BlockwiseByteCounter < 8)
+            else if(i < 9 && BlockwiseByteCounter < 8)
             {
-                MemBlock[ByteCounter] = 0x78 + MemBlock[ByteCounter] - KeyBlocksArray[KeyBlockCtr][iterate-1];
-                iterate++;
+                MemBlock[ByteCounter] = 0x78 + MemBlock[ByteCounter] - KeyBlocksArray[KeyBlockCtr][i-1];
+                i++;
             }
-            else if(iterate==9)
+            else if(i == 9)
             {
-                iterate = 0;
+                i = 0;
                 ByteCounter++;
                 BlockwiseByteCounter++;
             }
@@ -216,19 +215,11 @@ void ff_decrypt_data(uint8_t *MemBlock, size_t size)
 	
 	    CarryFlag2 = (TBlockA < KBlockA) ? 1 : 0;
 
-	    TBlockA = TBlockA - KBlockA;
-	    TBlockB = TBlockB - KBlockB - CarryFlag2;
-	
-	    TBlockA = TBlockA ^ Gear1;
-	    TBlockB = TBlockB ^ Gear2;
-	
-	    TBlockA = KBlockA ^ TBlockA;
-	    TBlockB = KBlockB ^ TBlockB;
+	    TBlockA = KBlockA ^ Gear1 ^ (TBlockA - KBlockA);
+	    TBlockB = KBlockB ^ Gear2 ^ (TBlockB - KBlockB - CarryFlag2);
 
 	    Write_u32_le(&MemBlock[ByteCounter],   &TBlockB);
 	    Write_u32_le(&MemBlock[ByteCounter+4], &TBlockA);
-
-	    ByteCounter +=8;
     }
     ///EXITING THE OUTER LOOP. FILE HAS NOW BEEN FULLY DECODED.
 }
@@ -258,53 +249,47 @@ void ff_encrypt_data(uint8_t *MemBlock, size_t size)
 
         Gear1 = o.Cog32BArray[0] | (ByteCounter << 0x0A) | ByteCounter; ///Will this work badly when Gear1 becomes higher than 7FFFFFFF?
 
-        CarryFlag1 = (Gear1 > ~0xA1652347) ? 1 : 0;
+        CarryFlag1 = (Gear1 > ~FFXIII_CONST) ? 1 : 0;
 
-	    Gear1 = Gear1 + 0xA1652347;
+	    Gear1 = Gear1 + FFXIII_CONST;
 	    Gear2 = (BlockCounter*2 | o.Cog32BArray[1]) + CarryFlag1;
-	
-	    TBlockB = Read_u32_le(&MemBlock[ByteCounter]);
-	    TBlockA = Read_u32_le(&MemBlock[ByteCounter+4]);
 
 	    KBlockA = Read_u32_le(&KeyBlocksArray[KeyBlockCtr][0]);
 	    KBlockB = Read_u32_le(&KeyBlocksArray[KeyBlockCtr][4]);
 	
-	    TBlockB = KBlockB ^ TBlockB;
-	    TBlockA = KBlockA ^ TBlockA;
-	
-	    TBlockB = TBlockB ^ Gear2;
-	    TBlockA = TBlockA ^ Gear1;
-	
+	    TBlockB = KBlockB ^ Gear2 ^ Read_u32_le(&MemBlock[ByteCounter]);
+	    TBlockA = KBlockA ^ Gear1 ^ Read_u32_le(&MemBlock[ByteCounter+4]);
+
 	    ///Reverse of TBlockA < KBlockA from the Decoder.
 	    CarryFlag2 = (TBlockA > ~KBlockA) ? 1 : 0;
 
-	    TBlockB = TBlockB + KBlockB + CarryFlag2;       ///Reversed from subtraction to addition.
-	    TBlockA = TBlockA + KBlockA;                    ///Reversed from subtraction to addition.
+	    TBlockB += KBlockB + CarryFlag2;       ///Reversed from subtraction to addition.
+	    TBlockA += KBlockA;                    ///Reversed from subtraction to addition.
 	
 	    Write_u32_le(&MemBlock[ByteCounter],   &TBlockA);
 	    Write_u32_le(&MemBlock[ByteCounter+4], &TBlockB);
 
         ///INNER LOOP OF ENCODER
-        for(int iterate = 8, BlockwiseByteCounter = 0; BlockwiseByteCounter < 8; )
+        for(int i = 8, BlockwiseByteCounter = 0; BlockwiseByteCounter < 8;)
         {
-            if(iterate != 0 && BlockwiseByteCounter < 8)
+            if(i != 0 && BlockwiseByteCounter < 8)
             {
-                MemBlock[ByteCounter] = MemBlock[ByteCounter] + KeyBlocksArray[KeyBlockCtr][iterate-1] - 0x78;
-                iterate--;
+                MemBlock[ByteCounter] = MemBlock[ByteCounter] + KeyBlocksArray[KeyBlockCtr][i-1] - 0x78;
+                i--;
             }
-            else if(iterate == 0 && BlockwiseByteCounter==0)
+            else if(i == 0 && BlockwiseByteCounter==0)
             {
                 MemBlock[ByteCounter] = 0x45 ^ BlockCounter ^ MemBlock[ByteCounter];
                 OldMemblockValue = MemBlock[ByteCounter];
                 BlockwiseByteCounter++;
                 ByteCounter++;
-                iterate = 8;
+                i = 8;
             }
-            else if(iterate == 0 && BlockwiseByteCounter < 8)
+            else if(i == 0 && BlockwiseByteCounter < 8)
             {
                 MemBlock[ByteCounter] = MemBlock[ByteCounter] ^ OldMemblockValue;
                 OldMemblockValue = MemBlock[ByteCounter];
-                iterate = 8;
+                i = 8;
                 BlockwiseByteCounter++;
                 ByteCounter++;
             }
