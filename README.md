@@ -40,6 +40,8 @@ Tools to fix checksums for specific PS3 save-games:
 - [deadspace-checksum-fixer](./deadspace-checksum-fixer)
   - Dead Space 2
   - Dead Space 3
+- [dbz-checksum-fixer](./dbz-checksum-fixer)
+  - Dragon Ball Z: Ultimate Tenkaichi
 - [ffxhd-checksum-fixer](./ffxhd-checksum-fixer)
   - Final Fantasy X HD
   - Final Fantasy X-2 HD

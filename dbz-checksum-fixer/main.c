@@ -1,6 +1,6 @@
 /*
 *
-*	DBZ Tenkaichi Ultimate (PS3) Checksum Fixer - (c) 2021 by Bucanero - www.bucanero.com.ar
+*	DBZ Ultimate Tenkaichi (PS3) Checksum Fixer - (c) 2021 by Bucanero - www.bucanero.com.ar
 *
 * This tool is based (reversed) on the original dbz_ultimate_tenkaichi_checksum_fixer by Red-EyeX32
 *
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 	u32 csum;
 	char *opt, *bak;
 
-	printf("\nDBZ Tenkaichi Ultimate (PS3) checksum fixer 0.1.0 - (c) 2021 by Bucanero\n\n");
+	printf("\nDBZ Ultimate Tenkaichi (PS3) checksum fixer 0.1.0 - (c) 2021 by Bucanero\n\n");
 
 	if (--argc < 1)
 	{

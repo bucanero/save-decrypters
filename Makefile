@@ -18,6 +18,7 @@ all:
 	$(MAKE) -C deadspace-checksum-fixer
 	$(MAKE) -C gta5-decrypter
 	$(MAKE) -C prototype-checksum-fixer
+	$(MAKE) -C dbz-checksum-fixer
 
 clean:
 	$(MAKE) clean -C diablo3-decrypter
@@ -35,3 +36,4 @@ clean:
 	$(MAKE) clean -C deadspace-checksum-fixer
 	$(MAKE) clean -C gta5-decrypter
 	$(MAKE) clean -C prototype-checksum-fixer
+	$(MAKE) clean -C dbz-checksum-fixer
