@@ -54,6 +54,7 @@ jobs:
           mv nfs-undercover-decrypter/nfs-undercover-decrypter nfs-undercover-decrypter.exe
           mv gta5-decrypter/gta5-ps3save-decrypter gta5-ps3save-decrypter.exe
           mv deadspace-checksum-fixer/ds-checksum-fixer ds-checksum-fixer.exe
+          mv dbz-checksum-fixer/dbz-checksum-fixer dbz-checksum-fixer.exe
           mv ffxhd-checksum-fixer/ffxhd-checksum-fixer ffxhd-checksum-fixer.exe
           mv kh25-checksum-fixer/kh25remix-checksum-fixer kh25remix-checksum-fixer.exe
           mv prototype-checksum-fixer/prototype-checksum-fixer prototype-checksum-fixer.exe
@@ -77,6 +78,7 @@ jobs:
             ffxhd-checksum-fixer.exe \
             nfs-undercover-decrypter.exe \
             ds-checksum-fixer.exe \
+            dbz-checksum-fixer.exe \
             gta5-ps3save-decrypter.exe \
             prototype-checksum-fixer.exe
 
