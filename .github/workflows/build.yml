@@ -54,6 +54,7 @@ jobs:
             nfs-undercover-decrypter/nfs-undercover-decrypter \
             deadspace-checksum-fixer/ds-checksum-fixer \
             gta5-decrypter/gta5-ps3save-decrypter \
+            dbz-checksum-fixer/dbz-checksum-fixer \
             prototype-checksum-fixer/prototype-checksum-fixer
 
     - uses: actions/upload-artifact@v2
