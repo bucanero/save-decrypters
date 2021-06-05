@@ -8,13 +8,7 @@
 *	- http://www.cse.yorku.ca/~oz/hash.html#sdbm
 */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdint.h>
-
-#define u8 uint8_t
-#define u32 uint32_t
+#include "../common/iofile.c"
 
 #define DS2_CSUM_OFFSET    0x04
 #define DS2_SIZE_OFFSET    0x6C
@@ -22,49 +16,6 @@
 #define DS3_SIZE_OFFSET    0x4C
 #define DS3_HED_SIZE       0x80
 
-#define ES32(_val) \
-	((u32)(((((u32)_val) & 0xff000000) >> 24) | \
-	       ((((u32)_val) & 0x00ff0000) >> 8 ) | \
-	       ((((u32)_val) & 0x0000ff00) << 8 ) | \
-	       ((((u32)_val) & 0x000000ff) << 24)))
-
-
-int read_buffer(const char *file_path, u8 **buf, size_t *size)
-{
-	FILE *fp;
-	u8 *file_buf;
-	size_t file_size;
-	
-	if ((fp = fopen(file_path, "rb")) == NULL)
-        return -1;
-	fseek(fp, 0, SEEK_END);
-	file_size = ftell(fp);
-	fseek(fp, 0, SEEK_SET);
-	file_buf = (u8 *)malloc(file_size);
-	fread(file_buf, 1, file_size, fp);
-	fclose(fp);
-	
-	if (buf)
-        *buf = file_buf;
-	else
-        free(file_buf);
-	if (size)
-        *size = file_size;
-	
-	return 0;
-}
-
-int write_buffer(const char *file_path, u8 *buf, size_t size)
-{
-	FILE *fp;
-	
-	if ((fp = fopen(file_path, "wb")) == NULL)
-        return -1;
-	fwrite(buf, 1, size, fp);
-	fclose(fp);
-	
-	return 0;
-}
 
 u32 sdbm_hash(const u8* data, u32 len, u32 init)
 {

@@ -1,10 +1,4 @@
-
 #define KEYSIZE         0x1048
-#define SECRET_KEY      "(SH[@2>r62%5+QKpy|g6"
-#define SHA1_HMAC_KEY   "xM;6X%/p^L/:}-5QoA+K8:F*M!~sb(WK<E%6sW_un0a[7Gm6,()kHoXY+yI/s;Ba"
-
-/* C:\Downloads\key.bin (7/10/2020 2:37:26 PM)
-   StartOffset: 00000000, EndOffset: 00001047, Length: 00001048 */
 
 const unsigned char KEY_DATA[KEYSIZE] = {
 	0xA6, 0x0B, 0x31, 0xD1, 0xAC, 0xB5, 0xDF, 0x98, 0xDB, 0x72, 0xFD, 0x2F,
