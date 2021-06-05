@@ -6,52 +6,8 @@
 *
 */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdint.h>
+#include "../common/iofile.c"
 
-#define u8 uint8_t
-#define u16 uint16_t
-#define u32 uint32_t
-
-
-int read_buffer(const char *file_path, u8 **buf, size_t *size)
-{
-	FILE *fp;
-	u8 *file_buf;
-	size_t file_size;
-	
-	if ((fp = fopen(file_path, "rb")) == NULL)
-        return -1;
-	fseek(fp, 0, SEEK_END);
-	file_size = ftell(fp);
-	fseek(fp, 0, SEEK_SET);
-	file_buf = (u8 *)malloc(file_size);
-	fread(file_buf, 1, file_size, fp);
-	fclose(fp);
-	
-	if (buf)
-        *buf = file_buf;
-	else
-        free(file_buf);
-	if (size)
-        *size = file_size;
-	
-	return 0;
-}
-
-int write_buffer(const char *file_path, u8 *buf, size_t size)
-{
-	FILE *fp;
-	
-	if ((fp = fopen(file_path, "wb")) == NULL)
-        return -1;
-	fwrite(buf, 1, size, fp);
-	fclose(fp);
-	
-	return 0;
-}
 
 u32 wadd_le(const uint16_t* data, u32 len)
 {
