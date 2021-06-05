@@ -52,6 +52,8 @@ Tools to fix checksums for specific PS3 save-games:
 - [prototype-checksum-fixer](./prototype-checksum-fixer)
   - Prototype 1
   - Prototype 2
+- [sw4-checksum-fixer](./sw4-checksum-fixer)
+  - Samurai Warriors 4
 
 ## License
 
