@@ -6,20 +6,8 @@
 *
 */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdint.h>
-#include "md5.c"
-
-#define u8 uint8_t
-#define u32 uint32_t
-
-#define ES32(_val) \
-	((u32)(((((u32)_val) & 0xff000000) >> 24) | \
-	       ((((u32)_val) & 0x00ff0000) >> 8 ) | \
-	       ((((u32)_val) & 0x0000ff00) << 8 ) | \
-	       ((((u32)_val) & 0x000000ff) << 24)))
+#include "../common/iofile.c"
+#include "../common/md5.c"
 
 #define BLOCK_SIZE	16
 
@@ -27,43 +15,6 @@ const uint8_t NFS_XOR_KEY[16] = {
 	33, 243, 198, 210, 8, 99, 170, 172, 56, 226, 32, 98, 13, 13, 77, 82
 };
 
-
-int read_buffer(const char *file_path, u8 **buf, size_t *size)
-{
-	FILE *fp;
-	u8 *file_buf;
-	size_t file_size;
-	
-	if ((fp = fopen(file_path, "rb")) == NULL)
-        return -1;
-	fseek(fp, 0, SEEK_END);
-	file_size = ftell(fp);
-	fseek(fp, 0, SEEK_SET);
-	file_buf = (u8 *)malloc(file_size);
-	fread(file_buf, 1, file_size, fp);
-	fclose(fp);
-	
-	if (buf)
-        *buf = file_buf;
-	else
-        free(file_buf);
-	if (size)
-        *size = file_size;
-	
-	return 0;
-}
-
-int write_buffer(const char *file_path, u8 *buf, size_t size)
-{
-	FILE *fp;
-	
-	if ((fp = fopen(file_path, "wb")) == NULL)
-        return -1;
-	fwrite(buf, 1, size, fp);
-	fclose(fp);
-	
-	return 0;
-}
 
 void md5_block(const u8* in, u8* out)
 {

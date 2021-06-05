@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o sw4-checksum-fixer main.c
+	gcc -D _GNU_SOURCE -o sw4-checksum-fixer main.c
 
 clean:
 	-rm -f sw4-checksum-fixer

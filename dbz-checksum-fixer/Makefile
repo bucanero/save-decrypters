@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o dbz-checksum-fixer main.c
+	gcc -D _GNU_SOURCE -o dbz-checksum-fixer main.c
 
 clean:
 	-rm -f dbz-checksum-fixer

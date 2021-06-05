@@ -12,6 +12,10 @@
 #define u32 uint32_t
 #define u64 uint64_t
 
+#define ES16(_val) \
+	((u16)(((((u16)_val) & 0xff00) >> 8) | \
+	       ((((u16)_val) & 0x00ff) << 8)))
+
 #define ES32(_val) \
 	((u32)(((((u32)_val) & 0xff000000) >> 24) | \
 	       ((((u32)_val) & 0x00ff0000) >> 8 ) | \
