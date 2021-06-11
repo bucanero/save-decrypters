@@ -2,7 +2,7 @@
 *
 *	MGS PS3 Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
 *
-* This tool is based (reversed) on the original diablo_3_save_data_decrypter by Red-EyeX32
+* This tool is based (reversed) on the original XBOX MGS 2/3 - SecFixers by Philymaster
 *
 */
 
