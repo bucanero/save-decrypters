@@ -45,6 +45,8 @@ jobs:
           mv diablo3-decrypter/diablo3-ps3save-decrypter diablo3-ps3save-decrypter.exe
           mv re-remaster-decrypter/re-remaster-decrypter re-remaster-decrypter.exe
           mv dmc-decrypter/dmc-ps3save-decrypter dmc-ps3save-decrypter.exe
+          mv mgs-hd-decrypter/mgs-hd-decrypter mgs-hd-decrypter.exe
+          mv mgs-pw-decrypter/mgs-pw-decrypter mgs-pw-decrypter.exe
           mv naughtydog-decrypter/naughtydog-ps3save-decrypter naughtydog-ps3save-decrypter.exe
           mv re-revelations2-decrypter/re-revelations2-decrypter re-revelations2-decrypter.exe
           mv ff13-decrypter/ff13-ps3save-decrypter ff13-ps3save-decrypter.exe
@@ -55,6 +57,7 @@ jobs:
           mv gta5-decrypter/gta5-ps3save-decrypter gta5-ps3save-decrypter.exe
           mv deadspace-checksum-fixer/ds-checksum-fixer ds-checksum-fixer.exe
           mv dbz-checksum-fixer/dbz-checksum-fixer dbz-checksum-fixer.exe
+          mv sw4-checksum-fixer/sw4-checksum-fixer sw4-checksum-fixer.exe
           mv ffxhd-checksum-fixer/ffxhd-checksum-fixer ffxhd-checksum-fixer.exe
           mv kh25-checksum-fixer/kh25remix-checksum-fixer kh25remix-checksum-fixer.exe
           mv prototype-checksum-fixer/prototype-checksum-fixer prototype-checksum-fixer.exe
@@ -69,6 +72,8 @@ jobs:
             kh25remix-checksum-fixer.exe \
             re-remaster-decrypter.exe \
             dmc-ps3save-decrypter.exe \
+            mgs-hd-decrypter.exe \
+            mgs-pw-decrypter.exe \
             naughtydog-ps3save-decrypter.exe \
             re-revelations2-decrypter.exe \
             ff13-ps3save-decrypter.exe \
@@ -79,6 +84,7 @@ jobs:
             nfs-undercover-decrypter.exe \
             ds-checksum-fixer.exe \
             dbz-checksum-fixer.exe \
+            sw4-checksum-fixer.exe \
             gta5-ps3save-decrypter.exe \
             prototype-checksum-fixer.exe
 
