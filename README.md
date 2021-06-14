@@ -22,6 +22,11 @@ Tools to decrypt specific PS3 save-games:
   - The Last of Us
   - Uncharted 2
   - Uncharted 3
+- [mgs-hd-decrypter](./mgs-hd-decrypter)
+  - Metal Gear Solid 2 HD - Sons of Liberty
+  - Metal Gear Solid 3 HD - Snake Eater
+- [mgs-pw-decrypter](./mgs-pw-decrypter)
+  - Metal Gear Solid: Peace Walker HD
 - [nfs-rivals-decrypter](./nfs-rivals-decrypter)
   - Need For Speed: Rivals
 - [nfs-undercover-decrypter](./nfs-undercover-decrypter)
