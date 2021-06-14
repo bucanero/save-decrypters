@@ -55,6 +55,9 @@ jobs:
             deadspace-checksum-fixer/ds-checksum-fixer \
             gta5-decrypter/gta5-ps3save-decrypter \
             dbz-checksum-fixer/dbz-checksum-fixer \
+            sw4-checksum-fixer/sw4-checksum-fixer \
+            mgs-hd-decrypter/mgs-hd-decrypter \
+            mgs-pw-decrypter/mgs-pw-decrypter \
             prototype-checksum-fixer/prototype-checksum-fixer
 
     - uses: actions/upload-artifact@v2
