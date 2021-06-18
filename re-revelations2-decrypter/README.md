@@ -12,7 +12,7 @@ OPTIONS        Explanation:
 
 ### Hashes
 
-**Note:** this tool doesn't fix the DWADD/SHA1 integrity hashes.
+**Note:** this tool also updates the DWADD/SHA1 integrity hashes.
 
 #### DWADD
 

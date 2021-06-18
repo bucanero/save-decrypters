@@ -11,9 +11,24 @@
 
 #include "../common/iofile.c"
 #include "../common/blowfish.c"
+#include "../common/sha1.c"
 
 #define SECRET_KEY      "zW$2eWaHNdT~6j86T_&j"
 
+
+u32 dwadd(const u8* data, u32 len)
+{
+	u32 csum = 0;
+
+	len /= 4;
+	while (len--)
+	{
+		csum += ES32(*(u32*)data);
+		data += 4;
+	}
+
+	return csum;
+}
 
 void decrypt_data(const u32* key_buffer, u32* data, u32 size)
 {
@@ -105,7 +120,16 @@ int main(int argc, char **argv)
 	if (*opt == 'd')
 		decrypt_data(key_table, (u32*)(data + 0x10), len - 0x10);
 	else
+	{
+		u32 crc = ES32(dwadd(data + 0x10, len - 0x30));
+		memcpy(data + 0x08, &crc, sizeof(u32));
+		printf("[*] Updated DWADD: %08X\n", ES32(crc));
+
+		sha1(data + 0x127590, data + 0x10, (len - 0x30) * 8);
+		printf("[*] Updated SHA1 : " SHA1_FMT(data + 0x127590, "\n"));
+
 		encrypt_data(key_table, (u32*)(data + 0x10), len - 0x10);
+	}
 
 	write_buffer(argv[2], data, len);
 
