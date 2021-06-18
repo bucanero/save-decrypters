@@ -29,7 +29,10 @@
 #include <stdint.h>
 #include "sha1.h"
 
-//#define LITTLE_ENDIAN
+#if !defined(LITTLE_ENDIAN) && !defined(BIG_ENDIAN)
+#define LITTLE_ENDIAN
+#endif
+
 #define SHA1_FMT(d,s)     "%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%s", \
                            (d)[0], (d)[1], (d)[2], (d)[3], \
                            (d)[4], (d)[5], (d)[6], (d)[7], \

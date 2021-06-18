@@ -11,6 +11,7 @@
 
 #include "../common/iofile.c"
 #include "../common/blowfish.c"
+#include "../common/sha1.c"
 
 #define SECRET_KEY      "SBmdYgEamc=#sA0)Mhs9#>/4iiXbMPxW"
 
@@ -105,7 +106,12 @@ int main(int argc, char **argv)
 	if (*opt == 'd')
 		decrypt_data(key_table, (u32*) data, len);
 	else
+	{
+		sha1(data + 0x0C, data + 0x40, (len - 0x40) * 8);
+		printf("[*] Updated SHA1: " SHA1_FMT(data + 0x0C, "\n"));
+
 		encrypt_data(key_table, (u32*) data, len);
+	}
 
 	write_buffer(argv[2], data, len);
 
