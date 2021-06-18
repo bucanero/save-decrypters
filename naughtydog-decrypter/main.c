@@ -11,10 +11,43 @@
 
 #include "../common/iofile.c"
 #include "../common/blowfish.c"
+#include "../common/sha1.c"
+#include "../common/hmac-sha1.c"
 
 #define SECRET_KEY      "(SH[@2>r62%5+QKpy|g6"
 #define SHA1_HMAC_KEY   "xM;6X%/p^L/:}-5QoA+K8:F*M!~sb(WK<E%6sW_un0a[7Gm6,()kHoXY+yI/s;Ba"
 
+#define CRC32_POLY    0xEDB88320
+#define CRC32_INIT    0xFFFFFFFF
+
+
+void init_crc32_table(uint32_t* crc32_table, uint32_t poly)
+{
+	for (int b = 0; b < 256; ++b)
+	{
+		uint32_t r = b;
+
+		for (int i = 0; i < 8; ++i)
+			r = (r & 1) ? (r >> 1) ^ poly : (r >> 1);
+
+		crc32_table[b] = r;
+	}
+
+	return;
+}
+
+u32 calc_crc32(const u8* data, u32 len)
+{
+	u32 crc32_table[256];
+	u32 crc = CRC32_INIT;
+
+	init_crc32_table(crc32_table, CRC32_POLY);
+
+	while (len--)
+		crc = crc32_table[(crc ^ *data++) & 0xFF] ^ (crc >> 8);
+
+	return ~crc;
+}
 
 void decrypt_data(const u32* key_buffer, u32* data, u32 size)
 {
@@ -118,7 +151,16 @@ int main(int argc, char **argv)
 	if (*opt == 'd')
 		decrypt_data((u32*) key_table, (u32*) data, dsize);
 	else
+	{
+		u32 crc = ES32(calc_crc32(data + 0x58C, ES32(*(u32*)&data[0x58C]) - 4));
+		memcpy(data + 0x588, &crc, sizeof(u32));
+		printf("[*] Updated CRC32    : %08X\n", ES32(crc));
+
+		hmac_sha1(data + len - 0x20, SHA1_HMAC_KEY, 8 * strlen(SHA1_HMAC_KEY), data + 8, (len - 40)*8);
+		printf("[*] Updated SHA1 HMAC: " SHA1_FMT(data + len - 0x20, "\n"));
+
 		encrypt_data((u32*) key_table, (u32*) data, dsize);
+	}
 
 	write_buffer(argv[2], data, len);
 

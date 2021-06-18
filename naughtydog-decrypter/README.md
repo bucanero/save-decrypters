@@ -11,7 +11,7 @@ OPTIONS        Explanation:
 
 ### Hashes
 
-**Note:** the tool doesn't fix the CRC32 and SHA1 HMAC integrity hashes.
+**Note:** the tool also updates the CRC32 and SHA1 HMAC integrity hashes.
 
 #### CRC32
 
