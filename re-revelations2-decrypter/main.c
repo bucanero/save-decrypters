@@ -35,7 +35,7 @@ void decrypt_data(const u32* key_buffer, u32* data, u32 size)
 	u32 buf[2];
 
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
-    size /= 4;
+	size /= 4;
 
 	for (int i = 0; i < size; i+= 2)
 	{
@@ -53,10 +53,10 @@ void decrypt_data(const u32* key_buffer, u32* data, u32 size)
 
 void encrypt_data(const u32* key_buffer, u32* data, u32 size)
 {
-	u32 buf[2], crc;
+	u32 buf[2];
 
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
-    size /= 4;
+	size /= 4;
 
 	for (int i = 0; i < size; i+= 2)
 	{
