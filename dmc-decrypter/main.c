@@ -11,6 +11,7 @@
 
 #include "../common/iofile.c"
 #include "../common/blowfish.c"
+#include "../common/sha1.c"
 
 #define SECRET_KEY      "8jdf*jsd@dfd8*P:QcNt"
 // Devil May Cry 5 Retail Xbox360 key = "KA^3k@21\'38gdjfgEFJ#"
@@ -33,7 +34,7 @@ void decrypt_data(const u32* key_buffer, u32* data, u32 size)
 		data[i+1] = ES32(buf[1]);
 	}
 
-	printf("[*] Stored SHA1: 0x%X%X%X%X%X\n", ES32(data[1]), ES32(data[2]), ES32(data[3]), ES32(data[4]), ES32(data[5]));
+	printf("[*] Stored SHA1: " SHA1_FMT((u8*)&data[1], "\n"));
 	printf("[*] SHA1 Calculation Length: 0x%X\n", ES32(data[6]));
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
@@ -41,9 +42,11 @@ void decrypt_data(const u32* key_buffer, u32* data, u32 size)
 
 void encrypt_data(const u32* key_buffer, u32* data, u32 size)
 {
-	u32 buf[2], crc;
+	u32 buf[2];
 
-	printf("[*] Stored SHA1: 0x%X%X%X%X%X\n", ES32(data[1]), ES32(data[2]), ES32(data[3]), ES32(data[4]), ES32(data[5]));
+	sha1(&data[1], &data[7], ES32(data[6]) * 8);
+
+	printf("[*] Updated SHA1: " SHA1_FMT((u8*)&data[1], "\n"));
 	printf("[*] SHA1 Calculation Length: 0x%X\n", ES32(data[6]));
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
     size /= 4;

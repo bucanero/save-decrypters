@@ -12,7 +12,7 @@ OPTIONS        Explanation:
 
 ### Hash
 
-**Note:** the tool doesn't fix the SHA1 integrity hash.
+**Note:** the tool also updates the SHA1 integrity hash.
 
 ```
 [Update SHA1 for PROFILE (Required)]
