@@ -1,6 +1,6 @@
-# ducktales-checksum-fixer
+# digimon-checksum-fixer
 
-A tool to fix checksum on DuckTales: Remastered (PS3) save-games.
+A tool to fix checksum on Digimon All-Star Rumble (PS3) save-games.
 
 ### Credits
 

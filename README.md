@@ -49,6 +49,8 @@ Tools to fix checksums for specific PS3 save-games:
   - Dead Space 3
 - [dbz-checksum-fixer](./dbz-checksum-fixer)
   - Dragon Ball Z: Ultimate Tenkaichi
+- [digimon-checksum-fixer](./digimon-checksum-fixer)
+  - Digimon: All-Star Rumble
 - [ducktales-checksum-fixer](./ducktales-checksum-fixer)
   - DuckTales: Remastered
 - [ffxhd-checksum-fixer](./ffxhd-checksum-fixer)
@@ -58,6 +60,8 @@ Tools to fix checksums for specific PS3 save-games:
   - Kingdom Hearts HD 2.5 ReMIX
   - Kingdom Hearts HD Birth by Sleep (BBS)
   - Kingdom Hearts Re: Chain of Memories (CoM)
+- [lego-checksum-fixer](./lego-checksum-fixer)
+  - LEGO The Lord of the Rings
 - [prototype-checksum-fixer](./prototype-checksum-fixer)
   - Prototype 1
   - Prototype 2

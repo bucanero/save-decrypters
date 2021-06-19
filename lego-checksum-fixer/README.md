@@ -1,6 +1,6 @@
-# ducktales-checksum-fixer
+# lego-checksum-fixer
 
-A tool to fix checksum on DuckTales: Remastered (PS3) save-games.
+A tool to fix checksum on LEGO (PS3) save-games.
 
 ### Credits
 
