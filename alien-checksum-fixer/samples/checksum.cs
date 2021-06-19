@@ -1,3 +1,17 @@
+/*
+
+Security:
+-> Custom SHA1
+. . . Offset: 8
+. . . Calc. Start: 32
+. . . Calc. Length: See Code
+
+Additional:
+A SHA1 hash is calculated and moved to a buffer with the size of 24.
+The three Int64 values of the buffer are combined using XOR.
+
+*/
+
 byte[] data = File.ReadAllBytes(o.FileName);
 
 int calcLen;

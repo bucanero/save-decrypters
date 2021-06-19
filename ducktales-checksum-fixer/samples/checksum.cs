@@ -1,3 +1,16 @@
+/*
+
+Security:
+-> Custom Checksum
+. . . Offset: 0
+. . . Calc. Start: 16
+. . . Calc. Length: 0x400
+
+Additional:
+The code is not optimized yet, but will do this later. For now this code works. :)
+
+*/
+
 private ulong CalculateChecksum(byte[] data, int offset, int size) {
     uint  r1, r2, r3, r4, r5, r6, r7, r8;
 
