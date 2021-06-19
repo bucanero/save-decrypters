@@ -22,6 +22,8 @@ all:
 	$(MAKE) -C sw4-checksum-fixer
 	$(MAKE) -C alien-checksum-fixer
 	$(MAKE) -C ducktales-checksum-fixer
+	$(MAKE) -C lego-checksum-fixer
+	$(MAKE) -C digimon-checksum-fixer
 	$(MAKE) -C mgs-hd-decrypter
 	$(MAKE) -C mgs-pw-decrypter
 
@@ -44,6 +46,8 @@ clean:
 	$(MAKE) clean -C dbz-checksum-fixer
 	$(MAKE) clean -C sw4-checksum-fixer
 	$(MAKE) clean -C alien-checksum-fixer
+	$(MAKE) clean -C lego-checksum-fixer
+	$(MAKE) clean -C digimon-checksum-fixer
 	$(MAKE) clean -C ducktales-checksum-fixer
 	$(MAKE) clean -C mgs-pw-decrypter
 	$(MAKE) clean -C mgs-hd-decrypter
