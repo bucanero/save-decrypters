@@ -1,4 +1,4 @@
-# ps3-save-decrypters
+# PlayStation 3 Save Decrypters
 
 A collection of custom save-game decrypters and checksum fixers for PS3.
 
@@ -42,11 +42,15 @@ Tools to decrypt specific PS3 save-games:
 ## Checksum fixers
 
 Tools to fix checksums for specific PS3 save-games:
+- [alien-checksum-fixer](./alien-checksum-fixer)
+  - Alien: Isolation
 - [deadspace-checksum-fixer](./deadspace-checksum-fixer)
   - Dead Space 2
   - Dead Space 3
 - [dbz-checksum-fixer](./dbz-checksum-fixer)
   - Dragon Ball Z: Ultimate Tenkaichi
+- [ducktales-checksum-fixer](./ducktales-checksum-fixer)
+  - DuckTales: Remastered
 - [ffxhd-checksum-fixer](./ffxhd-checksum-fixer)
   - Final Fantasy X HD
   - Final Fantasy X-2 HD
