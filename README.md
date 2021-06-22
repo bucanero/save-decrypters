@@ -44,6 +44,8 @@ Tools to decrypt specific PS3 save-games:
 Tools to fix checksums for specific PS3 save-games:
 - [alien-checksum-fixer](./alien-checksum-fixer)
   - Alien: Isolation
+- [cod-checksum-fixer](./cod-checksum-fixer)
+  - Call of Duty: Ghosts
 - [deadspace-checksum-fixer](./deadspace-checksum-fixer)
   - Dead Space 2
   - Dead Space 3
