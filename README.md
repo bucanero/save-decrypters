@@ -69,6 +69,8 @@ Tools to fix checksums for specific PS3 save-games:
   - Prototype 2
 - [sw4-checksum-fixer](./sw4-checksum-fixer)
   - Samurai Warriors 4
+- [tears2-checksum-fixer](./tears2-checksum-fixer)
+  - Tears to Tiara 2
 
 ## License
 
