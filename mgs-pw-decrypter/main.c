@@ -41,83 +41,68 @@ const uint32_t PW_TABLE[256] = {
 	0xfe693d2b, 0x896e0dbd, 0x10675c07, 0x67606c91, 0xf904f932, 0x8e03c9a4, 0x170a981e, 0x600da888, 
 	0xed05a57d, 0x9a0295eb, 0x30bc451, 0x740cf4c7, 0xea686164, 0x9d6f51f2, 0x4660048, 0x736130de, 
 	0xe3de2d4f, 0x94d91dd9, 0xdd04c63, 0x7ad77cf5, 0xe4b3e956, 0x93b4d9c0, 0xabd887a, 0x7dbab8ec };
-u32 PW_SALTS[2] = {0, 0};
 
-u32 CalculateChecksum(const u8* data, int offset, int size)
+u32 CalculateChecksum(const u8* data, int size)
 {
     u32 csum = -1;
-    for (int i = offset; i < offset + size; i++)
-    {
-        csum = PW_TABLE[(u8)(data[i] ^ csum)] ^ csum >> 8 ^ 0x50b85761;
-    }
+
+    while (size--)
+        csum = PW_TABLE[(u8)(*data++ ^ csum)] ^ csum >> 8 ^ PW_TABLE[0];
+
     return ~csum;
 }
 
-void DeEncryptBlock(u32* data, int offset, int size)
+void DeEncryptBlock(u32* data, int size, u32* pwSalts)
 {
-	u32 value;
+	size /= 4;
 
-	offset /= 4;
-	for (int i = 0; i < size >> 2; i++)
+	for (int i = 0; i < size; i++)
 	{
-		value = ES32(ES32(data[offset + i]) ^ PW_SALTS[0]);
-		memcpy(&data[offset + i], &value, sizeof(u32));
-		PW_SALTS[0] = PW_SALTS[0] * 0x2e90edd + PW_SALTS[1];
+		data[i] = ES32(ES32(data[i]) ^ pwSalts[0]);
+		pwSalts[0] = pwSalts[0] * 0x2e90edd + pwSalts[1];
 	}
 }
 
-void SetSalts(u32 r3, u32 r4, u32 r5)
+void SetSalts(u32* pwSalts, const u32 *data)
 {
-    u32 num = r3 ^ r4;
-    PW_SALTS[1] = num * r5;
-    PW_SALTS[0] = (num ^ 0x6576) << 16 | num;
+    u32 offset = (ES32(data[1]) | 0xAD47DE8F) ^ ES32(data[0]);
+    u32 r5 = ES32(data[offset + 7]) ^ 0xBC4DEFA2;
+    u32 r4 = ES32(data[offset + 3]) ^ 0x2d71d26c;
+    u32 r3 = ES32(data[offset + 2]) ^ 0x1327de73;
+
+    pwSalts[0] = r3 ^ r4;
+    pwSalts[1] = pwSalts[0] * r5;
+    pwSalts[0] = (pwSalts[0] ^ 0x6576) << 16 | pwSalts[0];
 }
 
 void SwapBlock(u32* data, int len)
 {
     for (int i = 0; i < len; i++)
-    {
-    	u32 num = ES32(data[i]);
-    	memcpy(&data[i], &num, sizeof(u32));
-    }
+    	data[i] = ES32(data[i]);
 }
 
 void PW_Decrypt(u32* data)
 {
-	SwapBlock(data, 16);
+    u32 salts[2] = {0, 0};
 
-    u32 num = ES32(data[1]) | 0xAD47DE8F;
-    u32 num1 = num ^ ES32(data[0]);
-    u32 num2 = ES32(data[num1 + 7]) ^ 0xBC4DEFA2;
-    u32 num3 = ES32(data[num1 + 3]) ^ 0x2d71d26c;
-    num = ES32(data[num1 + 2]) ^ 0x1327de73;
-    SetSalts(num, num3, num2);
+    SwapBlock(data, 0xd676);
+    SetSalts(salts, data);
+    DeEncryptBlock(data + 16, 0x35998, salts);
 
-	SwapBlock(data + 16, 0xd666);
-    DeEncryptBlock(data, 64, 0x35998);
-
-    u32 num4 = 0x359d8 / 4;
-    u32 num5 = ES32(data[num4]);
-    u32 num6 = ES32(data[num4 + 1]);
-    num1 = (num6 | 0xAD47DE8F) ^ num5;
-    num2 = ES32(data[num1 + 7 + num4]) ^ 0xBC4DEFA2;
-    num3 = ES32(data[num1 + 3 + num4]) ^ 0x2d71d26c;
-    num = ES32(data[num1 + 2 + num4]) ^ 0x1327de73;
-    SetSalts(num, num3, num2);
-    DeEncryptBlock(data, 0x35a18, 0xf0d0);
-
+    SetSalts(salts, data + 0xD676);
+    DeEncryptBlock(data + 0xD686, 0xf0d0, salts);
 	SwapBlock(data + 17, 0xd665);
 
-    if (CalculateChecksum((u8*)data, 68, 0x1af24) != ES32(data[14]))
+    if (CalculateChecksum((u8*)data + 68, 0x1af24) != ES32(data[14]))
         printf("[!] Checksum error (%x)\n", 68);
 
-    if (CalculateChecksum((u8*)data, 0x1af68, 0x1c00) != ES32(data[15]))
+    if (CalculateChecksum((u8*)data + 0x1af68, 0x1c00) != ES32(data[15]))
         printf("[!] Checksum error (%x)\n", 0x1af68);
 
-    if (CalculateChecksum((u8*)data, 0x1cb68, 0x18e68) != ES32(data[12]))
+    if (CalculateChecksum((u8*)data + 0x1cb68, 0x18e68) != ES32(data[12]))
         printf("[!] Checksum error (%x)\n", 0x1cb68);
 
-    if (CalculateChecksum((u8*)data, 0x35a18, 0xf0d0) != ES32(data[num4 + 13]))
+    if (CalculateChecksum((u8*)data + 0x35a18, 0xf0d0) != ES32(data[0xD683]))
         printf("[!] Checksum error (%x)\n", 0x35a18);
 
 	printf("[*] Decrypted File Successfully!\n\n");
@@ -126,43 +111,22 @@ void PW_Decrypt(u32* data)
 
 void PW_Encrypt(u32* data)
 {
-	u32 num;
+    u32 salts[2] = {0, 0};
 
-    num = ES32(CalculateChecksum((u8*)data, 0x35a18, 0xf0d0));
-    memcpy(&data[0xD683], &num, sizeof(u32));
-
-    num = ES32(CalculateChecksum((u8*)data, 0x1cb68, 0x18e68));
-    memcpy(&data[12], &num, sizeof(u32));
-
-    num = ES32(CalculateChecksum((u8*)data, 0x1af68, 0x1c00));
-    memcpy(&data[15], &num, sizeof(u32));
-
-    num = ES32(CalculateChecksum((u8*)data, 68, 0x1af24));
-    memcpy(&data[14], &num, sizeof(u32));
+    data[0xD683] = ES32(CalculateChecksum((u8*)data + 0x35a18, 0xf0d0));
+    data[12] = ES32(CalculateChecksum((u8*)data + 0x1cb68, 0x18e68));
+    data[15] = ES32(CalculateChecksum((u8*)data + 0x1af68, 0x1c00));
+    data[14] = ES32(CalculateChecksum((u8*)data + 68, 0x1af24));
 
     printf("[*] New Checksums: %08X %08X %08X %08X\n", data[12], data[14], data[15], data[0xD683]);
 
 	SwapBlock(data + 17, 0xd665);
+    SetSalts(salts, data + 0xD676);
+    DeEncryptBlock(data + 0xD686, 0xf0d0, salts);
 
-    num = ES32(data[0xD676]);
-    u32 num1 = ES32(data[0xD677]);
-    u32 num2 = (num1 | 0xAD47DE8F) ^ num;
-    u32 num3 = ES32(data[0xD676 + num2 + 7]) ^ 0xBC4DEFA2;
-    u32 num4 = ES32(data[0xD676 + num2 + 3]) ^ 0x2d71d26c;
-    u32 num5 = ES32(data[0xD676 + num2 + 2]) ^ 0x1327de73;
-    SetSalts(num5, num4, num3);
-    DeEncryptBlock(data, 0x35a18, 0xf0d0);
-
-    num1 = ES32(data[1]) | 0xAD47DE8F;
-    num2 = num1 ^ ES32(data[0]);
-    num3 = ES32(data[num2 + 7]) ^ 0xBC4DEFA2;
-    num4 = ES32(data[num2 + 3]) ^ 0x2d71d26c;
-    num5 = ES32(data[num2 + 2]) ^ 0x1327de73;
-    SetSalts(num5, num4, num3);
-    DeEncryptBlock(data, 64, 0x35998);
-
-	SwapBlock(data + 16, 0xd666);
-	SwapBlock(data, 16);
+    SetSalts(salts, data);
+    DeEncryptBlock(data + 16, 0x35998, salts);
+	SwapBlock(data, 0xD676);
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;

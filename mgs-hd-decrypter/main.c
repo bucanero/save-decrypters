@@ -15,13 +15,13 @@
 
 #define CRC_POLY            0xEDB88320
 
-int CalculateCRC32(const u8* data, int offset, int size)
+int CalculateCRC32(const u8* data, int size)
 {
     int crc = -1;
 
-    for (int i = offset; i < offset + size; i++)
+    while (size--)
     {
-        crc = crc ^ data[i] << 24 >> 24;
+        crc = crc ^ *data++ << 24 >> 24;
         for (int j = 0; j < 8; j++)
         {
             int num = crc & 1;
@@ -100,7 +100,7 @@ void EncodeBase64(u8* data, const char* chars)
             tmpArray[j] = (u8)(data[i] & 63);
 
         else if (k <= 7)
-                tmpArray[j] = (u8)(data[i + 1] >> (10-k)) | ((data[i] & ((1 << (8-k)) - 1)) << (k-2));
+            tmpArray[j] = (u8)(data[i + 1] >> (10-k)) | ((data[i] & ((1 << (8-k)) - 1)) << (k-2));
 
         k += 6;
         if (k >= 8)
@@ -144,13 +144,13 @@ void DecodeBase64(u8* data, const char* str)
         if (k == 0xff)
             return;
 
-        data[m] = (u8)(k - j & 63);
+        data[m] = (u8)((k - j) & 63);
     }
 
     for (j = 0, k = 0, m = 0; m < 21; m++)
     {
         if (j <= 5)
-            tmpArray[m] = (u8)(data[k] & 63 >> (j & 31)) << (2 + j & 31);
+            tmpArray[m] = (u8)(data[k] & 63 >> (j & 31)) << ((2 + j) & 31);
 
         i = ~j + 7;
         j = 0;
@@ -200,7 +200,7 @@ u32 mgs2_encrypt_data(u8* data, u32 size)
 {
 	printf("[*] MGS2 Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-    u32 crc = ES32(CalculateCRC32(data, 4, 0x1598) ^ CalculateCRC32(data, 0x15aa, 0x1c00));
+    u32 crc = ES32(CalculateCRC32(data + 4, 0x1598) ^ CalculateCRC32(data + 0x15aa, 0x1c00));
     memcpy(data + 0x15a6L, &crc, sizeof(u32));
 
     // Encrypt Layer 2
