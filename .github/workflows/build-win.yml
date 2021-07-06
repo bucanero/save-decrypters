@@ -58,6 +58,12 @@ jobs:
           mv deadspace-checksum-fixer/ds-checksum-fixer ds-checksum-fixer.exe
           mv dbz-checksum-fixer/dbz-checksum-fixer dbz-checksum-fixer.exe
           mv sw4-checksum-fixer/sw4-checksum-fixer sw4-checksum-fixer.exe
+          mv cod-checksum-fixer/sw4-checksum-fixer cod-checksum-fixer.exe
+          mv alien-checksum-fixer/sw4-checksum-fixer alien-checksum-fixer.exe
+          mv digimon-checksum-fixer/sw4-checksum-fixer digimon-checksum-fixer.exe
+          mv lego-checksum-fixer/sw4-checksum-fixer lego-checksum-fixer.exe
+          mv ducktales-checksum-fixer/sw4-checksum-fixer ducktales-checksum-fixer.exe
+          mv tears2-checksum-fixer/sw4-checksum-fixer tears2-checksum-fixer.exe
           mv ffxhd-checksum-fixer/ffxhd-checksum-fixer ffxhd-checksum-fixer.exe
           mv kh25-checksum-fixer/kh25remix-checksum-fixer kh25remix-checksum-fixer.exe
           mv prototype-checksum-fixer/prototype-checksum-fixer prototype-checksum-fixer.exe
@@ -85,6 +91,12 @@ jobs:
             ds-checksum-fixer.exe \
             dbz-checksum-fixer.exe \
             sw4-checksum-fixer.exe \
+            cod-checksum-fixer.exe \
+            alien-checksum-fixer.exe \
+            tears2-checksum-fixer.exe \
+            ducktales-checksum-fixer.exe \
+            lego-checksum-fixer.exe \
+            digimon-checksum-fixer.exe \
             gta5-ps3save-decrypter.exe \
             prototype-checksum-fixer.exe
 
