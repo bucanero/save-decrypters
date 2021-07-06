@@ -63,6 +63,8 @@ Tools to fix checksums for specific PS3 save-games:
   - Kingdom Hearts HD Birth by Sleep (BBS)
   - Kingdom Hearts Re: Chain of Memories (CoM)
 - [lego-checksum-fixer](./lego-checksum-fixer)
+  - LEGO Batman 2: DC Super Heroes
+  - LEGO Harry Potter: Years 5-7
   - LEGO The Lord of the Rings
 - [prototype-checksum-fixer](./prototype-checksum-fixer)
   - Prototype 1

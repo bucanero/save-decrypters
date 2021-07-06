@@ -26,6 +26,8 @@ all:
 	$(MAKE) -C digimon-checksum-fixer
 	$(MAKE) -C mgs-hd-decrypter
 	$(MAKE) -C mgs-pw-decrypter
+	$(MAKE) -C cod-checksum-fixer
+	$(MAKE) -C tears2-checksum-fixer
 
 clean:
 	$(MAKE) clean -C diablo3-decrypter
@@ -51,3 +53,5 @@ clean:
 	$(MAKE) clean -C ducktales-checksum-fixer
 	$(MAKE) clean -C mgs-pw-decrypter
 	$(MAKE) clean -C mgs-hd-decrypter
+	$(MAKE) clean -C cod-checksum-fixer
+	$(MAKE) clean -C tears2-checksum-fixer
