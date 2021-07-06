@@ -56,6 +56,12 @@ jobs:
             gta5-decrypter/gta5-ps3save-decrypter \
             dbz-checksum-fixer/dbz-checksum-fixer \
             sw4-checksum-fixer/sw4-checksum-fixer \
+            cod-checksum-fixer/cod-checksum-fixer \
+            lego-checksum-fixer/lego-checksum-fixer \
+            alien-checksum-fixer/alien-checksum-fixer \
+            ducktales-checksum-fixer/ducktales-checksum-fixer \
+            digimon-checksum-fixer/digimon-checksum-fixer \
+            tears2-checksum-fixer/tears2-checksum-fixer \
             mgs-hd-decrypter/mgs-hd-decrypter \
             mgs-pw-decrypter/mgs-pw-decrypter \
             prototype-checksum-fixer/prototype-checksum-fixer
