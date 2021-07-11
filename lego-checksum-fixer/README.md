@@ -5,6 +5,7 @@ A tool to fix checksum on LEGO (PS3) save-games:
 - LEGO Lord Of The Rings
 - LEGO Batman 2: DC Super Heroes
 - LEGO Harry Potter: Years 5-7
+- LEGO Pirates of the Caribbean: The Video Game
 
 ### Credits
 

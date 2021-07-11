@@ -65,12 +65,14 @@ Tools to fix checksums for specific PS3 save-games:
 - [lego-checksum-fixer](./lego-checksum-fixer)
   - LEGO Batman 2: DC Super Heroes
   - LEGO Harry Potter: Years 5-7
+  - LEGO Pirates of the Caribbean: The Video Game
   - LEGO The Lord of the Rings
 - [prototype-checksum-fixer](./prototype-checksum-fixer)
   - Prototype 1
   - Prototype 2
 - [sw4-checksum-fixer](./sw4-checksum-fixer)
   - Samurai Warriors 4
+  - Sengoku Musou 4
 - [tears2-checksum-fixer](./tears2-checksum-fixer)
   - Tears to Tiara 2
 
