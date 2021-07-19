@@ -1,0 +1,114 @@
+/*
+*
+*	Tales of Zestiria (PS3) Checksum Fixer - (c) 2021 by Bucanero - www.bucanero.com.ar
+*
+* This tool is based/reversed on the "Tales of Zestiria save editor" by Amany,
+* and the TZOFixer crypto notes by Vulnavia
+*
+*/
+
+#include "../common/iofile.c"
+#include "../common/sha1.c"
+
+#define HASH_POS		0x000C  // PC Save: 0x0514
+#define HASH_START		0x01D0  // PC Save: 0x06D8
+#define HASH_LEN		637440
+
+
+void sha_Compute(u8* hash_out, const u8* msg, u32 length, const char* key, u32 klen)
+{
+	u8 tmp[23];
+	sha1_ctx_t s;
+
+	sha1_init(&s);
+	while(length & (~0x0001ff)) // length>=512
+	{
+		sha1_nextBlock(&s, msg);
+		msg = (uint8_t*)msg + SHA1_BLOCK_BITS/8; // increment pointer to next block
+		length -= SHA1_BLOCK_BITS;
+	}
+
+	// hack to append the 'key' to the data being hashed
+	if (klen == 3)
+	{
+		memcpy(tmp, msg, 20);
+		memcpy(tmp + 20, key, klen);
+		msg = tmp;
+		length = sizeof(tmp) * 8;
+	}
+	else
+	{
+		msg = (u8*)key;
+		length = klen * 8;
+	}
+	
+	sha1_lastBlock(&s, msg, length);
+	sha1_ctx2hash(hash_out, &s);
+}
+
+/*
+    SHA1_CTX ctx;
+
+    SHA1Init(&ctx);
+    SHA1Update(&ctx, msg, length);
+    SHA1Update(&ctx, (const unsigned char*)key, klen);
+    SHA1Final(hash_out, &ctx);
+*/
+
+void toz_Compute(u8* hash, const u8* data, u32 len)
+{
+	const char array[8][4] = {
+		"SRA", "ROS", "MIC", "LAI", "EDN", "DEZ", "ZAB", "ALI"
+	};
+
+	sha_Compute(hash, data, len * 8, "TO12", 4);
+
+	for (int i = 0; i < 100; i++)
+		sha_Compute(hash, hash, 20, array[i % 8], 3);
+
+	return;
+}
+
+void print_usage(const char* argv0)
+{
+	printf("USAGE: %s filename\n\n", argv0);
+	return;
+}
+
+int main(int argc, char **argv)
+{
+	size_t len;
+	u8 *data;
+	char *opt, *bak;
+
+	printf("\nTales of Zestiria (PS3) checksum fixer 0.1.0 - (c) 2021 by Bucanero\n\n");
+
+	if (--argc < 1)
+	{
+		print_usage(argv[0]);
+		return -1;
+	}
+
+	if (read_buffer(argv[1], &data, &len) != 0)
+	{
+		printf("[*] Could Not Access The File (%s)\n", argv[1]);
+		return -1;
+	}
+	// Save a file backup
+	asprintf(&bak, "%s.bak", argv[1]);
+	write_buffer(bak, data, len);
+
+	printf("[*] File Size       : %lu bytes\n", len);
+	printf("[*] Stored SHA1     : " SHA1_FMT(data + HASH_POS, "\n"));
+
+	toz_Compute(data + HASH_POS, data + HASH_START, HASH_LEN);
+	printf("[*] Updated SHA1    : " SHA1_FMT(data + HASH_POS, "\n"));
+
+	if (write_buffer(argv[1], data, len) == 0)
+		printf("[*] Successfully Wrote New Checksum!\n\n");
+
+	free(bak);
+	free(data);
+
+	return 0;
+}

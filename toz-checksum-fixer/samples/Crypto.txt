@@ -1,0 +1,25 @@
+x86-Codeanalysis by Vulnavia
+Reverse Engineering by Vulnavia
+Cryptanalysis by Vulnavia
+//---------------------------------------------------------------------------------------
+
+Hash     : SHA1 in Cascade
+Location : 0x514
+Start    : 0x6D8 (it's just where that 0x64 is)
+Size     : 0x9BA00
+Keys     : 1 x 'TO12' -> 100 x ('SRA', 'ROS', 'MIC', 'LAI', 'EDN', 'DEZ', 'ZAB', 'ALI')
+Notes    : First Calc SHA1 from Start to given Size, then add first Key to that Hash
+           and recalc Hash, then repeat the same with the 8 other Keys 100 Times
+           starting from the first to the last and starting over again from first
+           when you reach the last, till you end at the 4th of it after 100 repeats.
+         
+           They done that by copy over the Hash and appending the Key to it everytime
+           which is not needed, it doesn't matter for SHA1 if you copy over the Hash
+           and append the Keys or if you simple continue hashing the Key as additional
+           Data, what they probably not known... LOL! So to make Things easier, simply
+           hash the Key as additional Data, just as you would if you want to hash to
+           different Data Segments that should appear as hashed as whole, this saves
+           you alot of copying and appending.
+
+//---------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------
