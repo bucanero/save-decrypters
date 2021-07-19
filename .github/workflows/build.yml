@@ -65,7 +65,7 @@ jobs:
             toz-checksum-fixer/toz-checksum-fixer \
             mgs-hd-decrypter/mgs-hd-decrypter \
             mgs-pw-decrypter/mgs-pw-decrypter \
-            dw8xl-decrypter/dw8xl-decrypter \
+            dw8xl-decrypter/dw8xl-ps3save-decrypter \
             prototype-checksum-fixer/prototype-checksum-fixer
 
     - uses: actions/upload-artifact@v2
