@@ -15,7 +15,7 @@
 #define HASH_LEN		637440
 
 
-void sha_Compute(u8* hash_out, const u8* msg, u32 length, const char* key, u32 klen)
+void sha_Compute(u8* hash_out, const u8* msg, u32 length, const char* key)
 {
 	u8 tmp[23];
 	sha1_ctx_t s;
@@ -29,17 +29,17 @@ void sha_Compute(u8* hash_out, const u8* msg, u32 length, const char* key, u32 k
 	}
 
 	// hack to append the 'key' to the data being hashed
-	if (klen == 3)
+	if (strlen(key) == 3)
 	{
 		memcpy(tmp, msg, 20);
-		memcpy(tmp + 20, key, klen);
+		memcpy(tmp + 20, key, 3);
 		msg = tmp;
 		length = sizeof(tmp) * 8;
 	}
 	else
 	{
 		msg = (u8*)key;
-		length = klen * 8;
+		length = 4 * 8;
 	}
 	
 	sha1_lastBlock(&s, msg, length);
@@ -61,10 +61,10 @@ void toz_Compute(u8* hash, const u8* data, u32 len)
 		"SRA", "ROS", "MIC", "LAI", "EDN", "DEZ", "ZAB", "ALI"
 	};
 
-	sha_Compute(hash, data, len * 8, "TO12", 4);
+	sha_Compute(hash, data, len * 8, "TO12");
 
 	for (int i = 0; i < 100; i++)
-		sha_Compute(hash, hash, 20, array[i % 8], 3);
+		sha_Compute(hash, hash, 20, array[i % 8]);
 
 	return;
 }
@@ -99,10 +99,10 @@ int main(int argc, char **argv)
 	write_buffer(bak, data, len);
 
 	printf("[*] File Size       : %lu bytes\n", len);
-	printf("[*] Stored SHA1     : " SHA1_FMT(data + HASH_POS, "\n"));
+	printf("[*] Stored SHA1-ToZ : " SHA1_FMT(data + HASH_POS, "\n"));
 
 	toz_Compute(data + HASH_POS, data + HASH_START, HASH_LEN);
-	printf("[*] Updated SHA1    : " SHA1_FMT(data + HASH_POS, "\n"));
+	printf("[*] Updated SHA1-ToZ: " SHA1_FMT(data + HASH_POS, "\n"));
 
 	if (write_buffer(argv[1], data, len) == 0)
 		printf("[*] Successfully Wrote New Checksum!\n\n");

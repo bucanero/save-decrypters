@@ -75,6 +75,8 @@ Tools to fix checksums for specific PS3 save-games:
   - Sengoku Musou 4
 - [tears2-checksum-fixer](./tears2-checksum-fixer)
   - Tears to Tiara 2
+- [toz-checksum-fixer](./toz-checksum-fixer)
+  - Tales of Zestiria
 
 ## License
 

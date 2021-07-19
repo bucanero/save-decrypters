@@ -28,6 +28,7 @@ all:
 	$(MAKE) -C mgs-pw-decrypter
 	$(MAKE) -C cod-checksum-fixer
 	$(MAKE) -C tears2-checksum-fixer
+	$(MAKE) -C toz-checksum-fixer
 	$(MAKE) -C dw8xl-decrypter
 
 clean:
@@ -56,4 +57,5 @@ clean:
 	$(MAKE) clean -C mgs-hd-decrypter
 	$(MAKE) clean -C cod-checksum-fixer
 	$(MAKE) clean -C tears2-checksum-fixer
+	$(MAKE) clean -C toz-checksum-fixer
 	$(MAKE) clean -C dw8xl-decrypter
