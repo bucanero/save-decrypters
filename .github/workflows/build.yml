@@ -62,8 +62,10 @@ jobs:
             ducktales-checksum-fixer/ducktales-checksum-fixer \
             digimon-checksum-fixer/digimon-checksum-fixer \
             tears2-checksum-fixer/tears2-checksum-fixer \
+            toz-checksum-fixer/toz-checksum-fixer \
             mgs-hd-decrypter/mgs-hd-decrypter \
             mgs-pw-decrypter/mgs-pw-decrypter \
+            dw8xl-decrypter/dw8xl-decrypter \
             prototype-checksum-fixer/prototype-checksum-fixer
 
     - uses: actions/upload-artifact@v2
