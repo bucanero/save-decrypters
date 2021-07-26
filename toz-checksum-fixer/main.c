@@ -17,32 +17,18 @@
 
 void sha_Compute(u8* hash_out, const u8* msg, u32 length, const char* key)
 {
-	u8 tmp[23];
 	sha1_ctx_t s;
 
 	sha1_init(&s);
 	while(length & (~0x0001ff)) // length>=512
 	{
 		sha1_nextBlock(&s, msg);
-		msg = (uint8_t*)msg + SHA1_BLOCK_BITS/8; // increment pointer to next block
+		msg += SHA1_BLOCK_BITS/8; // increment pointer to next block
 		length -= SHA1_BLOCK_BITS;
 	}
 
 	// hack to append the 'key' to the data being hashed
-	if (strlen(key) == 3)
-	{
-		memcpy(tmp, msg, 20);
-		memcpy(tmp + 20, key, 3);
-		msg = tmp;
-		length = sizeof(tmp) * 8;
-	}
-	else
-	{
-		msg = (u8*)key;
-		length = 4 * 8;
-	}
-	
-	sha1_lastBlock(&s, msg, length);
+	sha1_lastBlock(&s, (u8*)key, strlen(key) * 8);
 	sha1_ctx2hash(hash_out, &s);
 }
 
@@ -57,14 +43,19 @@ void sha_Compute(u8* hash_out, const u8* msg, u32 length, const char* key)
 
 void toz_Compute(u8* hash, const u8* data, u32 len)
 {
+	u8 tmp[23];
 	const char array[8][4] = {
 		"SRA", "ROS", "MIC", "LAI", "EDN", "DEZ", "ZAB", "ALI"
 	};
 
-	sha_Compute(hash, data, len * 8, "TO12");
+	sha_Compute(tmp, data, len * 8, "TO12");
 
 	for (int i = 0; i < 100; i++)
-		sha_Compute(hash, hash, 20, array[i % 8]);
+	{
+		memcpy(tmp + 20, array[i % 8], 3);
+		sha1(tmp, tmp, sizeof(tmp) * 8);
+	}
+	memcpy(hash, tmp, 20);
 
 	return;
 }
