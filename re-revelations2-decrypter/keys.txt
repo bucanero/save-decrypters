@@ -1,0 +1,26 @@
+Resident Evil HD Remaster
+Security:
+-> Blowfish
+	-> Key SBmdYgEamc=#sA0)Mhs9#>/4iiXbMPxW
+-> SHA1
+	-> Offset: 12
+	-> Calculation Start: 64
+	-> Calculation Length: Int32 stored at 32
+
+Resident Evil Revelations 2
+-> Blowfish
+	-> Key zW$2eWaHNdT~6j86T_&j
+-> DWADD
+ 	-> Offset: 8
+	-> Calculation Start: 16
+	-> Calculation Length: 302432
+-> SHA1
+	-> Offset: EOF-32
+	-> Calculation Start: 16
+	-> Calculation Length: EOF-48
+	
+Resident Evil 2
+-> Key K<>$cl%isqA|~nV4W5~3z_Q)j]5DHdB9sb{cI9Hn&Gqc-zO8O6zfw
+
+Resident Evil 7
+-> Key hHGb4nS653aRT29jy
