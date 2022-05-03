@@ -86,7 +86,8 @@ void print_usage(const char* argv0)
 
 int main(int argc, char **argv)
 {
-	size_t len, offset;
+	size_t len;
+	long offset;
 	u8* data;
 	u32 size;
 	char *opt, *bak;
@@ -113,25 +114,20 @@ int main(int argc, char **argv)
 		return -1;
 	}
 	
-	offset = search_data(data, len, PROFILE_STRING, strlen(PROFILE_STRING));
-	if (offset > 0)
+	if ((offset = search_data(data, len, PROFILE_STRING, strlen(PROFILE_STRING))) > 0)
 	{
 		pre = ProfilePrefixMagic_PS4;
 		xor = ProfileXorMagic_PS4;
 	}
+	else if ((offset = search_data(data, len, SAVEGAME_STRING, strlen(SAVEGAME_STRING))) > 0)
+	{
+		pre = PrefixMagic_PS4;
+		xor = XorMagic_PS4;
+	}
 	else
 	{
-		offset = search_data(data, len, SAVEGAME_STRING, strlen(SAVEGAME_STRING));
-		if (offset > 0)
-		{
-			pre = PrefixMagic_PS4;
-			xor = XorMagic_PS4;
-		}
-		else
-		{
-			printf("[!] Error: Please choose a Borderlands 3 PS4 file\n");
-			return -1;
-		}
+		printf("[!] Error: Please choose a Borderlands 3 PS4 file\n");
+		return -1;
 	}
 	printf("[*] Type: %s\n", data + offset);
 
