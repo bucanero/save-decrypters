@@ -1,0 +1,330 @@
+[Update Custom SHA1 for SAVE (Required)]
+; initialize
+set [tmp]:read(0x9BBD0,4)
+write at 0x9BBD0:"TO12"
+set range:0x01D0,0x9BBD3
+set [hash]:SHA1
+write at 0x9BBD0:[tmp]
+
+; define temp buffer
+set pointer:0xAEFE0
+write next (0):[hash]
+set range:pointer,pointer+0x16
+
+; 1 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 2 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 3 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 4 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 5 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 6 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 7 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 8 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 9 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 10 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 11 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 12 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"EDN"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"DEZ"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ZAB"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ALI"
+set [hash]:SHA1
+write next (0):[hash]
+; 13 round
+write next (20):"SRA"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"ROS"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"MIC"
+set [hash]:SHA1
+write next (0):[hash]
+write next (20):"LAI"
+set [hash]:SHA1
+
+; clean-up temp buffer
+write next (0):0x0000000000000000000000000000000000000000000000
+; write checksum
+write at 0x0C:[hash]
