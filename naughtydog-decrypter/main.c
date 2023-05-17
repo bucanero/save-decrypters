@@ -146,7 +146,12 @@ int main(int argc, char **argv)
 	write_buffer(bak, data, len);
 
 	dsize = *(u32*) &data[len-4];
+
+#ifdef __PS4__
+	dsize = (dsize);
+#else
 	dsize = ES32(dsize);
+#endif	
 
 	if (*opt == 'd')
 		decrypt_data((u32*) key_table, (u32*) data, dsize);
