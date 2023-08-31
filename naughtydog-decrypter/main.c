@@ -147,11 +147,8 @@ int main(int argc, char **argv)
 
 	dsize = *(u32*) &data[len-4];
 
-#ifdef __PS4__
-	dsize = (dsize);
-#else
-	dsize = ES32(dsize);
-#endif	
+	// Check for PS3 saves (big-endian)
+	if (data[len-4] == 0x00) dsize = ES32(dsize);
 
 	if (*opt == 'd')
 		decrypt_data((u32*) key_table, (u32*) data, dsize);
