@@ -154,7 +154,12 @@ int main(int argc, char **argv)
 		decrypt_data((u32*) key_table, (u32*) data, dsize);
 	else
 	{
-		u32 crc = ES32(calc_crc32(data + 0x58C, ES32(*(u32*)&data[0x58C]) - 4));
+		u32 crc = *(u32*) &data[0x58C];
+		if (data[len-4] == 0x00)
+			crc = ES32(calc_crc32(data + 0x58C, ES32(crc) - 4));
+		else
+			crc = calc_crc32(data + 0x58C, crc - 4);
+
 		memcpy(data + 0x588, &crc, sizeof(u32));
 		printf("[*] Updated CRC32    : %08X\n", ES32(crc));
 
