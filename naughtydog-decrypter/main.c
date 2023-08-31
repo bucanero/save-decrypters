@@ -57,7 +57,7 @@ void decrypt_data(const u32* key_buffer, u32* data, u32 size)
     printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
     size = size/4;
 
-	data[0] = ES32(0x0000157C);
+	// data starts at 0x08
 	data += 2;
 
 	for (i = 0; i < size; i+= 2)
@@ -82,7 +82,7 @@ void encrypt_data(const u32* key_buffer, u32* data, u32 size)
     printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
     size = size/4;
 
-	data[0] = ES32(0x0000157D);
+	// data starts at 0x08
 	data += 2;
 
 	for (i = 0; i < size; i+= 2)
@@ -113,9 +113,9 @@ int main(int argc, char **argv)
 	size_t len;
 	u8* data;
 	u32 dsize;
-	char *opt, *bak;
+	char isPS3, *opt, *bak;
 
-	printf("\nnaughtydog-ps3save-decrypter 0.1.0 - (c) 2020 by Bucanero\n\n");
+	printf("\nnaughtydog-ps3save-decrypter 0.2.0 - (c) 2020 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{
@@ -146,18 +146,22 @@ int main(int argc, char **argv)
 	write_buffer(bak, data, len);
 
 	dsize = *(u32*) &data[len-4];
-	dsize = ES32(dsize);
+
+	// Check for PS3 saves (big-endian)
+	isPS3 = (data[0] == 0 && data[1] == 0);
+	if (isPS3) dsize = ES32(dsize);
 
 	if (*opt == 'd')
 		decrypt_data((u32*) key_table, (u32*) data, dsize);
 	else
 	{
-		u32 crc = ES32(calc_crc32(data + 0x58C, ES32(*(u32*)&data[0x58C]) - 4));
+		u32 crc = *(u32*) &data[0x58C];
+		crc = (isPS3 ? ES32(calc_crc32(data + 0x58C, ES32(crc) - 4)) : calc_crc32(data + 0x58C, crc - 4));
 		memcpy(data + 0x588, &crc, sizeof(u32));
 		printf("[*] Updated CRC32    : %08X\n", ES32(crc));
 
-		hmac_sha1(data + len - 0x20, SHA1_HMAC_KEY, 8 * strlen(SHA1_HMAC_KEY), data + 8, (len - 40)*8);
-		printf("[*] Updated SHA1 HMAC: " SHA1_FMT(data + len - 0x20, "\n"));
+		hmac_sha1(data + dsize - 0xC, SHA1_HMAC_KEY, 8 * strlen(SHA1_HMAC_KEY), data + 8, (dsize - 0x14)*8);
+		printf("[*] Updated SHA1 HMAC: " SHA1_FMT(data + dsize - 0xC, "\n"));
 
 		encrypt_data((u32*) key_table, (u32*) data, dsize);
 	}
