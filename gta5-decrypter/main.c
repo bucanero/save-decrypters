@@ -12,6 +12,29 @@ const u8 GTAV_PS3_KEY[32] = {
 		0x0D, 0x80, 0x26, 0x48, 0xDB, 0x37, 0xB9, 0xED, 0x0F, 0x48, 0xC5, 0x73, 0x42, 0xC0, 0x22, 0xF5
 	};
 
+int search_data(const u8* data, size_t size, int start, const char* search, int len)
+{
+	for (size_t i = start; i <= (size-len); i++)
+		if (memcmp(data + i, search, len) == 0)
+			return i;
+
+    return -1;
+}
+
+// https://github.com/Zhaxxy/rdr2_enc_dec/blob/main/rdr2_enc_dec.py#L10
+uint32_t rockstar_chks(const char* data, int len)
+{
+    uint32_t checksum = 0x3FAC7125;
+
+    while (len--)
+    {
+        checksum = ((checksum + (signed char) *data++) * 0x401) & 0xFFFFFFFF;
+        checksum = (checksum >> 6 ^ checksum) & 0xFFFFFFFF;
+    }
+    checksum = (checksum*9) & 0xFFFFFFFF;
+    
+    return (((checksum >> 11 ^ checksum) * 0x8001) & 0xFFFFFFFF);
+}
 
 void decrypt_data(u8* data, u32 size)
 {
@@ -60,7 +83,7 @@ int main(int argc, char **argv)
 	u8* data;
 	char *opt, *bak;
 
-	printf("\nGTA5-ps3save-decrypter 0.1.0 - (c) 2021 by Bucanero\n\n");
+	printf("\nGTA5 PS3/PS4 Save Decrypter 0.2.0 - (c) 2021 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{
@@ -83,11 +106,44 @@ int main(int argc, char **argv)
 	// Save a file backup
 	asprintf(&bak, "%s.bak", argv[2]);
 	write_buffer(bak, data, len);
+	
+	int isPS4 = (data[0] == 0 && data[1] == 0 && data[2] == 0) ? *(int*)(data + 0x108) : 0;
+	printf("[i] Platform Type: %s\n\n", isPS4 ? "PS4" : "PS3");
 
 	if (*opt == 'd')
-		decrypt_data(data, len);
+		decrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? ES32(isPS4) : len));
 	else
-		encrypt_data(data, len);
+	{
+		uint32_t chks, chks_len;
+		int chks_off = search_data(data, len, 0, "CHKS", 5);
+	
+		if (chks_off < 0)
+		{
+			printf("[!] CHKS Header Not Found!\n>>> Aborting... (Not a decrypted GTA5 save?)\n\n");
+			return -1;
+		}
+	
+		chks     = ES32(*(uint32_t*)(data + chks_off + 4));
+		chks_len = ES32(*(uint32_t*)(data + chks_off + 8));
+	
+		if (chks != 0x14)
+			printf(" ! CHKS Header Mismatch!\n   > Expected: %08X\n   > Detected: %08X\n\n", 0x14, chks);
+
+		printf(" - CHKS Offset : 0x%X\n", chks_off);
+		printf(" - CHKS Size   : 0x%X (%d bytes)\n", chks_len, chks_len);
+		printf(" - Old Checksum: %08X\n", ES32(*(uint32_t*)(data + chks_off + 0xC)));
+	
+		memset(data + chks_off + 8, 0, 8);
+		chks = rockstar_chks((char*) data + (chks_off - chks_len + 0x14), chks_len);
+		printf(" + New Checksum: %08X\n\n", chks);
+
+		chks = ES32(chks);
+		chks_len = ES32(chks_len);
+		memcpy(data + chks_off + 0xC, &chks, sizeof(uint32_t));
+		memcpy(data + chks_off + 0x8, &chks_len, sizeof(uint32_t));
+	
+		encrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? ES32(isPS4) : len));
+	}
 
 	write_buffer(argv[2], data, len);
 
