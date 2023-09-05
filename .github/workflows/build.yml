@@ -40,33 +40,37 @@ jobs:
     
     - name: Compress output
       run: |
-        tar -zcvf build.tar.gz diablo3-decrypter/diablo3-ps3save-decrypter \
-            kh25-checksum-fixer/kh25remix-checksum-fixer \
-            re-remaster-decrypter/re-remaster-decrypter \
-            dmc-decrypter/dmc-ps3save-decrypter \
-            naughtydog-decrypter/naughtydog-ps3save-decrypter \
-            re-revelations2-decrypter/re-revelations2-decrypter \
-            ff13-decrypter/ff13-ps3save-decrypter \
-            nfs-rivals-decrypter/nfsrivals-ps3save-decrypter \
-            silent-hill3-decrypter/silent-hill3-decrypter \
-            cod-blackops-decrypter/cod-blackops-decrypter \
-            ffxhd-checksum-fixer/ffxhd-checksum-fixer \
-            nfs-undercover-decrypter/nfs-undercover-decrypter \
-            deadspace-checksum-fixer/ds-checksum-fixer \
-            gta5-decrypter/gta5-ps3save-decrypter \
-            dbz-checksum-fixer/dbz-checksum-fixer \
-            sw4-checksum-fixer/sw4-checksum-fixer \
-            cod-checksum-fixer/cod-checksum-fixer \
-            lego-checksum-fixer/lego-checksum-fixer \
+        tar -zcvf build.tar.gz \
             alien-checksum-fixer/alien-checksum-fixer \
-            ducktales-checksum-fixer/ducktales-checksum-fixer \
+            cod-blackops-decrypter/cod-blackops-decrypter \
+            cod-checksum-fixer/cod-checksum-fixer \
+            dbz-checksum-fixer/dbz-checksum-fixer \
+            deadspace-checksum-fixer/ds-checksum-fixer \
+            diablo3-decrypter/diablo3-ps3save-decrypter \
             digimon-checksum-fixer/digimon-checksum-fixer \
-            tears2-checksum-fixer/tears2-checksum-fixer \
-            toz-checksum-fixer/toz-checksum-fixer \
+            dmc-decrypter/dmc-ps3save-decrypter \
+            ducktales-checksum-fixer/ducktales-checksum-fixer \
+            dw8xl-decrypter/dw8xl-ps3save-decrypter \
+            ff13-decrypter/ff13-ps3save-decrypter \
+            ffxhd-checksum-fixer/ffxhd-checksum-fixer \
+            gta5-decrypter/gta5-ps3save-decrypter \
+            kh25-checksum-fixer/kh25remix-checksum-fixer \
+            lego-checksum-fixer/lego-checksum-fixer \
             mgs-hd-decrypter/mgs-hd-decrypter \
             mgs-pw-decrypter/mgs-pw-decrypter \
-            dw8xl-decrypter/dw8xl-ps3save-decrypter \
-            prototype-checksum-fixer/prototype-checksum-fixer
+            naughtydog-decrypter/naughtydog-ps3save-decrypter \
+            nfs-rivals-decrypter/nfsrivals-ps3save-decrypter \
+            nfs-undercover-decrypter/nfs-undercover-decrypter \
+            prototype-checksum-fixer/prototype-checksum-fixer \
+            ps4-borderlands3-decrypter/ps4-borderlands3-decrypter \
+            ps4-rdr2-decrypter/rdr2-ps4save-decrypter \
+            ps4-re-rev2-decrypter/re-revelations2-decrypter \
+            re-remaster-decrypter/re-remaster-decrypter \
+            re-revelations2-decrypter/re-revelations2-decrypter \
+            silent-hill3-decrypter/silent-hill3-decrypter \
+            sw4-checksum-fixer/sw4-checksum-fixer \
+            tears2-checksum-fixer/tears2-checksum-fixer \
+            toz-checksum-fixer/toz-checksum-fixer
 
     - uses: actions/upload-artifact@v2
       with:

@@ -1,8 +1,8 @@
-# PlayStation 3 Save Decrypters
+# PlayStation Save Decrypters
 
-A collection of custom save-game decrypters and checksum fixers for PS3.
+A collection of custom save-game decrypters and checksum fixers for PS3 & PS4.
 
-## Decrypters
+## PS3 Decrypters
 
 Tools to decrypt specific PS3 save-games:
 - [cod-blackops-decrypter](./cod-blackops-decrypter)
@@ -12,6 +12,8 @@ Tools to decrypt specific PS3 save-games:
   - Diablo 3
 - [dmc-decrypter](./dmc-decrypter)
   - DmC: Devil May Cry
+- [dw8xl-decrypter](./dw8xl-decrypter)
+  - Dynasty Warriors 8 Xtreme Legends
 - [ff13-decrypter](./ff13-decrypter)
   - Final Fantasy XIII
   - Final Fantasy XIII-2
@@ -38,6 +40,22 @@ Tools to decrypt specific PS3 save-games:
   - Resident Evil Revelations 2
 - [silent-hill3-decrypter](./silent-hill3-decrypter)
   - Silent Hill 3 HD
+
+## PS4 Decrypters
+
+Tools to decrypt specific PS4 save-games:
+- [ps4-borderlands3-decrypter](./ps4-borderlands3-decrypter)
+  - Borderlands 3 (PS4)
+- [gta5-decrypter](./gta5-decrypter)
+  - Grand Theft Auto 5 (PS4)
+- [naughtydog-decrypter](./naughtydog-decrypter)
+  - The Last of Us Remastered (PS4)
+  - Uncharted 2 Remastered (PS4)
+  - Uncharted 3 Remastered (PS4)
+- [ps4-rdr2-decrypter](./ps4-rdr2-decrypter)
+  - Red Dead Redemption 2 (PS4)
+- [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter)
+  - Resident Evil Revelations 2 (PS4)
 
 ## Checksum fixers
 

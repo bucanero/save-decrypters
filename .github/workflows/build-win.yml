@@ -42,33 +42,36 @@ jobs:
         run: |
           make
           # add .exe extension to binaries
+          mv alien-checksum-fixer/alien-checksum-fixer alien-checksum-fixer.exe
+          mv cod-blackops-decrypter/cod-blackops-decrypter cod-blackops-decrypter.exe
+          mv cod-checksum-fixer/cod-checksum-fixer cod-checksum-fixer.exe
+          mv dbz-checksum-fixer/dbz-checksum-fixer dbz-checksum-fixer.exe
+          mv deadspace-checksum-fixer/ds-checksum-fixer ds-checksum-fixer.exe
           mv diablo3-decrypter/diablo3-ps3save-decrypter diablo3-ps3save-decrypter.exe
-          mv re-remaster-decrypter/re-remaster-decrypter re-remaster-decrypter.exe
+          mv digimon-checksum-fixer/digimon-checksum-fixer digimon-checksum-fixer.exe
           mv dmc-decrypter/dmc-ps3save-decrypter dmc-ps3save-decrypter.exe
+          mv ducktales-checksum-fixer/ducktales-checksum-fixer ducktales-checksum-fixer.exe
+          mv dw8xl-decrypter/dw8xl-ps3save-decrypter dw8xl-ps3save-decrypter.exe
+          mv ff13-decrypter/ff13-ps3save-decrypter ff13-ps3save-decrypter.exe
+          mv ffxhd-checksum-fixer/ffxhd-checksum-fixer ffxhd-checksum-fixer.exe
+          mv gta5-decrypter/gta5-ps3save-decrypter gta5-save-decrypter.exe
+          mv kh25-checksum-fixer/kh25remix-checksum-fixer kh25remix-checksum-fixer.exe
+          mv lego-checksum-fixer/lego-checksum-fixer lego-checksum-fixer.exe
           mv mgs-hd-decrypter/mgs-hd-decrypter mgs-hd-decrypter.exe
           mv mgs-pw-decrypter/mgs-pw-decrypter mgs-pw-decrypter.exe
-          mv naughtydog-decrypter/naughtydog-ps3save-decrypter naughtydog-ps3save-decrypter.exe
-          mv re-revelations2-decrypter/re-revelations2-decrypter re-revelations2-decrypter.exe
-          mv ff13-decrypter/ff13-ps3save-decrypter ff13-ps3save-decrypter.exe
-          mv dw8xl-decrypter/dw8xl-ps3save-decrypter dw8xl-ps3save-decrypter.exe
+          mv naughtydog-decrypter/naughtydog-ps3save-decrypter naughtydog-save-decrypter.exe
           mv nfs-rivals-decrypter/nfsrivals-ps3save-decrypter nfsrivals-ps3save-decrypter.exe
-          mv silent-hill3-decrypter/silent-hill3-decrypter silent-hill3-decrypter.exe
-          mv cod-blackops-decrypter/cod-blackops-decrypter cod-blackops-decrypter.exe
           mv nfs-undercover-decrypter/nfs-undercover-decrypter nfs-undercover-decrypter.exe
-          mv gta5-decrypter/gta5-ps3save-decrypter gta5-ps3save-decrypter.exe
-          mv deadspace-checksum-fixer/ds-checksum-fixer ds-checksum-fixer.exe
-          mv dbz-checksum-fixer/dbz-checksum-fixer dbz-checksum-fixer.exe
+          mv prototype-checksum-fixer/prototype-checksum-fixer prototype-checksum-fixer.exe
+          mv ps4-borderlands3-decrypter/ps4-borderlands3-decrypter ps4-borderlands3-decrypter.exe
+          mv ps4-rdr2-decrypter/rdr2-ps4save-decrypter rdr2-ps4save-decrypter.exe
+          mv ps4-re-rev2-decrypter/re-revelations2-decrypter ps4-re-revelations2-decrypter.exe
+          mv re-remaster-decrypter/re-remaster-decrypter re-remaster-decrypter.exe
+          mv re-revelations2-decrypter/re-revelations2-decrypter re-revelations2-decrypter.exe
+          mv silent-hill3-decrypter/silent-hill3-decrypter silent-hill3-decrypter.exe
           mv sw4-checksum-fixer/sw4-checksum-fixer sw4-checksum-fixer.exe
-          mv cod-checksum-fixer/cod-checksum-fixer cod-checksum-fixer.exe
-          mv alien-checksum-fixer/alien-checksum-fixer alien-checksum-fixer.exe
-          mv digimon-checksum-fixer/digimon-checksum-fixer digimon-checksum-fixer.exe
-          mv lego-checksum-fixer/lego-checksum-fixer lego-checksum-fixer.exe
-          mv ducktales-checksum-fixer/ducktales-checksum-fixer ducktales-checksum-fixer.exe
           mv tears2-checksum-fixer/tears2-checksum-fixer tears2-checksum-fixer.exe
           mv toz-checksum-fixer/toz-checksum-fixer toz-checksum-fixer.exe
-          mv ffxhd-checksum-fixer/ffxhd-checksum-fixer ffxhd-checksum-fixer.exe
-          mv kh25-checksum-fixer/kh25remix-checksum-fixer kh25remix-checksum-fixer.exe
-          mv prototype-checksum-fixer/prototype-checksum-fixer prototype-checksum-fixer.exe
 
       - name: Get short SHA
         id: slug
@@ -76,33 +79,37 @@ jobs:
     
       - name: Compress output
         run: |
-          tar -zcvf build.tar.gz diablo3-ps3save-decrypter.exe \
-            kh25remix-checksum-fixer.exe \
-            re-remaster-decrypter.exe \
+          tar -zcvf build.tar.gz \
+            alien-checksum-fixer.exe \
+            cod-blackops-decrypter.exe \
+            cod-checksum-fixer.exe \
+            dbz-checksum-fixer.exe \
+            ds-checksum-fixer.exe \
+            diablo3-ps3save-decrypter.exe \
+            digimon-checksum-fixer.exe \
             dmc-ps3save-decrypter.exe \
+            ducktales-checksum-fixer.exe \
             dw8xl-ps3save-decrypter.exe \
+            ff13-ps3save-decrypter.exe \
+            ffxhd-checksum-fixer.exe \
+            gta5-save-decrypter.exe \
+            kh25remix-checksum-fixer.exe \
+            lego-checksum-fixer.exe \
             mgs-hd-decrypter.exe \
             mgs-pw-decrypter.exe \
-            naughtydog-ps3save-decrypter.exe \
-            re-revelations2-decrypter.exe \
-            ff13-ps3save-decrypter.exe \
+            naughtydog-save-decrypter.exe \
             nfsrivals-ps3save-decrypter.exe \
-            silent-hill3-decrypter.exe \
-            cod-blackops-decrypter.exe \
-            ffxhd-checksum-fixer.exe \
             nfs-undercover-decrypter.exe \
-            ds-checksum-fixer.exe \
-            dbz-checksum-fixer.exe \
+            prototype-checksum-fixer.exe \
+            ps4-borderlands3-decrypter.exe \
+            rdr2-ps4save-decrypter.exe \
+            ps4-re-revelations2-decrypter.exe \
+            re-remaster-decrypter.exe \
+            re-revelations2-decrypter.exe \
+            silent-hill3-decrypter.exe \
             sw4-checksum-fixer.exe \
-            cod-checksum-fixer.exe \
-            alien-checksum-fixer.exe \
             tears2-checksum-fixer.exe \
-            toz-checksum-fixer.exe \
-            ducktales-checksum-fixer.exe \
-            lego-checksum-fixer.exe \
-            digimon-checksum-fixer.exe \
-            gta5-ps3save-decrypter.exe \
-            prototype-checksum-fixer.exe
+            toz-checksum-fixer.exe
 
       - uses: actions/upload-artifact@v2
         with:

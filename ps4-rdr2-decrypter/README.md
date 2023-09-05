@@ -16,4 +16,4 @@ OPTIONS        Explanation:
 
 ### Credits
 
-The custom checksums is based on [rdr2_enc_dec](https://github.com/Zhaxxy/rdr2_enc_dec) by Zhaxxy
+The custom checksum is based on [rdr2_enc_dec](https://github.com/Zhaxxy/rdr2_enc_dec) by Zhaxxy
