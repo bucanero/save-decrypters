@@ -61,7 +61,10 @@ Tools to decrypt specific PS4 save-games:
 
 Tools to fix checksums for specific PS3 save-games:
 - [alien-checksum-fixer](./alien-checksum-fixer)
-  - Alien: Isolation
+  - Alien: Isolation (PS3/PS4)
+- [castlevania-checksum-fixer](./castlevania-checksum-fixer)
+  - Castlevania: Lords of Shadow
+  - Castlevania: Lords of Shadow 2
 - [cod-checksum-fixer](./cod-checksum-fixer)
   - Call of Duty: Ghosts
 - [deadspace-checksum-fixer](./deadspace-checksum-fixer)

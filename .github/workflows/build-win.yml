@@ -43,7 +43,7 @@ jobs:
           make
           # add .exe extension to binaries
           mv alien-checksum-fixer/alien-checksum-fixer alien-checksum-fixer.exe
-          mv castlevania-checksum-fixer/cod-checksum-fixer castlevania-checksum-fixer.exe
+          mv castlevania-checksum-fixer/castlevania-checksum-fixer castlevania-checksum-fixer.exe
           mv cod-blackops-decrypter/cod-blackops-decrypter cod-blackops-decrypter.exe
           mv cod-checksum-fixer/cod-checksum-fixer cod-checksum-fixer.exe
           mv dbz-checksum-fixer/dbz-checksum-fixer dbz-checksum-fixer.exe
