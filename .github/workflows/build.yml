@@ -42,6 +42,7 @@ jobs:
       run: |
         tar -zcvf build.tar.gz \
             alien-checksum-fixer/alien-checksum-fixer \
+            castlevania-checksum-fixer/castlevania-checksum-fixer \
             cod-blackops-decrypter/cod-blackops-decrypter \
             cod-checksum-fixer/cod-checksum-fixer \
             dbz-checksum-fixer/dbz-checksum-fixer \

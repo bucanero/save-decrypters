@@ -1,0 +1,29 @@
+PPC-Codeanalysis by Vulnavia
+Reverse Engineering by Vulnavia
+//------------------------------------------------------------------------------
+
+li        r8, 0         # Load Immediate
+li        r9, 0         # Load Immediate
+li        r30, 0        # Load Immediate
+li        r11, 0        # Load Immediate
+addi      r6, r3, 1     # Add Immediate
+addi      r5, r4, -1    # Add Immediate
+addi      r31, r3, -1   # Add Immediate
+repeat
+addi      r10, r11, 1   # Add Immediate
+lbzx      r7, r6, r11   # Load Byte and Zero Indexed  // (pointer to second Byte)
+clrlwi    r29, r11, 24  # r29 = r11 & 0xFF
+clrlwi    r28, r10, 24  # r28 = r10 & 0xFF
+addi      r11, r11, 2   # Add Immediate
+xor       r7, r7, r28   # XOR
+lbzx      r10, r31, r10 # Load Byte and Zero Indexed  // (pointer to first Byte)
+cmplw     cr6, r11, r5  # Compare Logical Word
+add       r9, r7, r9    # Add
+xor       r10, r10, r29 # XOR
+add       r8, r10, r8   # Add
+blt       cr6, loc_
+add       r11, r9, r8
+add       r3, r11, r30  # Add
+until r11>=$47FFF
+
+//------------------------------------------------------------------------------
