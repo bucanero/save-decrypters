@@ -47,17 +47,16 @@
    surprised if they were a performance bottleneck for MD5.  */
 
 static uint32
-getu32 (addr)
-     const unsigned char *addr;
+getu32 (const unsigned char *addr)
 {
 	return (((((unsigned long)addr[3] << 8) | addr[2]) << 8)
 		| addr[1]) << 8 | addr[0];
 }
 
 static void
-putu32 (data, addr)
-     uint32 data;
-     unsigned char *addr;
+putu32 (
+     uint32 data,
+     unsigned char *addr)
 {
 	addr[0] = (unsigned char)data;
 	addr[1] = (unsigned char)(data >> 8);
@@ -70,8 +69,7 @@ putu32 (data, addr)
  * initialization constants.
  */
 void
-MD5Init(ctx)
-     struct MD5Context *ctx;
+MD5Init(struct MD5Context *ctx)
 {
 	ctx->buf[0] = 0x67452301;
 	ctx->buf[1] = 0xefcdab89;
@@ -87,10 +85,10 @@ MD5Init(ctx)
  * of bytes.
  */
 void
-MD5Update(ctx, buf, len)
-     struct MD5Context *ctx;
-     unsigned char const *buf;
-     unsigned len;
+MD5Update(
+     struct MD5Context *ctx,
+     unsigned char const *buf,
+     unsigned len)
 {
 	uint32 t;
 
@@ -138,9 +136,9 @@ MD5Update(ctx, buf, len)
  * 1 0* (64-bit count of bits processed, MSB-first)
  */
 void
-MD5Final(digest, ctx)
-     unsigned char digest[16];
-     struct MD5Context *ctx;
+MD5Final(
+     unsigned char digest[16],
+     struct MD5Context *ctx)
 {
 	unsigned count;
 	unsigned char *p;
@@ -201,9 +199,9 @@ MD5Final(digest, ctx)
  * the data and converts bytes into longwords for this routine.
  */
 void
-MD5Transform(buf, inraw)
-     uint32 buf[4];
-     const unsigned char inraw[64];
+MD5Transform(
+     uint32 buf[4],
+     const unsigned char inraw[64])
 {
 	register uint32 a, b, c, d;
 	uint32 in[16];
