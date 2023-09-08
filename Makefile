@@ -20,6 +20,7 @@ all:
 	$(MAKE) -C lego-checksum-fixer
 	$(MAKE) -C mgs-hd-decrypter
 	$(MAKE) -C mgs-pw-decrypter
+	$(MAKE) -C mgs5-tpp-decrypter
 	$(MAKE) -C naughtydog-decrypter
 	$(MAKE) -C nfs-rivals-decrypter
 	$(MAKE) -C nfs-undercover-decrypter
@@ -53,6 +54,7 @@ clean:
 	$(MAKE) clean -C lego-checksum-fixer
 	$(MAKE) clean -C mgs-hd-decrypter
 	$(MAKE) clean -C mgs-pw-decrypter
+	$(MAKE) clean -C mgs5-tpp-decrypter
 	$(MAKE) clean -C naughtydog-decrypter
 	$(MAKE) clean -C nfs-rivals-decrypter
 	$(MAKE) clean -C nfs-undercover-decrypter

@@ -59,6 +59,7 @@ jobs:
             lego-checksum-fixer/lego-checksum-fixer \
             mgs-hd-decrypter/mgs-hd-decrypter \
             mgs-pw-decrypter/mgs-pw-decrypter \
+            mgs5-tpp-decrypter/mgs5-tpp-decrypter \
             naughtydog-decrypter/naughtydog-ps3save-decrypter \
             nfs-rivals-decrypter/nfsrivals-ps3save-decrypter \
             nfs-undercover-decrypter/nfs-undercover-decrypter \

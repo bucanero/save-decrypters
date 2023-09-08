@@ -60,6 +60,7 @@ jobs:
           mv lego-checksum-fixer/lego-checksum-fixer lego-checksum-fixer.exe
           mv mgs-hd-decrypter/mgs-hd-decrypter mgs-hd-decrypter.exe
           mv mgs-pw-decrypter/mgs-pw-decrypter mgs-pw-decrypter.exe
+          mv mgs5-tpp-decrypter/mgs5-tpp-decrypter mgs5-tpp-decrypter.exe
           mv naughtydog-decrypter/naughtydog-ps3save-decrypter naughtydog-save-decrypter.exe
           mv nfs-rivals-decrypter/nfsrivals-ps3save-decrypter nfsrivals-ps3save-decrypter.exe
           mv nfs-undercover-decrypter/nfs-undercover-decrypter nfs-undercover-decrypter.exe
@@ -99,6 +100,7 @@ jobs:
             lego-checksum-fixer.exe \
             mgs-hd-decrypter.exe \
             mgs-pw-decrypter.exe \
+            mgs5-tpp-decrypter.exe \
             naughtydog-save-decrypter.exe \
             nfsrivals-ps3save-decrypter.exe \
             nfs-undercover-decrypter.exe \

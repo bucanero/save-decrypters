@@ -29,6 +29,8 @@ Tools to decrypt specific PS3 save-games:
   - Metal Gear Solid 3 HD - Snake Eater
 - [mgs-pw-decrypter](./mgs-pw-decrypter)
   - Metal Gear Solid: Peace Walker HD
+- [mgs5-tpp-decrypter](./mgs5-tpp-decrypter)
+  - Metal Gear Solid V: The Phantom Pain
 - [nfs-rivals-decrypter](./nfs-rivals-decrypter)
   - Need For Speed: Rivals
 - [nfs-undercover-decrypter](./nfs-undercover-decrypter)
@@ -48,6 +50,8 @@ Tools to decrypt specific PS4 save-games:
   - Borderlands 3 (PS4)
 - [gta5-decrypter](./gta5-decrypter)
   - Grand Theft Auto 5 (PS4)
+- [mgs5-tpp-decrypter](./mgs5-tpp-decrypter)
+  - Metal Gear Solid V: The Phantom Pain (PS4)
 - [naughtydog-decrypter](./naughtydog-decrypter)
   - The Last of Us Remastered (PS4)
   - Uncharted 2 Remastered (PS4)
