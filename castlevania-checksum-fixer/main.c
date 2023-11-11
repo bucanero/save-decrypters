@@ -17,7 +17,7 @@ int ComputeHash(const u8* Bytes, u32 Length)
 	for (int i = 0; i < Length; i += 2)
 	{
 		num += ((int)Bytes[i] ^ (i & 255));
-		num2 += ((int)Bytes[i + 1] ^ (i + 1 & 255));
+		num2 += ((int)Bytes[i + 1] ^ ((i + 1) & 255));
 	}
 
 	return (num + num2);
