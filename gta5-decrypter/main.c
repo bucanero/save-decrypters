@@ -22,18 +22,20 @@ int search_data(const u8* data, size_t size, int start, const char* search, int 
 }
 
 // https://github.com/Zhaxxy/rdr2_enc_dec/blob/main/rdr2_enc_dec.py#L10
-uint32_t rockstar_chks(const char* data, int len)
+// https://www.burtleburtle.net/bob/hash/doobs.html
+uint32_t jenkins_one_at_a_time_hash(const uint8_t* data, size_t length, uint32_t hash)
 {
-    uint32_t checksum = 0x3FAC7125;
-
-    while (len--)
+    while (length--)
     {
-        checksum = ((checksum + (signed char) *data++) * 0x401) & 0xFFFFFFFF;
-        checksum = (checksum >> 6 ^ checksum) & 0xFFFFFFFF;
+        hash += (signed char) *data++;
+        hash += hash << 10;
+        hash ^= hash >> 6;
     }
-    checksum = (checksum*9) & 0xFFFFFFFF;
-    
-    return (((checksum >> 11 ^ checksum) * 0x8001) & 0xFFFFFFFF);
+    hash += hash << 3;
+    hash ^= hash >> 11;
+    hash += hash << 15;
+
+    return hash;
 }
 
 void decrypt_data(u8* data, u32 size)
@@ -106,7 +108,7 @@ int main(int argc, char **argv)
 	// Save a file backup
 	asprintf(&bak, "%s.bak", argv[2]);
 	write_buffer(bak, data, len);
-	
+
 	int isPS4 = (data[0] == 0 && data[1] == 0 && data[2] == 0) ? *(int*)(data + 0x108) : 0;
 	printf("[i] Platform Type: %s\n\n", isPS4 ? "PS4" : "PS3");
 
@@ -134,7 +136,7 @@ int main(int argc, char **argv)
 		printf(" - Old Checksum: %08X\n", ES32(*(uint32_t*)(data + chks_off + 0xC)));
 	
 		memset(data + chks_off + 8, 0, 8);
-		chks = rockstar_chks((char*) data + (chks_off - chks_len + 0x14), chks_len);
+		chks = jenkins_one_at_a_time_hash(data + (chks_off - chks_len + 0x14), chks_len, 0x3FAC7125);
 		printf(" + New Checksum: %08X\n\n", chks);
 
 		chks = ES32(chks);

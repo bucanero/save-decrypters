@@ -15,7 +15,7 @@ void fixHashes(uint8_t* data, int size)
     uint16_t sumL, sumH;
     u8* e = data + size;
 
-    for (u8* s = e - size; s < e; s += 4)
+    for (u8* s = data; s < e; s += 4)
     {
         sumL = sumH = 0;
         for (int n = 0; n < 16; ++n, ++s)
