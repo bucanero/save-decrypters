@@ -12,4 +12,4 @@ OPTIONS        Explanation:
 
 ### Credits
 
-This tool is based on [libP3Hash](https://github.com/efonte/libP3Hash) by Owocek.
+This tool is based on [libP3Hash](https://github.com/owodzeg/libP3Hash) by Owocek.
