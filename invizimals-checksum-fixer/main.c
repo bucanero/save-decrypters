@@ -83,6 +83,7 @@ void print_usage(const char* argv0)
 {
 	printf("USAGE: %s [option] filename\n\n", argv0);
 	printf("OPTIONS        Explanation:\n");
+	printf(" -0            Invizimals (UCES01241)\n");
 	printf(" -1            Invizimals (UCES01411/UCES01525/UCUS98760)\n");
 	printf(" -2            Invizimals (UCES01581)\n\n");
 	return;
@@ -105,7 +106,7 @@ int main(int argc, char **argv)
 	}
 
 	opt = argv[1];
-	if (*opt++ != '-' || (*opt != '1' && *opt != '2'))
+	if (*opt++ != '-' || (*opt != '0' && *opt != '1' && *opt != '2'))
 	{
 		print_usage(argv[0]);
 		return -1;
@@ -131,9 +132,16 @@ int main(int argc, char **argv)
 	data[0x0E] = 0x76;
 	data[0x0F] = 0x88;
 
+	if (*opt == '0')
+	{
+		data[0x0D] = 0x67;
+		data[0x0E] = 0x45;
+	}
+	else
 	// unlock save to load in any system
 	data[0x30] = 0;
 
+	// UCES01241 - adler32, initial value 0
 	// UCES01411 - adler32, initial value 0
 	// UCES01581 - MurmurHash3, initial value 0
 	// https://en.wikipedia.org/wiki/MurmurHash
