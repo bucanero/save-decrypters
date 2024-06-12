@@ -22,10 +22,21 @@ int search_data(const u8* data, size_t size, int start, const char* search, int 
     return -1;
 }
 
+void reverse_array(uint8_t *data, int len) {
+	int i;
+	int end = len - 1;
+
+	for (i = 0; i < len / 2; i++, end--) {
+		uint8_t tmp = data[i];
+		data[i] = data[end];
+		data[end] = tmp;
+	}
+}
+
 // https://github.com/Zhaxxy/rdr2_enc_dec/blob/main/rdr2_enc_dec.py#L10
-uint32_t rockstar_chks(const char* data, int len)
+uint32_t rockstar_chks(const char* data, int len, uint32_t seed)
 {
-    uint32_t checksum = 0x3FAC7125;
+    uint32_t checksum = seed;
 
     while (len--)
     {
@@ -112,6 +123,30 @@ int main(int argc, char **argv)
 		decrypt_data(data + 0x120, len - 0x120);
 	else
 	{
+		// fix title checksum
+
+		uint8_t initial_data[0x04]; // must be 00 00 00 04
+		uint8_t title[0x100];
+
+		// read first 4 bytes of file and reverse
+		memcpy(initial_data, data, sizeof(initial_data));
+		reverse_array(initial_data, sizeof(initial_data));
+
+		// read title from offset 0x04 to 0x104
+		memcpy(title, data + sizeof(initial_data), sizeof(title));
+
+		// generate seed
+		uint32_t seed = rockstar_chks((char *)initial_data, sizeof(initial_data), 0);
+
+		// use generated seed to calculate title checksum
+		uint32_t title_chks = rockstar_chks((char *)title, sizeof(title), seed);
+		title_chks = ES32(title_chks);
+
+		// finally, fix the 4 byte checksum at 0x104
+		memcpy(data + 0x104, &title_chks, sizeof(uint32_t));
+
+		// fix general checksum
+
 		uint32_t chks, chks_len;
 		int chks_off = search_data(data, len, 0, "CHKS", 5);
 	
@@ -134,7 +169,7 @@ int main(int argc, char **argv)
 			printf(" - Old Checksum: %08X\n", ES32(*(uint32_t*)(data + chks_off + 0xC)));
 		
 			memset(data + chks_off + 8, 0, 8);
-			chks = rockstar_chks((char*) data + (chks_off - chks_len + 0x14), chks_len);
+			chks = rockstar_chks((char*) data + (chks_off - chks_len + 0x14), chks_len, 0x3FAC7125);
 			printf(" + New Checksum: %08X\n\n", chks);
 	
 			chks = ES32(chks);
