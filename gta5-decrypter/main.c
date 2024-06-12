@@ -21,6 +21,17 @@ int search_data(const u8* data, size_t size, int start, const char* search, int 
     return -1;
 }
 
+void reverse_array(uint8_t *data, int len) {
+	int i;
+	int end = len - 1;
+
+	for (i = 0; i < len / 2; i++, end--) {
+		uint8_t tmp = data[i];
+		data[i] = data[end];
+		data[end] = tmp;
+	}
+}
+
 // https://github.com/Zhaxxy/rdr2_enc_dec/blob/main/rdr2_enc_dec.py#L10
 // https://www.burtleburtle.net/bob/hash/doobs.html
 uint32_t jenkins_one_at_a_time_hash(const uint8_t* data, size_t length, uint32_t hash)
@@ -109,13 +120,38 @@ int main(int argc, char **argv)
 	asprintf(&bak, "%s.bak", argv[2]);
 	write_buffer(bak, data, len);
 
-	int isPS4 = (data[0] == 0 && data[1] == 0 && data[2] == 0) ? *(int*)(data + 0x108) : 0;
+	int isPS4 = (data[0] == 0 && data[1] == 0 && data[2] == 0) ? 1 : 0;
 	printf("[i] Platform Type: %s\n\n", isPS4 ? "PS4" : "PS3");
 
 	if (*opt == 'd')
-		decrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? ES32(isPS4) : len));
+		decrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? (len - 0x114) : len));
 	else
 	{
+		if (isPS4) {
+			// fix title checksum
+			uint8_t initial_data[0x04]; // must be 00 00 00 01
+			uint8_t title[0x100];
+
+			// read first 4 bytes of file and reverse
+			memcpy(initial_data, data, sizeof(initial_data));
+			reverse_array(initial_data, sizeof(initial_data));
+
+			// read title from offset 0x04 to 0x104
+			memcpy(title, data + sizeof(initial_data), sizeof(title));
+
+			// generate seed
+			uint32_t seed = jenkins_one_at_a_time_hash(initial_data, sizeof(initial_data), 0);
+
+			// use generated seed to calculate title checksum
+			uint32_t title_chks = jenkins_one_at_a_time_hash(title, sizeof(title), seed);
+			title_chks = ES32(title_chks);
+
+			// finally, fix the 4 byte checksum at 0x104
+			memcpy(data + 0x104, &title_chks, sizeof(uint32_t));
+		}
+
+		// fix general checksum
+
 		uint32_t chks, chks_len;
 		int chks_off = search_data(data, len, 0, "CHKS", 5);
 	
@@ -144,7 +180,7 @@ int main(int argc, char **argv)
 		memcpy(data + chks_off + 0xC, &chks, sizeof(uint32_t));
 		memcpy(data + chks_off + 0x8, &chks_len, sizeof(uint32_t));
 	
-		encrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? ES32(isPS4) : len));
+		encrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? (len - 0x114) : len));
 	}
 
 	write_buffer(argv[2], data, len);
