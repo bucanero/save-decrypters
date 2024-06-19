@@ -26,15 +26,15 @@ all:
 	$(MAKE) -C nfs-undercover-decrypter
 	$(MAKE) -C prototype-checksum-fixer
 	$(MAKE) -C ps4-borderlands3-decrypter
-	$(MAKE) -C ps4-re-rev2-decrypter
 	$(MAKE) -C ps4-rdr2-decrypter
+	$(MAKE) -C ps4-re-rev2-decrypter
+	$(MAKE) -C ps4-terraria-decrypter
 	$(MAKE) -C re-remaster-decrypter
 	$(MAKE) -C re-revelations2-decrypter
 	$(MAKE) -C silent-hill3-decrypter
 	$(MAKE) -C sw4-checksum-fixer
 	$(MAKE) -C tears2-checksum-fixer
 	$(MAKE) -C toz-checksum-fixer
-	$(MAKE) -C ps4-terraria-decrypter
 
 clean:
 	$(MAKE) clean -C alien-checksum-fixer
@@ -63,10 +63,10 @@ clean:
 	$(MAKE) clean -C ps4-borderlands3-decrypter
 	$(MAKE) clean -C ps4-rdr2-decrypter
 	$(MAKE) clean -C ps4-re-rev2-decrypter
+	$(MAKE) clean -C ps4-terraria-decrypter
 	$(MAKE) clean -C re-remaster-decrypter
 	$(MAKE) clean -C re-revelations2-decrypter
 	$(MAKE) clean -C silent-hill3-decrypter
 	$(MAKE) clean -C sw4-checksum-fixer
 	$(MAKE) clean -C tears2-checksum-fixer
 	$(MAKE) clean -C toz-checksum-fixer
-	$(MAKE) clean -C ps4-terraria-decrypter
