@@ -138,14 +138,14 @@ int main(int argc, char **argv)
                     break;
                 }
 
-                uint8_t full_comp[(4 + 4) + comp_len];
-                uint32_t new_len = (uint32_t)len;
+                data = (uint8_t *)realloc(data, (4 + 4) + comp_len);
+                len = (uint32_t)len;
 
-                memcpy(full_comp, &COMP_MAGIC, 4);
-                memcpy(full_comp + 4, &new_len, 4);
-                memcpy(full_comp + 8, comp, comp_len);
+                memcpy(data, &COMP_MAGIC, 4);
+                memcpy(data + 4, &len, 4);
+                memcpy(data + 8, comp, comp_len);
 
-                write_buffer(filename, full_comp, sizeof(full_comp));
+                write_buffer(filename, data, (4 + 4) + comp_len);
                 free(comp);
             }
 
