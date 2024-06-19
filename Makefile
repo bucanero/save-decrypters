@@ -34,6 +34,7 @@ all:
 	$(MAKE) -C sw4-checksum-fixer
 	$(MAKE) -C tears2-checksum-fixer
 	$(MAKE) -C toz-checksum-fixer
+	$(MAKE) -C ps4-terraria-decrypter
 
 clean:
 	$(MAKE) clean -C alien-checksum-fixer
@@ -68,3 +69,4 @@ clean:
 	$(MAKE) clean -C sw4-checksum-fixer
 	$(MAKE) clean -C tears2-checksum-fixer
 	$(MAKE) clean -C toz-checksum-fixer
+	$(MAKE) clean -C ps4-terraria-decrypter

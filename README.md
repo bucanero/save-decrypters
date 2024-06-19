@@ -60,6 +60,8 @@ Tools to decrypt specific PS4 save-games:
   - Red Dead Redemption 2 (PS4)
 - [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter)
   - Resident Evil Revelations 2 (PS4)
+- [ps4-terraria-decrypter](./ps4-terraria-decrypter)
+  - Terraria (PS4)
 
 ## Checksum fixers
 
