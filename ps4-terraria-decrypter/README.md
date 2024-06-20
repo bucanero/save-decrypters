@@ -3,7 +3,7 @@
 A tool to decrypt/decompress Terraria PS4 .plr & .wld files.
 
 ```
-USAGE: ./re-revelations2-decrypter [option] [type] filename
+USAGE: ./ps4-terraria-decrypter [option] [type] filename
 
 OPTIONS        Explanation:
  -d            Decrypt/Decompress File
