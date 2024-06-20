@@ -1,3 +1,8 @@
+/*
+*	Terraria PS4 Decrypter / Unpacker - (c) 2024 by hzh
+*	https://github.com/hzhreal/
+*/
+
 #define CBC 1
 #define AES128 1
 #define AES256 0

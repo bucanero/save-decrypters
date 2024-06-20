@@ -13,5 +13,10 @@ TYPES          Explanation:
  2             .wld
 ```
 
-## Note
-- Not all .wld files are compatible
+### Notes
+
+- Not all `.wld` files are compatible
+
+### Credits
+
+This tool was created by [hzh](https://github.com/hzhreal/)
