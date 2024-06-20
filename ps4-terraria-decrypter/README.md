@@ -1,6 +1,6 @@
 # ps4-terraria-decrypter
 
-A tool to decrypt/decompress Terraria PS4 .plr & .wld files.
+A tool to decrypt/decompress Terraria PS4 `.plr` & `.wld` files.
 
 ```
 USAGE: ./ps4-terraria-decrypter [option] [type] filename
