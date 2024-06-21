@@ -22,11 +22,11 @@ void decrypt_data(uint8_t* data, size_t size)
 	struct AES_ctx ctx;
 	AES_init_ctx_iv(&ctx, SECRET_KEY, SECRET_KEY);
 
-    printf("[*] Total Decrypted Size Is 0x%X (%zu bytes)\n", size, size);
+	printf("[*] Total Decrypted Size Is 0x%X (%zu bytes)\n", size, size);
 
 	AES_CBC_decrypt_buffer(&ctx, data, size);
 
-    printf("[*] Decrypted File Successfully!\n\n");
+	printf("[*] Decrypted File Successfully!\n\n");
 	return;
 }
 
@@ -35,11 +35,11 @@ void encrypt_data(uint8_t* data, size_t size)
 	struct AES_ctx ctx;
 	AES_init_ctx_iv(&ctx, SECRET_KEY, SECRET_KEY);
 
-    printf("[*] Total Encrypted Size Is 0x%X (%zu bytes)\n", size, size);
+	printf("[*] Total Encrypted Size Is 0x%X (%zu bytes)\n", size, size);
 
-    AES_CBC_encrypt_buffer(&ctx, data, size);
+	AES_CBC_encrypt_buffer(&ctx, data, size);
 
-    printf("[*] Encrypted File Successfully!\n\n");
+	printf("[*] Encrypted File Successfully!\n\n");
 	return;
 }
 
@@ -49,18 +49,17 @@ void print_usage(const char* argv0)
 	printf("OPTIONS        Explanation:\n");
 	printf(" -d            Decrypt/Decompress File\n");
 	printf(" -e            Encrypt/Compress File\n\n");
-    printf("TYPES          Explanation:\n");
-    printf(" 1             .plr\n");
-    printf(" 2             .wld\n\n");
+	printf("TYPES          Explanation:\n");
+	printf(" 1             .plr\n");
+	printf(" 2             .wld\n\n");
 	return;
 }
 
 int main(int argc, char **argv)
 {
 	uint8_t *data;
-    size_t len;
-	char *opt, *bak;
-    char type;
+	size_t len;
+	char *opt, *bak, type;
 
 	printf("\nTerraria (PS4) decrypter\n\n");
  
@@ -69,20 +68,20 @@ int main(int argc, char **argv)
 		print_usage(argv[0]);
 		return -1;
 	}
-    char *filename = argv[3];
+	char *filename = argv[3];
 
-    opt = argv[1];
+	opt = argv[1];
 	if (*opt++ != '-' || (*opt != 'd' && *opt != 'e'))
 	{
 		print_usage(argv[0]);
         return -1;
 	}
 
-    type = *argv[2];
-    if (type != '1' && type != '2') {
-        print_usage(argv[0]);
-        return -1;
-    }
+	type = *argv[2];
+	if (type != '1' && type != '2') {
+		print_usage(argv[0]);
+		return -1;
+	}
 
 	if (read_buffer(filename, &data, &len) != 0)
 	{
