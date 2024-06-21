@@ -31,6 +31,7 @@ Tools to decrypt specific PS3 save-games:
   - Metal Gear Solid: Peace Walker HD
 - [mgs5-tpp-decrypter](./mgs5-tpp-decrypter)
   - Metal Gear Solid V: The Phantom Pain
+  - Metal Gear Solid V: Ground Zeroes
 - [nfs-rivals-decrypter](./nfs-rivals-decrypter)
   - Need For Speed: Rivals
 - [nfs-undercover-decrypter](./nfs-undercover-decrypter)
@@ -50,8 +51,11 @@ Tools to decrypt specific PS4 save-games:
   - Borderlands 3 (PS4)
 - [gta5-decrypter](./gta5-decrypter)
   - Grand Theft Auto 5 (PS4)
+- [rgg-decrypter](./rgg-decrypter)
+  - Like a Dragon: Ishin! (PS4)
 - [mgs5-tpp-decrypter](./mgs5-tpp-decrypter)
   - Metal Gear Solid V: The Phantom Pain (PS4)
+  - Metal Gear Solid V: Ground Zeroes (PS4)
 - [naughtydog-decrypter](./naughtydog-decrypter)
   - The Last of Us Remastered (PS4)
   - Uncharted 2 Remastered (PS4)
@@ -60,8 +64,20 @@ Tools to decrypt specific PS4 save-games:
   - Red Dead Redemption 2 (PS4)
 - [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter)
   - Resident Evil Revelations 2 (PS4)
+- [smt5-decrypter](./smt5-decrypter)
+  - Shin Megami Tensei V (PS4)
 - [ps4-terraria-decrypter](./ps4-terraria-decrypter)
   - Terraria (PS4)
+
+## PSP Decrypters
+
+Tools to decrypt specific PSP save-games:
+- [patapon3-decrypter](./patapon3-decrypter)
+  - Patapon 3 (PSP)
+- [monsterhunter-decrypter](./monsterhunter-decrypter)
+  - Monster Hunter Freedom Unite (PSP)
+  - Monster Hunter Portable 2nd G (PSP)
+  - Monster Hunter Portable 3rd (PSP)
 
 ## Checksum fixers
 
@@ -73,6 +89,8 @@ Tools to fix checksums for specific PS3 save-games:
   - Castlevania: Lords of Shadow 2
 - [cod-checksum-fixer](./cod-checksum-fixer)
   - Call of Duty: Ghosts
+- [deadrising-checksum-fixer](./deadrising-checksum-fixer)
+  - Dead Rising (PS4)
 - [deadspace-checksum-fixer](./deadspace-checksum-fixer)
   - Dead Space 2
   - Dead Space 3
@@ -85,6 +103,10 @@ Tools to fix checksums for specific PS3 save-games:
 - [ffxhd-checksum-fixer](./ffxhd-checksum-fixer)
   - Final Fantasy X HD
   - Final Fantasy X-2 HD
+- [invizimals-checksum-fixer](./invizimals-checksum-fixer)
+  - Invizimals (PSP)
+  - Invizimals - Shadow Zone (PSP)
+  - Invizimals - The Lost Tribe (PSP)
 - [kh25-checksum-fixer](./kh25-checksum-fixer)
   - Kingdom Hearts HD 2.5 ReMIX
   - Kingdom Hearts HD Birth by Sleep (BBS)
