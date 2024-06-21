@@ -1,11 +1,13 @@
 /*
 *
-*	GTA 5 PS3 Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
+*	GTA 5 PS3/PS4 Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
 *
 */
 
 #include "../common/iofile.c"
 #include "../common/aes.c"
+
+#define CHECKSUM_SEED 0x3FAC7125
 
 const u8 GTAV_PS3_KEY[32] = {
 		0x16, 0x85, 0xFF, 0xA3, 0x8D, 0x01, 0x0F, 0x0D, 0xFE, 0x66, 0x1C, 0xF9, 0xB5, 0x57, 0x2C, 0x50,
@@ -85,7 +87,7 @@ int main(int argc, char **argv)
 	u8* data;
 	char *opt, *bak;
 
-	printf("\nGTA5 PS3/PS4 Save Decrypter 0.2.0 - (c) 2021 by Bucanero\n\n");
+	printf("\nGTA5 PS3/PS4 Save Decrypter 0.3.0 - (c) 2021 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{
@@ -109,13 +111,43 @@ int main(int argc, char **argv)
 	asprintf(&bak, "%s.bak", argv[2]);
 	write_buffer(bak, data, len);
 
-	int isPS4 = (data[0] == 0 && data[1] == 0 && data[2] == 0) ? *(int*)(data + 0x108) : 0;
+	int isPS4 = (data[0] == 0 && data[1] == 0 && data[2] == 0);
 	printf("[i] Platform Type: %s\n\n", isPS4 ? "PS4" : "PS3");
 
 	if (*opt == 'd')
-		decrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? ES32(isPS4) : len));
+		decrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? (len - 0x114) : len));
 	else
 	{
+		if (isPS4)
+		{
+			// fix title checksum
+			uint32_t seed; // must be 00 00 00 01
+			uint8_t title[0x100];
+
+			// read first 4 bytes of file and reverse
+			memcpy(&seed, data, sizeof(uint32_t));
+			seed = ES32(seed);
+
+			// read title from offset 0x04 to 0x104
+			memcpy(title, data + 0x04, sizeof(title));
+
+			// generate seed
+			seed = jenkins_one_at_a_time_hash((uint8_t*) &seed, sizeof(uint32_t), 0);
+
+			// use generated seed to calculate title checksum
+			uint32_t title_chks = jenkins_one_at_a_time_hash(title, sizeof(title), seed);
+
+			printf(" - Title Seed  : %08X\n", seed);
+			printf(" - Old Checksum: %08X\n", ES32(*(uint32_t*)(data + 0x104)));
+			printf(" + New Checksum: %08X\n\n", title_chks);
+			title_chks = ES32(title_chks);
+
+			// finally, fix the 4 byte checksum at 0x104
+			memcpy(data + 0x104, &title_chks, sizeof(uint32_t));
+		}
+
+		// fix general checksum
+
 		uint32_t chks, chks_len;
 		int chks_off = search_data(data, len, 0, "CHKS", 5);
 	
@@ -136,7 +168,7 @@ int main(int argc, char **argv)
 		printf(" - Old Checksum: %08X\n", ES32(*(uint32_t*)(data + chks_off + 0xC)));
 	
 		memset(data + chks_off + 8, 0, 8);
-		chks = jenkins_one_at_a_time_hash(data + (chks_off - chks_len + 0x14), chks_len, 0x3FAC7125);
+		chks = jenkins_one_at_a_time_hash(data + (chks_off - chks_len + 0x14), chks_len, CHECKSUM_SEED);
 		printf(" + New Checksum: %08X\n\n", chks);
 
 		chks = ES32(chks);
@@ -144,7 +176,7 @@ int main(int argc, char **argv)
 		memcpy(data + chks_off + 0xC, &chks, sizeof(uint32_t));
 		memcpy(data + chks_off + 0x8, &chks_len, sizeof(uint32_t));
 	
-		encrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? ES32(isPS4) : len));
+		encrypt_data(data + (isPS4 ? 0x114 : 0), (isPS4 ? (len - 0x114) : len));
 	}
 
 	write_buffer(argv[2], data, len);
