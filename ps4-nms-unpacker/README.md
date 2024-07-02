@@ -6,8 +6,8 @@ A tool to unpack No Man's Sky PS4 `savedata.hg` files.
 USAGE: ./ps4-nms-unpacker [option] filename
 
 OPTIONS        Explanation:
- -d            Unpack File
- -e            Pack File
+ -u            Unpack File
+ -p            Pack File
 ```
 
 ### Notes
