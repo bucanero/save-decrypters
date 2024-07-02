@@ -229,7 +229,7 @@ int main(int argc, char **argv)
 	if (*opt++ != '-' || (*opt != 'd' && *opt != 'e'))
 	{
 		print_usage(argv[0]);
-        return -1;
+		return -1;
 	}
 
 	if (read_buffer(filename, &data, &len) != 0)
