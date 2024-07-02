@@ -204,8 +204,8 @@ void print_usage(const char* argv0)
 {
 	printf("USAGE: %s [option] filename\n\n", argv0);
 	printf("OPTIONS        Explanation:\n");
-	printf(" -d            Unpack File\n");
-	printf(" -e            Pack File\n\n");
+	printf(" -u            Unpack File\n");
+	printf(" -p            Pack File\n\n");
 	return;
 }
 
