@@ -252,7 +252,7 @@ int main(int argc, char **argv)
 	mapping_json = cJSON_GetObjectItem(mapping_json_root, "Mapping");
 
 	// decompress or compress file
-	if (*opt == 'd') {
+	if (*opt == 'u') {
 		uint8_t *decomp;
 		size_t decomp_len;
 
