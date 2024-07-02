@@ -212,7 +212,7 @@ void print_usage(const char* argv0)
 int main(int argc, char **argv)
 {
 	uint8_t *data;
-    size_t len;
+	size_t len;
 	char *opt, *bak;
 	int ret = 0;
 
