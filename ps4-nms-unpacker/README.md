@@ -18,4 +18,4 @@ OPTIONS        Explanation:
 
 This tool was created by [hzh](https://github.com/hzhreal/)
 
-The file that makes the deobfuscation possible is from https://github.com/monkeyman192/MBINCompiler/releases/tag/v4.73.0-pre1
+The file that makes the deobfuscation possible is from [MBINCompiler](https://github.com/monkeyman192/MBINCompiler/releases/tag/v4.73.0-pre1)
