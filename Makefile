@@ -31,6 +31,7 @@ all:
 	$(MAKE) -C patapon3-decrypter
 	$(MAKE) -C prototype-checksum-fixer
 	$(MAKE) -C ps4-borderlands3-decrypter
+	$(MAKE) -C ps4-nms-unpacker
 	$(MAKE) -C ps4-rdr2-decrypter
 	$(MAKE) -C ps4-re-rev2-decrypter
 	$(MAKE) -C ps4-terraria-decrypter
@@ -73,6 +74,7 @@ clean:
 	$(MAKE) clean -C patapon3-decrypter
 	$(MAKE) clean -C prototype-checksum-fixer
 	$(MAKE) clean -C ps4-borderlands3-decrypter
+	$(MAKE) clean -C ps4-nms-unpacker
 	$(MAKE) clean -C ps4-rdr2-decrypter
 	$(MAKE) clean -C ps4-re-rev2-decrypter
 	$(MAKE) clean -C ps4-terraria-decrypter

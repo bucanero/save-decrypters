@@ -56,6 +56,8 @@ Tools to decrypt specific PS4 save-games:
 - [mgs5-tpp-decrypter](./mgs5-tpp-decrypter)
   - Metal Gear Solid V: The Phantom Pain (PS4)
   - Metal Gear Solid V: Ground Zeroes (PS4)
+- [ps4-nms-unpacker](./ps4-nms-unpacker)
+  - No Man's Sky (PS4)
 - [naughtydog-decrypter](./naughtydog-decrypter)
   - The Last of Us Remastered (PS4)
   - Uncharted 2 Remastered (PS4)
