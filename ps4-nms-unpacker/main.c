@@ -226,7 +226,7 @@ int main(int argc, char **argv)
     char *filename = argv[2];
 
     opt = argv[1];
-	if (*opt++ != '-' || (*opt != 'd' && *opt != 'e'))
+	if (*opt++ != '-' || (*opt != 'u' && *opt != 'p'))
 	{
 		print_usage(argv[0]);
 		return -1;
