@@ -25,7 +25,7 @@ jobs:
       CHERE_INVOKING: 1
     name: MSYS2 ${{ matrix.mingw }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up shell
         run: echo "C:\msys64\usr\bin\" >> $GITHUB_PATH
         shell: pwsh
@@ -115,7 +115,7 @@ jobs:
             tears2-checksum-fixer.exe \
             toz-checksum-fixer.exe
 
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: build-${{ steps.slug.outputs.sha8 }}-${{matrix.mingw}}
           path: build.tar.gz
