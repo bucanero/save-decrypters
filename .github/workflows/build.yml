@@ -14,7 +14,7 @@ jobs:
         os: [macos-latest, ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     
     - name: Install Ubuntu requirements
       if: matrix.os == 'ubuntu-latest'
@@ -74,7 +74,7 @@ jobs:
             tears2-checksum-fixer/tears2-checksum-fixer \
             toz-checksum-fixer/toz-checksum-fixer
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: build-${{ steps.slug.outputs.sha8 }}-${{matrix.os}}
         path: build.tar.gz
