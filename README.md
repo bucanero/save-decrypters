@@ -131,4 +131,4 @@ Tools to fix checksums for specific PS3 save-games:
 
 ## License
 
-These tools are released under the [MIT License](LICENSE).
+These tools are released under the GNU [GPL v3.0 License](LICENSE).
