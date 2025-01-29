@@ -129,6 +129,10 @@ Tools to fix checksums for specific PS3 save-games:
 - [toz-checksum-fixer](./toz-checksum-fixer)
   - Tales of Zestiria
 
+Tools to fix checksums for specific PS4 save-games:
+- [re7-checksum-fixer](./re7-checksum-fixer)
+  - Resident Evil 7: Biohazard
+
 ## License
 
 These tools are released under the GNU [GPL v3.0 License](LICENSE).
