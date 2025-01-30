@@ -1,6 +1,6 @@
 # PlayStation Save Decrypters
 
-A collection of custom save-game decrypters and checksum fixers for PS3 & PS4.
+A collection of custom save-game decrypters and checksum fixers for PS3, PSP, and PS4.
 
 ## PS3 Decrypters
 
@@ -83,7 +83,7 @@ Tools to decrypt specific PSP save-games:
 
 ## Checksum fixers
 
-Tools to fix checksums for specific PS3 save-games:
+Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 - [alien-checksum-fixer](./alien-checksum-fixer)
   - Alien: Isolation (PS3/PS4)
 - [castlevania-checksum-fixer](./castlevania-checksum-fixer)
@@ -121,6 +121,8 @@ Tools to fix checksums for specific PS3 save-games:
 - [prototype-checksum-fixer](./prototype-checksum-fixer)
   - Prototype 1
   - Prototype 2
+- [re7-checksum-fixer](./re7-checksum-fixer)
+  - Resident Evil 7: Biohazard
 - [sw4-checksum-fixer](./sw4-checksum-fixer)
   - Samurai Warriors 4
   - Sengoku Musou 4
@@ -128,10 +130,6 @@ Tools to fix checksums for specific PS3 save-games:
   - Tears to Tiara 2
 - [toz-checksum-fixer](./toz-checksum-fixer)
   - Tales of Zestiria
-
-Tools to fix checksums for specific PS4 save-games:
-- [re7-checksum-fixer](./re7-checksum-fixer)
-  - Resident Evil 7: Biohazard
 
 ## License
 
