@@ -9,53 +9,46 @@
 
 #include "../common/iofile.c"
 
-#define HIWORD(n) ((u32)(n) >> 16)
-#define BS sizeof(u32)
-#define BS_BITS BS * 8
-
-u32 ROL4(u32 n, u32 count) {
-    count %= BS_BITS;
-    u32 high = n >> (BS_BITS - count);
-    n <<= count;
-    n |= high;
-    return n;
+// https://en.wikipedia.org/wiki/MurmurHash
+static inline uint32_t murmur_32_scramble(uint32_t k) {
+    k *= 0xcc9e2d51;
+    k = (k << 15) | (k >> 17);
+    k *= 0x1b873593;
+    return k;
 }
 
-u32 checksum(u8 *buf, u32 size) {
-    u8 val = 0;
-    u8 remainder = size & (BS - 1);
-    u32 *in = (u32 *)buf;
-    u32 csum = -1;
-    u32 blocks = size / BS;
-    u32 i;
-  
-    if (size >= BS) 
-    {
-        for (i = 0; i < blocks; i++) 
-        {
-            csum = 5 * ROL4(csum ^ (0x1B873593 * ((0x16A88000 * in[i]) | ((-0x3361D2AF * in[i]) >> 17))), 13) - 0x19AB949C;
-        }
+uint32_t murmur3_32(const uint8_t* key, size_t len, uint32_t seed)
+{
+    uint32_t h = seed;
+    uint32_t k;
+    /* Read in groups of 4. */
+    for (size_t i = len >> 2; i; i--) {
+        // Here is a source of differing results across endiannesses.
+        // A swap here has no effects on hash properties though.
+        memcpy(&k, key, sizeof(uint32_t));
+        key += sizeof(uint32_t);
+        h ^= murmur_32_scramble(k);
+        h = (h << 13) | (h >> 19);
+        h = h * 5 + 0xe6546b64;
     }
-
-    switch(remainder)
-    {
-        case 1:
-            val = val ^ *(u8 *)(in + BS * blocks);
-            csum ^= 0x1B873593 * ((0x16A88000 * val) | ((-0x3361D2AF * val) >> 17));
-            break;
-        case 2:
-        case 3:
-            if (remainder == 3) 
-            {
-                val = *(u8 *)(in + BS * blocks + 2) << 16;
-            }
-            val |= *(u8 *)(in + BS * blocks + 1) << 8;
-            val = val ^ *(u8 *)(in + BS * blocks);
-            csum ^= 0x1B873593 * ((0x16A88000 * val) | ((-0x3361D2AF * val) >> 17));
-            break;
+    /* Read the rest. */
+    k = 0;
+    for (size_t i = len & 3; i; i--) {
+        k <<= 8;
+        k |= key[i - 1];
     }
-    csum = -0x3D4D51CB * ((-0x7A143595 * (size ^ csum ^ ((size ^ csum) >> 16))) ^ ((-0x7A143595 * (size ^ csum ^ ((size ^ csum) >> 16))) >> 13));
-    return csum ^ HIWORD(csum);
+    // A swap is *not* necessary here because the preceding loop already
+    // places the low bytes in the low places according to whatever endianness
+    // we use. Swaps only apply when the memory is copied in a chunk.
+    h ^= murmur_32_scramble(k);
+    /* Finalize. */
+    h ^= len;
+    h ^= h >> 16;
+    h *= 0x85ebca6b;
+    h ^= h >> 13;
+    h *= 0xc2b2ae35;
+    h ^= h >> 16;
+    return h;
 }
 
 void print_usage(const char* argv0)
@@ -96,12 +89,13 @@ int main(int argc, char **argv)
     write_buffer(bak, data, len);
     free(bak);
 
-    csum = checksum(data, (u32)(len - sizeof(u32)));
-    printf("[*] Updated CHKS: %" PRIX32 "\n", ES32(csum));
+    printf("[*] Current Checksum: %" PRIX32 "\n", *(u32*)(data + len - 4));
+    csum = murmur3_32(data, len - sizeof(u32), 0xFFFFFFFF);
+    printf("[*] Updated Checksum: %" PRIX32 "\n", csum);
 
     memcpy(data + len - sizeof(u32), &csum, sizeof(u32));
-    write_buffer(filename, data, len);
-    printf("[*] Patched File Successfully!\n");
+    if (write_buffer(filename, data, len) == 0)
+        printf("[*] Patched File Successfully!\n");
 
     free(data);
     return 0;
