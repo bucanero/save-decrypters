@@ -37,6 +37,7 @@ all:
 	$(MAKE) -C ps4-terraria-decrypter
 	$(MAKE) -C re-remaster-decrypter
 	$(MAKE) -C re-revelations2-decrypter
+	$(MAKE) -C re7-checksum-fixer
 	$(MAKE) -C rgg-decrypter
 	$(MAKE) -C silent-hill3-decrypter
 	$(MAKE) -C smt5-decrypter
@@ -80,6 +81,7 @@ clean:
 	$(MAKE) clean -C ps4-terraria-decrypter
 	$(MAKE) clean -C re-remaster-decrypter
 	$(MAKE) clean -C re-revelations2-decrypter
+	$(MAKE) clean -C re7-checksum-fixer
 	$(MAKE) clean -C rgg-decrypter
 	$(MAKE) clean -C silent-hill3-decrypter
 	$(MAKE) clean -C smt5-decrypter
