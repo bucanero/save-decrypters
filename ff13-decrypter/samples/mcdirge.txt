@@ -1,0 +1,49 @@
+INSTRUCTIONS
+Place any of the following files in the same folder as McDirge_v0.3.exe in order to use the program.
+The files can be acquired by copying them from your save data with the use of (u)LaunchELF.
+
+    FILE        MISCELLANEOUS INFO
+    ----        ------------------
+    BISLPM-66271000 [NTSC-J, Tempsave data] Japanese Original
+    BISLPM-66271001 [NTSC-J] Japanese Original
+
+    BASLUS-21419000 [NTSC-US, Tempsave data]
+    BASLUS-21419001 [NTSC-US]
+
+    BESLES-54185000 [PAL, Tempsave data]
+    BESLES-54185001 [PAL]
+
+    BISLPM-66629000 [NTSC-J, Tempsave data] DCFFVII International
+    BISLPM-66629001 [NTSC-J] DCFFVII International
+
+    cfg000      [Configuration File: Basic Settings & Extra Features]
+    scene000    [Checkpoint data]
+    scene001    [Checkpoint data]
+    scene002    [Checkpoint data]
+    scene003    [Checkpoint data]
+    scene004    [Checkpoint data]
+    scene005    [Checkpoint data]
+    scene006    [Checkpoint data]
+    scene007    [Checkpoint data]
+    scene008    [Checkpoint data]
+    scene009    [Checkpoint data]
+    scene010    [Checkpoint data]
+    scr000      [Tempsave Screenshot]
+
+The files "icon.sys" and "kel.ico" deal with the 3D icon for Cerberus save data.
+These are not encrypted and McDirge is not built to edit these.
+
+After making the edits to a given file, simply paste the files back into the save folder
+with the use of (u)LaunchELF. Boot up the game and all the edits should be in effect.
+
+
+ABOUT READING AND EDITING cfg000 (user friendly interface)
+- If you've begun a new Dirge save file but haven't made any edits to "Control Settings" or "Other Settings", the file will be untouched and
+consist almost entirely of values of 0.
+
+In gameplay the default settings will be active, but this is not reflected in any values performed if you read cfg000 with McDirge at this point. Simply put, cfg000 is not "formatted" yet, at this stage. This is true also for Controller Setup, Keyboard Setup and Mouse Setup.
+
+Changing even a single thing, like the vibration, to Off instead of On will result in cfg000 being formatted.
+
+
+- If you make a Tempsave available when there is no actual tempsave data, then a placeholder Tempsave will be created that simply leads you to the start of the new game. This also reveals the unused placeholder image with Cait Sith in the checkpoints menu.

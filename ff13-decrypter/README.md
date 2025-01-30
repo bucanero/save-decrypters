@@ -18,4 +18,4 @@ GAME TYPE      Explanation:
 ### Credits
 
 This tool is based on (reversed) `Final Fantasy XIII Encryptor` by Jappi88,
-and [McDirge Save editor](https://thelifestream.net/forums/threads/dcffvii-research-thread.15951/page-42#post-884518) source by Shademp
+and [McDirge Save editor](https://thelifestream.net/forums/threads/dcffvii-research-thread.15951/post-867278) source by [Shademp](https://github.com/Shademp)
