@@ -49,3 +49,54 @@ LABEL_8:
   return v10 ^ HIWORD(v10);
 }
 ```
+
+```c
+#define HIWORD(n) ((u32)(n) >> 16)
+#define BS sizeof(u32)
+#define BS_BITS BS * 8
+
+u32 ROL4(u32 n, u32 count) {
+    count %= BS_BITS;
+    u32 high = n >> (BS_BITS - count);
+    n <<= count;
+    n |= high;
+    return n;
+}
+
+u32 checksum(u8 *buf, u32 size) {
+    u8 val = 0;
+    u8 remainder = size & (BS - 1);
+    u32 *in = (u32 *)buf;
+    u32 csum = -1;
+    u32 blocks = size / BS;
+    u32 i;
+
+    if (size >= BS) 
+    {
+        for (i = 0; i < blocks; i++) 
+        {
+            csum = 5 * ROL4(csum ^ (0x1B873593 * ((0x16A88000 * in[i]) | ((-0x3361D2AF * in[i]) >> 17))), 13) - 0x19AB949C;
+        }
+    }
+
+    switch(remainder)
+    {
+        case 1:
+            val = val ^ *(u8 *)(in + BS * blocks);
+            csum ^= 0x1B873593 * ((0x16A88000 * val) | ((-0x3361D2AF * val) >> 17));
+            break;
+        case 2:
+        case 3:
+            if (remainder == 3) 
+            {
+                val = *(u8 *)(in + BS * blocks + 2) << 16;
+            }
+            val |= *(u8 *)(in + BS * blocks + 1) << 8;
+            val = val ^ *(u8 *)(in + BS * blocks);
+            csum ^= 0x1B873593 * ((0x16A88000 * val) | ((-0x3361D2AF * val) >> 17));
+            break;
+    }
+    csum = -0x3D4D51CB * ((-0x7A143595 * (size ^ csum ^ ((size ^ csum) >> 16))) ^ ((-0x7A143595 * (size ^ csum ^ ((size ^ csum) >> 16))) >> 13));
+    return csum ^ HIWORD(csum);
+}
+```
