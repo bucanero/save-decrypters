@@ -20,6 +20,8 @@ Tools to decrypt specific PS3 save-games:
   - Lightning Returns: Final Fantasy XIII
 - [gta5-decrypter](./gta5-decrypter)
   - Grand Theft Auto 5
+- [la-noire-decrypter](./la-noire-decrypter)
+  - L.A. Noire
 - [naughtydog-decrypter](./naughtydog-decrypter)
   - The Last of Us
   - Uncharted 2

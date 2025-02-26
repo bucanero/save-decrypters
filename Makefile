@@ -19,6 +19,7 @@ all:
 	$(MAKE) -C gta5-decrypter
 	$(MAKE) -C invizimals-checksum-fixer
 	$(MAKE) -C kh25-checksum-fixer
+	$(MAKE) -C la-noire-decrypter
 	$(MAKE) -C lego-checksum-fixer
 	$(MAKE) -C mc4-cheat-decrypter
 	$(MAKE) -C mgs-hd-decrypter
@@ -63,6 +64,7 @@ clean:
 	$(MAKE) clean -C gta5-decrypter
 	$(MAKE) clean -C invizimals-checksum-fixer
 	$(MAKE) clean -C kh25-checksum-fixer
+	$(MAKE) clean -C la-noire-decrypter
 	$(MAKE) clean -C lego-checksum-fixer
 	$(MAKE) clean -C mc4-cheat-decrypter
 	$(MAKE) clean -C mgs-hd-decrypter

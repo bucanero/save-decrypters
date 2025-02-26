@@ -11,14 +11,15 @@
 unsigned char la_noire_save_aes_key[32] = "Wr9uFi4yi*?OESwiavv$ayIAp+u23PIe";
 unsigned char la_noire_profile_aes_key[32] = "_!pH4ThU-7N?u&eph4$eaC!aTHaQ5U7u";
 
-unsigned char la_noire_save_aes_key_xbox[32] = "FcHoaCrouPrI-b8EP!e$iURlE#r5e&@?";
-unsigned char la_noire_profile_aes_key_xbox[32] = "re$Uph$t7vECufEjey4_he3e2ajuwref";
+//unsigned char la_noire_save_aes_key_xbox[32] = "FcHoaCrouPrI-b8EP!e$iURlE#r5e&@?";
+//unsigned char la_noire_profile_aes_key_xbox[32] = "re$Uph$t7vECufEjey4_he3e2ajuwref";
 
+void *la_noire_key = la_noire_save_aes_key;
 
 void la_noire_decrypt_data(unsigned char* data, unsigned int len)
 {
 	struct AES_ctx ctx;
-	AES_init_ctx(&ctx, la_noire_save_aes_key);
+	AES_init_ctx(&ctx, la_noire_key);
 	memset(ctx.Iv, 0, AES_BLOCKLEN);
 
 	AES_CBC_decrypt_buffer(&ctx, data, len);
@@ -27,19 +28,22 @@ void la_noire_decrypt_data(unsigned char* data, unsigned int len)
 void la_noire_encrypt_data(unsigned char* data, unsigned int len)
 {
 	struct AES_ctx ctx;
-	AES_init_ctx(&ctx, la_noire_save_aes_key);
+	AES_init_ctx(&ctx, la_noire_key);
 	memset(ctx.Iv, 0, AES_BLOCKLEN);
 
 	AES_CBC_encrypt_buffer(&ctx, data, len);
 }
 
-void show_usage(void)
+void show_usage(const char* cmd)
 {
-	printf("USAGE: la_noire_save_decrypter [option] filename\n");
+	printf("USAGE: %s [option] [type] filename\n", cmd);
 	printf("\n");
 	printf("OPTIONS        Explanation:\n");
 	printf(" -d            Decrypt File\n");
 	printf(" -e            Encrypt File\n");
+	printf("TYPE\n");
+	printf(" -s            SaveData\n");
+	printf(" -p            Profile\n");
 }
 
 int is_valid_option(char *option)
@@ -54,15 +58,15 @@ int main(int argc, char *argv[])
 {
 	printf("\n\nla_noire_save_decrypter 0.1.0 (c) 2014 by Red-EyeX32\n\n");
 
-	if (argc != 3 || !is_valid_option(argv[1])) {
-		show_usage();
+	if (argc != 4 || !is_valid_option(argv[1])) {
+		show_usage(argv[0]);
 		return -1;
 	}
 
-	FILE* fp = fopen(argv[2], "rb+");
+	FILE* fp = fopen(argv[3], "rb+");
 
 	if (fp == NULL) {
-		printf("[*] Could Not Access The File");
+		printf("[*] Could Not Access The File %s\n", argv[3]);
 		return -2;
 	}
 
@@ -73,15 +77,15 @@ int main(int argc, char *argv[])
 	fseek(fp, 0, SEEK_SET);
 	fread(fileData, fileSize, 1, fp);
 
+	if (strcmp(argv[2], "-p") == 0)
+		la_noire_key = la_noire_profile_aes_key;
+
 	if (strcmp(argv[1], "-d") == 0)
 	{
 		printf("[*] Total Decrypted Size Is 0x%X\n", fileSize);
 		
 		la_noire_decrypt_data(fileData, fileSize);
 
-		fseek(fp, 0, SEEK_SET);
-		fwrite(fileData, 1, fileSize, fp);
-		fclose(fp);
 		printf("Decrypted\n");
 	}
 	else if (strcmp(argv[1], "-e") == 0)
@@ -90,11 +94,12 @@ int main(int argc, char *argv[])
 
 		la_noire_encrypt_data(fileData, fileSize);
 
-		fseek(fp, 0, SEEK_SET);
-		fwrite(fileData, 1, fileSize, fp);
-		fclose(fp);
 		printf("Encrypted\n");
 	}
+
+	fseek(fp, 0, SEEK_SET);
+	fwrite(fileData, 1, fileSize, fp);
+	fclose(fp);
 
 	return 0;
 }
