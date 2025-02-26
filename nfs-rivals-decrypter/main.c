@@ -45,43 +45,21 @@ u32 calc_crc32(const u8* data, u32 len)
 	return ~crc;
 }
 
-void decrypt_data(const u32* key_buffer, u32* data, u32 size)
+void decrypt_data(void* data, u32 size)
 {
-	u32 buf[2];
-
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
-    size >>= 3;
 
-	for (int i = 0; i < size; i+= 2)
-	{
-		buf[0] = ES32(data[i]);
-		buf[1] = ES32(data[i+1]);
-		crypt_64bit_down(key_buffer, buf);
-
-		data[i] = ES32(buf[0]);
-		data[i+1] = ES32(buf[1]);
-	}
+	blowfish_decrypt_buffer(data, size);
 
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
 }
 
-void encrypt_data(const u32* key_buffer, u32* data, u32 size)
+void encrypt_data(void* data, u32 size)
 {
-	u32 buf[2], crc;
-
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
-    size >>= 3;
 
-	for (int i = 0; i < size; i+= 2)
-	{
-		buf[0] = ES32(data[i]);
-		buf[1] = ES32(data[i+1]);
-		crypt_64bit_up(key_buffer, buf);
-
-		data[i] = ES32(buf[0]);
-		data[i+1] = ES32(buf[1]);
-	}
+	blowfish_encrypt_buffer(data, size);
 
 	printf("[*] Encrypted File Successfully!\n");
 	return;
@@ -117,11 +95,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	u32* key_table = malloc(KEYSIZE);
-	if (!key_table)
-		return -1;
-
-	apply_keycode(key_table, (u32*) KEY_DATA, SECRET_KEY);
+	blowfish_init_key(SECRET_KEY);
 
 	if (read_buffer(argv[2], &data, &len) != 0)
 	{
@@ -136,10 +110,10 @@ int main(int argc, char **argv)
 	printf("[*] Calculation Length: 0x%lX\n", len-4);
 
 	if (*opt == 'd')
-		decrypt_data(key_table, (u32*) (data+4), len);
+		decrypt_data((data+4), len-8);
 	else
 	{
-		encrypt_data(key_table, (u32*) (data+4), len);
+		encrypt_data((data+4), len-8);
 
 		u32 crc = ES32(calc_crc32(data+4, len-4));
 		memcpy(data, &crc, 4);
@@ -152,7 +126,6 @@ int main(int argc, char **argv)
 
 	free(bak);
 	free(data);
-	free(key_table);
-	
+
 	return 0;
 }

@@ -30,53 +30,31 @@ u32 dwadd(const u8* data, u32 len)
 	return csum;
 }
 
-void decrypt_data(const u32* key_buffer, u32* data, u32 size)
-{
-	u32 buf[2];
-
-	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
-	size /= 4;
-
-	for (int i = 0; i < size; i+= 2)
-	{
-//		No need for endian-swap
-		buf[0] = (data[i]);			// buf[0] = ES32(data[i]);
-		buf[1] = (data[i+1]);		// buf[1] = ES32(data[i+1]);
-		crypt_64bit_down(key_buffer, buf);
-
-//		No need for endian-swap
-		data[i] = (buf[0]);			// data[i] = ES32(buf[0]);
-		data[i+1] = (buf[1]);		// data[i+1] = ES32(buf[1]);
-	}
-
-	printf("[*] Decrypted File Successfully!\n\n");
-	return;
-}
-
 void swap_u32_data(u32* data, int count)
 {
 	for (int i=0; i < count; i++)
 		data[i] = ES32(data[i]);
 }
 
-void encrypt_data(const u32* key_buffer, u32* data, u32 size)
+void decrypt_data(u32* data, u32 size)
 {
-	u32 buf[2];
+	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
+	swap_u32_data(data, size/4);
+	blowfish_decrypt_buffer(data, size);
+	swap_u32_data(data, size/4);
+
+	printf("[*] Decrypted File Successfully!\n\n");
+	return;
+}
+
+void encrypt_data(u32* data, u32 size)
+{
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
-	size /= 4;
 
-	for (int i = 0; i < size; i+= 2)
-	{
-//		No need for endian-swap
-		buf[0] = (data[i]);
-		buf[1] = (data[i+1]);
-		crypt_64bit_up(key_buffer, buf);
-
-//		No need for endian-swap
-		data[i] = (buf[0]);
-		data[i+1] = (buf[1]);
-	}
+	swap_u32_data(data, size/4);
+	blowfish_encrypt_buffer(data, size);
+	swap_u32_data(data, size/4);
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
@@ -112,11 +90,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	u32* key_table = malloc(KEYSIZE);
-	if (!key_table)
-		return -1;
-
-	apply_keycode(key_table, (u32*) KEY_DATA, SECRET_KEY);
+	blowfish_init_key(SECRET_KEY);
 
 	if (read_buffer(argv[2], &data, &len) != 0)
 	{
@@ -128,7 +102,7 @@ int main(int argc, char **argv)
 	write_buffer(bak, data, len);
 
 	if (*opt == 'd')
-		decrypt_data(key_table, (u32*)(data + 0x20), len - 0x20);
+		decrypt_data((u32*)(data + 0x20), len - 0x20);
 	else
 	{
 		printf("[*] Source SHA1  : " SHA1_FMT(data + len - 0x20, "\n"));
@@ -136,14 +110,13 @@ int main(int argc, char **argv)
 		swap_u32_data((u32*)(data + len - 0x20), 5);
 		printf("[*] Updated SHA1 : " SHA1_FMT(data + len - 0x20, "\n"));
 
-		encrypt_data(key_table, (u32*)(data + 0x20), len - 0x20);
+		encrypt_data((u32*)(data + 0x20), len - 0x20);
 	}
 
 	write_buffer(argv[2], data, len);
 
 	free(bak);
 	free(data);
-	free(key_table);
-	
+
 	return 0;
 }

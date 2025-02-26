@@ -30,43 +30,21 @@ u32 dwadd(const u8* data, u32 len)
 	return csum;
 }
 
-void decrypt_data(const u32* key_buffer, u32* data, u32 size)
+void decrypt_data(void* data, u32 size)
 {
-	u32 buf[2];
-
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
-	size /= 4;
 
-	for (int i = 0; i < size; i+= 2)
-	{
-		buf[0] = ES32(data[i]);
-		buf[1] = ES32(data[i+1]);
-		crypt_64bit_down(key_buffer, buf);
-
-		data[i] = ES32(buf[0]);
-		data[i+1] = ES32(buf[1]);
-	}
+	blowfish_decrypt_buffer(data, size);
 
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
 }
 
-void encrypt_data(const u32* key_buffer, u32* data, u32 size)
+void encrypt_data(void* data, u32 size)
 {
-	u32 buf[2];
-
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
-	size /= 4;
 
-	for (int i = 0; i < size; i+= 2)
-	{
-		buf[0] = ES32(data[i]);
-		buf[1] = ES32(data[i+1]);
-		crypt_64bit_up(key_buffer, buf);
-
-		data[i] = ES32(buf[0]);
-		data[i+1] = ES32(buf[1]);
-	}
+	blowfish_encrypt_buffer(data, size);
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
@@ -102,11 +80,7 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	u32* key_table = malloc(KEYSIZE);
-	if (!key_table)
-		return -1;
-
-	apply_keycode(key_table, (u32*) KEY_DATA, SECRET_KEY);
+	blowfish_init_key(SECRET_KEY);
 
 	if (read_buffer(argv[2], &data, &len) != 0)
 	{
@@ -118,7 +92,7 @@ int main(int argc, char **argv)
 	write_buffer(bak, data, len);
 
 	if (*opt == 'd')
-		decrypt_data(key_table, (u32*)(data + 0x10), len - 0x10);
+		decrypt_data((data + 0x10), len - 0x10);
 	else
 	{
 		u32 crc = ES32(dwadd(data + 0x10, len - 0x30));
@@ -128,14 +102,13 @@ int main(int argc, char **argv)
 		sha1(data + 0x127590, data + 0x10, (len - 0x30) * 8);
 		printf("[*] Updated SHA1 : " SHA1_FMT(data + 0x127590, "\n"));
 
-		encrypt_data(key_table, (u32*)(data + 0x10), len - 0x10);
+		encrypt_data((data + 0x10), len - 0x10);
 	}
 
 	write_buffer(argv[2], data, len);
 
 	free(bak);
 	free(data);
-	free(key_table);
-	
+
 	return 0;
 }
