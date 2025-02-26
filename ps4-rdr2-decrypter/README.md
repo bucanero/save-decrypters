@@ -3,7 +3,7 @@
 A tool to decrypt RDR2 (Red Dead Redemption 2) PS4 save-games
 
 ```
-USAGE: ./rdr2-ps4save-decrypter [option] filename
+USAGE: ./rdr2-decrypter [option] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File

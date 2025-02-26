@@ -303,7 +303,7 @@ int main(int argc, char **argv)
 	u64 ff_key;
 	char *opt, *type, *bak;
 
-	printf("\nff13-ps3save-decrypter 0.1.0 - (c) 2021 by Bucanero\n\n");
+	printf("\nff13-save-decrypter 0.1.0 - (c) 2021 by Bucanero\n\n");
 	
 	if (--argc < 3)
 	{

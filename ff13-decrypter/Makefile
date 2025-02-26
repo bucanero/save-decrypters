@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o ff13-ps3save-decrypter main.c
+	gcc -D _GNU_SOURCE -o ff13-decrypter main.c
 
 clean:
-	-rm -f ff13-ps3save-decrypter
+	-rm -f ff13-decrypter

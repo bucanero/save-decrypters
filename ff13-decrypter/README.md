@@ -1,9 +1,9 @@
-# ff13-ps3save-decrypter
+# ff13-decrypter
 
 A tool to decrypt Final Fantasy XIII, XIII-2, & Lightning Returns PS3 save-games
 
 ```
-USAGE: ./ff13-ps3save-decrypter [option] [type] filename
+USAGE: ./ff13-decrypter [option] [type] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File

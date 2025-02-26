@@ -1,8 +1,8 @@
-# naughtydog-ps3save-decrypter
+# naughtydog-decrypter
 A tool to decrypt Naughty Dog PS3 save-games (The Last of Us, Uncharted 2, Uncharted 3)
 
 ```
-USAGE: ./naughtydog-ps3save-decrypter [option] filename
+USAGE: ./naughtydog-decrypter [option] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File

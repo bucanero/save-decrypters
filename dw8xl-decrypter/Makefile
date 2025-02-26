@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o dw8xl-ps3save-decrypter main.c
+	gcc -D _GNU_SOURCE -o dw8xl-decrypter main.c
 
 clean:
-	-rm -f dw8xl-ps3save-decrypter
+	-rm -f dw8xl-decrypter

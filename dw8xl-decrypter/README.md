@@ -1,9 +1,9 @@
-# dw8xl-ps3save-decrypter
+# dw8xl-decrypter
 
 A tool to decrypt Dynasty Warriors 8 Xtreme Legends PS3 save-games
 
 ```
-USAGE: ./dw8xl-ps3save-decrypter [option] filename
+USAGE: ./dw8xl-decrypter [option] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File

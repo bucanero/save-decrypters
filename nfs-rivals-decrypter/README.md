@@ -1,9 +1,9 @@
-# nfsrivals-ps3save-decrypter
+# nfsrivals-decrypter
 
 A tool to decrypt Need For Speed: Rivals PS3 save-games. The tool also fixes the custom CRC32 integrity hash.
 
 ```
-USAGE: ./nfsrivals-ps3save-decrypter [option] filename
+USAGE: ./nfsrivals-decrypter [option] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File

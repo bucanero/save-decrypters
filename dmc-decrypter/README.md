@@ -1,9 +1,9 @@
-# dmc-ps3save-decrypter
+# dmc-decrypter
 
 A tool to decrypt DmC: Devil May Cry PS3 save-games.
 
 ```
-USAGE: ./dmc-ps3save-decrypter [option] filename
+USAGE: ./dmc-decrypter [option] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File

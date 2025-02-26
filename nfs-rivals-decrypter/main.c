@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 	u8* data;
 	char *opt, *bak;
 
-	printf("\nnfsrivals-ps3save-decrypter 0.1.0 - (c) 2021 by Bucanero\n\n");
+	printf("\nnfsrivals-save-decrypter 0.1.0 - (c) 2021 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{

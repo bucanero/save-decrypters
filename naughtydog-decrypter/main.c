@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 	u32 dsize;
 	char isPS3, *opt, *bak;
 
-	printf("\nnaughtydog-ps3save-decrypter 0.2.0 - (c) 2020 by Bucanero\n\n");
+	printf("\nnaughtydog-save-decrypter 0.2.0 - (c) 2020 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{

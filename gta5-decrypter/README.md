@@ -3,7 +3,7 @@
 A tool to decrypt GTA 5 (Grand Theft Auto V) PS3 & PS4 save-games
 
 ```
-USAGE: ./gta5-ps3save-decrypter [option] filename
+USAGE: ./gta5-decrypter [option] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File

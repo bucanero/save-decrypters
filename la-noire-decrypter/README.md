@@ -3,7 +3,7 @@
 A tool to decrypt L.A. Noire PS3 save-games
 
 ```
-USAGE: ./gta5-ps3save-decrypter [option] filename
+USAGE: ./la-noire-decrypter [option] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File

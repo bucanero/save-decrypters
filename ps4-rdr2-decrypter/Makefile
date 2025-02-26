@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o rdr2-ps4save-decrypter main.c
+	gcc -D _GNU_SOURCE -o rdr2-decrypter main.c
 
 clean:
-	-rm -f rdr2-ps4save-decrypter
+	-rm -f rdr2-decrypter
