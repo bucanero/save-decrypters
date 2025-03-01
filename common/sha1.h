@@ -110,9 +110,9 @@ void sha1_ctx2hash (void *dest, sha1_ctx_t *state);
  * the SHA-1 hashing algorithm.
  * \param dest pointer to the hash value destination
  * \param msg  pointer to the message which should be hashed
- * \param length_b length of the message in bits
+ * \param length length of the message in bytes
  */ 
-void sha1(void *dest, const void *msg, uint32_t length_b);
+void sha1(void *dest, const void *msg, uint32_t length);
 
 
 

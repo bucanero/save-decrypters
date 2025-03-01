@@ -31,7 +31,7 @@ void decrypt_data(u32* data, u32 size)
 
 void encrypt_data(u32* data, u32 size)
 {
-	sha1(&data[1], &data[7], ES32(data[6]) * 8);
+	sha1(&data[1], &data[7], ES32(data[6]));
 
 	printf("[*] Updated SHA1: " SHA1_FMT((u8*)&data[1], "\n"));
 	printf("[*] SHA1 Calculation Length: 0x%X\n", ES32(data[6]));

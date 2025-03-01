@@ -106,7 +106,7 @@ int main(int argc, char **argv)
 	else
 	{
 		printf("[*] Source SHA1  : " SHA1_FMT(data + len - 0x20, "\n"));
-		sha1(data + len - 0x20, data + 0x20, (len - 0x40) * 8);
+		sha1(data + len - 0x20, data + 0x20, (len - 0x40));
 		swap_u32_data((u32*)(data + len - 0x20), 5);
 		printf("[*] Updated SHA1 : " SHA1_FMT(data + len - 0x20, "\n"));
 

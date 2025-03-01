@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 		decrypt_data(data, len);
 	else
 	{
-		sha1(data + 0x0C, data + 0x40, (len - 0x40) * 8);
+		sha1(data + 0x0C, data + 0x40, (len - 0x40));
 		printf("[*] Updated SHA1: " SHA1_FMT(data + 0x0C, "\n"));
 
 		encrypt_data(data, len);

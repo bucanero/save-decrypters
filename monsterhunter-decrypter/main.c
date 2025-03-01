@@ -204,7 +204,7 @@ void decrypt_data(u8* buff, u32 size, const char* salt, const uint8_t* dec_table
     // Hash the decrypted data with the salt and compare it
     memcpy(tmp, &buff[size-36], 20);
     memcpy(&buff[size-36], salt, 20);
-    sha1(sha, buff, (size-16) * 8);
+    sha1(sha, buff, (size-16));
     memcpy(&buff[size-36], tmp, 20);
 
     if (memcmp(sha, &buff[size-24], 20) != 0)
@@ -236,7 +236,7 @@ void encrypt_data(u8* buff, u32 size, const char* salt, const uint8_t* dec_table
     // Hash the unencrypted data with the salt and append it to the data
     memcpy(tmp, &buff[size-36], 20);
     memcpy(&buff[size-36], salt, 20);
-    sha1(sha, buff, (size-16) * 8);
+    sha1(sha, buff, (size-16));
     memcpy(&buff[size-36], tmp, 20);
     memcpy(&buff[size-24], sha, 20);
 
@@ -290,7 +290,7 @@ void decrypt_quest(uint8_t* data, int len, const uint16_t* k_def, const uint16_t
     uint8_t *tmp = malloc(len - 0x10);
     memcpy(tmp, data + 0x20, len - 0x20);
     memcpy(tmp + len - 0x20, salt, 0x10);
-    sha1(tmp, tmp, (len-0x10) * 8);
+    sha1(tmp, tmp, (len-0x10));
 
     printf("[*] Stored SHA1: " SHA1_FMT(&data[12], "\n"));
     // Get the hash from the start of the data
@@ -320,7 +320,7 @@ void encrypt_quest(uint8_t* data, int len, const uint16_t* k_def, const uint16_t
     uint8_t *tmp = malloc(len - 0x10);
     memcpy(tmp, data + 0x20, len - 0x20);
     memcpy(tmp + len - 0x20, salt, 0x10);
-    sha1(data+12, tmp, (len-0x10) * 8);
+    sha1(data+12, tmp, (len-0x10));
     free(tmp);
 
     printf("[*] Updated SHA1: " SHA1_FMT(&data[12], "\n"));

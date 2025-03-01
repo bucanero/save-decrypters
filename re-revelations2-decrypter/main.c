@@ -99,7 +99,7 @@ int main(int argc, char **argv)
 		memcpy(data + 0x08, &crc, sizeof(u32));
 		printf("[*] Updated DWADD: %08X\n", ES32(crc));
 
-		sha1(data + 0x127590, data + 0x10, (len - 0x30) * 8);
+		sha1(data + 0x127590, data + 0x10, (len - 0x30));
 		printf("[*] Updated SHA1 : " SHA1_FMT(data + 0x127590, "\n"));
 
 		encrypt_data((data + 0x10), len - 0x10);

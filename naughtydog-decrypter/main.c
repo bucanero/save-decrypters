@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 		memcpy(data + 0x588, &crc, sizeof(u32));
 		printf("[*] Updated CRC32    : %08X\n", ES32(crc));
 
-		hmac_sha1(data + dsize - 0xC, SHA1_HMAC_KEY, 8 * strlen(SHA1_HMAC_KEY), data + 8, (dsize - 0x14)*8);
+		hmac_sha1(data + dsize - 0xC, SHA1_HMAC_KEY, strlen(SHA1_HMAC_KEY), data + 8, (dsize - 0x14));
 		printf("[*] Updated SHA1 HMAC: " SHA1_FMT(data + dsize - 0xC, "\n"));
 
 		encrypt_data(data+8, dsize);

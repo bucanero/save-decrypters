@@ -14,7 +14,7 @@ u64 sha1_xor64(const u8* data, int size)
 {
 	u64 sha[3] = {0, 0, 0};
 
-	sha1(sha, data, size * 8);
+	sha1(sha, data, size);
 	
 	return (sha[0] ^ sha[1] ^ sha[2]);
 }
