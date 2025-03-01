@@ -89,8 +89,8 @@ void hmac_sha1_final(void *dest, hmac_sha1_ctx_t *s){
 #endif
 
 /*
- * keylength in bits!
- * message length in bits!
+ * keylength in bytes
+ * message length in bytes
  */
 void hmac_sha1(void *dest, const void *key, uint16_t keylength_b, const void *msg, uint32_t msglength_b){ /* a one-shot*/
 	sha1_ctx_t s;
@@ -98,6 +98,8 @@ void hmac_sha1(void *dest, const void *key, uint16_t keylength_b, const void *ms
 	uint8_t buffer[SHA1_BLOCK_BYTES];
 	
 	memset(buffer, 0, SHA1_BLOCK_BYTES);
+	keylength_b <<= 3; /* convert to bits */
+	msglength_b <<= 3; /* convert to bits */
 	
 	/* if key is larger than a block we have to hash it*/
 	if (keylength_b > SHA1_BLOCK_BITS){

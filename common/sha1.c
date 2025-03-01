@@ -195,6 +195,7 @@ void sha1_ctx2hash (void *dest, sha1_ctx_t *state){
 void sha1 (void *dest, const void *msg, uint32_t length){
 	sha1_ctx_t s;
 	sha1_init(&s);
+	length <<= 3; /* convert to bits */
 	while(length & (~0x0001ff)){ /* length>=512 */
 		sha1_nextBlock(&s, msg);
 		msg = (uint8_t*)msg + SHA1_BLOCK_BITS/8; /* increment pointer to next block */

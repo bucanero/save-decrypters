@@ -20,6 +20,7 @@ void sha_Compute(u8* hash_out, const u8* msg, u32 length, const char* key)
 	sha1_ctx_t s;
 
 	sha1_init(&s);
+	length <<= 3; /* convert to bits */
 	while(length & (~0x0001ff)) // length>=512
 	{
 		sha1_nextBlock(&s, msg);
@@ -48,12 +49,12 @@ void toz_Compute(u8* hash, const u8* data, u32 len)
 		"SRA", "ROS", "MIC", "LAI", "EDN", "DEZ", "ZAB", "ALI"
 	};
 
-	sha_Compute(tmp, data, len * 8, "TO12");
+	sha_Compute(tmp, data, len, "TO12");
 
 	for (int i = 0; i < 100; i++)
 	{
 		memcpy(tmp + 20, array[i % 8], 3);
-		sha1(tmp, tmp, sizeof(tmp) * 8);
+		sha1(tmp, tmp, sizeof(tmp));
 	}
 	memcpy(hash, tmp, 20);
 
