@@ -76,9 +76,6 @@ uint8_t* Mp3_HmacSha(const uint8_t* pbKey, int cbKey, const uint8_t* pbInp, int 
 			do
 			{
 				hmac_sha1(digest, sKey, cbKey, digest, 0x14);
-//				sha = new HMACSHA1(sKey);
-//				sha.TransformFinalBlock(digest, 0, 0x14);
-//				digest = sha.Hash;
 
 				int j = 0;
 				for (int x = 0; x < 4; x++)
@@ -115,7 +112,6 @@ uint8_t* Mp3_HmacSha(const uint8_t* pbKey, int cbKey, const uint8_t* pbInp, int 
 		int dlen = len < 0x14 ? len : 0x14;
 
 		idx++;
-//		Array.Copy(tmpHash, 0, hash, offset, dlen);
 		memcpy(hash + offset, tmpHash, dlen);
 		offset += dlen;
 		len -= dlen;
@@ -127,16 +123,6 @@ uint8_t* Mp3_HmacSha(const uint8_t* pbKey, int cbKey, const uint8_t* pbInp, int 
 
 uint8_t* Mp3_AesEcb(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt)
 {
-	/* Create our Rijndael class
-	Rijndael rj = Rijndael.Create();
-	rj.BlockSize = 128;
-	rj.KeySize = 256;
-	rj.Mode = CipherMode.ECB;
-	rj.Key = key;
-	rj.IV = new byte[16];
-	rj.Padding = PaddingMode.None;
-
-	var transform = !encrypt ? rj.CreateDecryptor() : rj.CreateEncryptor();*/
 	struct AES_ctx ctx;
 	AES_init_ctx(&ctx, key);
 
@@ -144,7 +130,6 @@ uint8_t* Mp3_AesEcb(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt)
 
 	if (dataLen > 0) {
 		for (int i = 0; i < 16; i++) {
-//			transform.TransformBlock(pbInp, 0, dataLen, pbInp, 0);
 			if (encrypt)
 			{
 				for (int j = 0; j < dataLen; j+= AES_BLOCKLEN)
@@ -163,16 +148,6 @@ uint8_t* Mp3_AesEcb(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt)
 
 uint8_t* Mp3_AesEcb2(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt)
 {
-	/* Create our Rijndael class
-	Rijndael rj = Rijndael.Create();
-	rj.BlockSize = 128;
-	rj.KeySize = 256;
-	rj.Mode = CipherMode.ECB;
-	rj.Key = key;
-	rj.IV = new byte[16];
-	rj.Padding = PaddingMode.None;
-
-	var transform = !encrypt ? rj.CreateDecryptor() : rj.CreateEncryptor();*/
 	struct AES_ctx ctx;
 	AES_init_ctx(&ctx, key);
 
@@ -183,7 +158,6 @@ uint8_t* Mp3_AesEcb2(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt
 	{
 		for (int i = 0; i < 16; i++)
 		{
-//			transform.TransformBlock(pbInp, cbInp - 0x10, 0x10, pbInp, cbInp - 0x10);
 			if (encrypt)
 			{
 				AES_ECB_encrypt(&ctx, pbInp + cbInp - 0x10);
@@ -195,7 +169,6 @@ uint8_t* Mp3_AesEcb2(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt
 		}
 		for (int i = 0; i < 16; i++)
 		{
-//			transform.TransformBlock(pbInp, 0, dataLen, pbInp, 0);
 			if (encrypt)
 			{
 				for (int j = 0; j < dataLen; j+= AES_BLOCKLEN)
@@ -213,16 +186,6 @@ uint8_t* Mp3_AesEcb2(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt
 
 uint8_t* Mp3_AesEcb3(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt)
 {
-	/* Create our Rijndael class
-	Rijndael rj = Rijndael.Create();
-	rj.BlockSize = 128;
-	rj.KeySize = 256;
-	rj.Mode = CipherMode.ECB;
-	rj.Key = key;
-	rj.IV = new byte[16];
-	rj.Padding = PaddingMode.None;
-
-	var transform = !encrypt ? rj.CreateDecryptor() : rj.CreateEncryptor();*/
 	struct AES_ctx ctx;
 	AES_init_ctx(&ctx, key);
 
@@ -233,7 +196,6 @@ uint8_t* Mp3_AesEcb3(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt
 	{
 		for (int i = 0; i < 16; i++)
 		{
-//			transform.TransformBlock(pbInp, 0, dataLen, pbInp, 0);
 			if (encrypt)
 			{
 				for (int j = 0; j < dataLen; j+= AES_BLOCKLEN)
@@ -247,7 +209,6 @@ uint8_t* Mp3_AesEcb3(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt
 		}
 		for (int i = 0; i < 16; i++)
 		{
-//			transform.TransformBlock(pbInp, cbInp - 0x10, 0x10, pbInp, cbInp - 0x10);
 			if (encrypt)
 			{
 				AES_ECB_encrypt(&ctx, pbInp + cbInp - 0x10);
@@ -290,7 +251,7 @@ void decrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 
 	uint8_t* hmacDigest2 = Mp3_AesEcb(EncAesKey, hmacDigest, 0x20, true);
 
-	uint8_t* saveData2 = Mp3_AesEcb2(hmacDigest2, saveData, saveLen, false); //sizeof(saveData)
+	Mp3_AesEcb2(hmacDigest2, saveData, saveLen, false); //sizeof(saveData)
 
 	// verifying the data
 	uint8_t sha1key[20];
@@ -301,7 +262,7 @@ void decrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 	sha1(sha1key, tmpbuf, sizeof(tmpbuf));
 
 	uint8_t hmacDigest3[0x20];
-	hmac_sha1(hmacDigest3, sha1key, sizeof(sha1key), saveData2, saveLen);
+	hmac_sha1(hmacDigest3, sha1key, sizeof(sha1key), saveData, saveLen);
 	memcpy(hmacDigest3 + 0x14, digestKey2 + 0x20, 4);
 	memcpy(hmacDigest3 + 0x18, digestKey2 + 0x24, 8);
 
@@ -314,8 +275,8 @@ void decrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 	uint8_t pbData2[0x20];
 	memcpy(pbData2, digestKey2, 0x20);
 
-	uint8_t* XpbData2 = Mp3_AesEcb(EncAesKey, pbData2, 0x20, false);
-	XpbData2 = Mp3_AesEcb(aesKey, pbData2, 0x20, false);
+	Mp3_AesEcb(EncAesKey, pbData2, 0x20, false);
+	Mp3_AesEcb(aesKey2, pbData2, 0x20, false);
 
 	if (memcmp(pbData2, hmacDigest3, 0x20) != 0)
 	{
@@ -326,7 +287,7 @@ void decrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 	free(hmacDigest);
 	free(aesKey2);
 
-	memcpy(saveBuffer + 0x2C, saveData2, saveLen);
+	memcpy(saveBuffer + 0x2C, saveData, saveLen);
 
     printf("[*] Decrypted File Successfully!\n\n");
 	return;
