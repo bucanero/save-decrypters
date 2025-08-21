@@ -8,7 +8,7 @@ on:
 
 jobs:
   msys:
-    runs-on: windows-2019
+    runs-on: windows-2022
     strategy:
       matrix:
         mingw: ["MINGW32", "MINGW64"]
