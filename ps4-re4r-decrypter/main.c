@@ -13,50 +13,50 @@
 
 void swap_u32_data(u32 *data, int count)
 {
-	for (int i=0; i < count; i++)
+	for (int i = 0; i < count; i++)
+	{
 		data[i] = ES32(data[i]);
+	}
 }
 
-void xor_down(void *bf_data, uint32_t size)
+void xor_down(void *bf_data, u32 size)
 {
-	uint32_t buf[2];
-	uint32_t *data = bf_data;
+	u32 buf[2];
+	u32 *data = bf_data;
     size /= 4;
-	u32 l = 0, r = 0;
+	u32 l, r;
 	u32 l_ = 0, r_ = 0;
-	for (int i = 0; i < size; i+= 2)
+	for (int i = 0; i < size; i += 2)
 	{
 		buf[0] = data[i];
 		buf[1] = data[i+1];
         l = buf[0];
 		r = buf[1];
 
-		crypt_64bit_down((uint32_t*) key_buffer, buf);
-		data[i] = buf[0];
-		data[i] ^= l_;
-		data[i+1] = buf[1];
-		data[i+1] ^= r_;
+		crypt_64bit_down((u32 *)key_buffer, buf);
+		data[i] = buf[0] ^ l_;
+		data[i+1] = buf[1] ^ r_;
 
         l_ = l;
 		r_ = r;
 	}
 }
 
-void xor_up(void *bf_data, uint32_t size)
+void xor_up(void *bf_data, u32 size)
 {
-	uint32_t buf[2];
-	uint32_t *data = bf_data;
+	u32 buf[2];
+	u32 *data = bf_data;
 	size /= 4;
-	u32 l = 0, r = 0;
+	u32 l, r;
 	u32 l_ = 0, r_ = 0;
-	for (int i = 0; i < size; i+= 2)
+	for (int i = 0; i < size; i += 2)
 	{
 		buf[0] = data[i] ^ l_;
 		buf[1] = data[i+1] ^ r_;
         l = buf[0];
 		r = buf[1];
 
-		crypt_64bit_up((uint32_t*) key_buffer, buf);
+		crypt_64bit_up((u32 *)key_buffer, buf);
 		data[i] = buf[0];
 		data[i+1] = buf[1];
 
@@ -69,13 +69,16 @@ void decrypt_data(u8 *data, u32 size)
 {
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-    // header
-    swap_u32_data((u32 *)data, 0x10/4);
-    blowfish_decrypt_buffer((void *)data, 0x10);
-    swap_u32_data((u32 *)data, 0x10/4);
+	// header
+	u8 header[0x10] = {0};
+	memcpy(header, data, sizeof(header));
+    swap_u32_data((u32 *)header, sizeof(header)/4);
+	blowfish_decrypt_buffer(header, sizeof(header));
+    swap_u32_data((u32 *)header, sizeof(header)/4);
 
     // data
-	xor_down(data + 0x10, size - 0x10);
+	xor_down(data, size);
+	memcpy(data, header, sizeof(header));
 
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
@@ -84,14 +87,15 @@ void decrypt_data(u8 *data, u32 size)
 void encrypt_data(u8 *data, u32 size)
 {
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
-    
-    // header
-	swap_u32_data((u32 *)data, 0x10/4);
-	blowfish_encrypt_buffer((void *)data, 0x10);
-	swap_u32_data((u32 *)data, 0x10/4);
 
-    // data
-    xor_up(data + 0x10, size - 0x10);
+	// header
+	swap_u32_data((u32 *)data, 0x10/4);
+	blowfish_encrypt_buffer(data, 0x10);
+    swap_u32_data((u32 *)data, 0x10/4);
+	xor_down(data, 0x10);
+
+	// data
+    xor_up(data, size);
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
