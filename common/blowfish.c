@@ -110,3 +110,51 @@ void blowfish_encrypt_buffer(void* bf_data, uint32_t size)
 		data[i+1] = ES32(buf[1]);
 	}
 }
+
+void blowfish_decrypt_buffer_cbc(void *bf_data, uint32_t size, uint64_t iv)
+{
+	uint32_t buf[2];
+	uint32_t *data = bf_data;
+    size /= 4;
+	uint32_t l, r;
+	uint32_t l_ = (uint32_t)(iv >> 32);
+	uint32_t r_ = (uint32_t)(iv & 0xFFFFFFFF);
+	for (int i = 0; i < size; i += 2)
+	{
+		buf[0] = ES32(data[i]);
+		buf[1] = ES32(data[i+1]);
+        l = buf[0];
+		r = buf[1];
+
+		crypt_64bit_down((uint32_t *)key_buffer, buf);
+		data[i] = ES32(buf[0] ^ l_);
+		data[i+1] = ES32(buf[1] ^ r_);
+
+        l_ = l;
+		r_ = r;
+	}
+}
+
+void blowfish_encrypt_buffer_cbc(void *bf_data, uint32_t size, uint64_t iv)
+{
+	uint32_t buf[2];
+	uint32_t *data = bf_data;
+	size /= 4;
+	uint32_t l, r;
+	uint32_t l_ = (uint32_t)(iv >> 32);
+	uint32_t r_ = (uint32_t)(iv & 0xFFFFFFFF);
+	for (int i = 0; i < size; i += 2)
+	{
+		buf[0] = ES32(data[i] ^ l_);
+		buf[1] = ES32(data[i+1] ^ r_);
+        l = buf[0];
+		r = buf[1];
+
+		crypt_64bit_up((uint32_t *)key_buffer, buf);
+		data[i] = ES32(buf[0]);
+		data[i+1] = ES32(buf[1]);
+
+        l_ = buf[0];
+		r_ = buf[1];
+	}
+}
