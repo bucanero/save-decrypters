@@ -1,3 +1,5 @@
+#include <inttypes.h>
+
 #define KEYSIZE         0x1048
 
 const unsigned char KEY_DATA[KEYSIZE] = {
@@ -352,5 +354,7 @@ const unsigned char KEY_DATA[KEYSIZE] = {
 };
 
 void blowfish_init_key(const char* key);
-void blowfish_decrypt_buffer(void* data, unsigned int size);
-void blowfish_encrypt_buffer(void* data, unsigned int size);
+void blowfish_decrypt_buffer(void* data, uint32_t size);
+void blowfish_encrypt_buffer(void* data, uint32_t size);
+void blowfish_decrypt_buffer_cbc(void* data, uint32_t size, uint64_t iv);
+void blowfish_encrypt_buffer_cbc(void* data, uint32_t size, uint64_t iv);

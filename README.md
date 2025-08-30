@@ -68,6 +68,8 @@ Tools to decrypt specific PS4 save-games:
   - Red Dead Redemption 2 (PS4)
 - [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter)
   - Resident Evil Revelations 2 (PS4)
+- [ps4-re4r-decrypter](./ps4-re4r-decrypter)
+  - Resident Evil 4 Remake (PS4)
 - [smt5-decrypter](./smt5-decrypter)
   - Shin Megami Tensei V (PS4)
 - [ps4-terraria-decrypter](./ps4-terraria-decrypter)
