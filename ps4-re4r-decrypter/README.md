@@ -12,4 +12,4 @@ OPTIONS        Explanation:
 
 ### Credits
 
-This tool was made possible through the efforts of [Alfizari](https://github.com/alfizari) and [hzh](https://github.com/hzhreal/)
+This tool was made possible through the efforts of [Alfizari](https://github.com/alfizari), [Brotherguns5624](https://github.com/Brotherguns5624), and [hzh](https://github.com/hzhreal/)

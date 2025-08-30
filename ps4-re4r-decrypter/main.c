@@ -8,61 +8,16 @@
 
 #include "../common/iofile.c"
 #include "../common/blowfish.c"
+#include "../common/mmh3.c"
 
 #define SECRET_KEY "wa9Ui_tFKa_6E_D5gVChjM69xMKDX8QxEykYKhzb4cRNLknpCZUra"
 
-void swap_u32_data(u32 *data, int count)
+void swap_u32_data(u8 *data, u32 size)
 {
+	int count = size/sizeof(u32);
+	u32 *d = (u32 *)data;
 	for (int i = 0; i < count; i++)
-	{
-		data[i] = ES32(data[i]);
-	}
-}
-
-void xor_down(void *bf_data, u32 size)
-{
-	u32 buf[2];
-	u32 *data = bf_data;
-    size /= 4;
-	u32 l, r;
-	u32 l_ = 0, r_ = 0;
-	for (int i = 0; i < size; i += 2)
-	{
-		buf[0] = data[i];
-		buf[1] = data[i+1];
-        l = buf[0];
-		r = buf[1];
-
-		crypt_64bit_down((u32 *)key_buffer, buf);
-		data[i] = buf[0] ^ l_;
-		data[i+1] = buf[1] ^ r_;
-
-        l_ = l;
-		r_ = r;
-	}
-}
-
-void xor_up(void *bf_data, u32 size)
-{
-	u32 buf[2];
-	u32 *data = bf_data;
-	size /= 4;
-	u32 l, r;
-	u32 l_ = 0, r_ = 0;
-	for (int i = 0; i < size; i += 2)
-	{
-		buf[0] = data[i] ^ l_;
-		buf[1] = data[i+1] ^ r_;
-        l = buf[0];
-		r = buf[1];
-
-		crypt_64bit_up((u32 *)key_buffer, buf);
-		data[i] = buf[0];
-		data[i+1] = buf[1];
-
-        l_ = buf[0];
-		r_ = buf[1];
-	}
+		d[i] = ES32(d[i]);
 }
 
 void decrypt_data(u8 *data, u32 size)
@@ -72,12 +27,14 @@ void decrypt_data(u8 *data, u32 size)
 	// header
 	u8 header[0x10] = {0};
 	memcpy(header, data, sizeof(header));
-    swap_u32_data((u32 *)header, sizeof(header)/4);
+    swap_u32_data(header, sizeof(header));
 	blowfish_decrypt_buffer(header, sizeof(header));
-    swap_u32_data((u32 *)header, sizeof(header)/4);
+    swap_u32_data(header, sizeof(header));
 
     // data
-	xor_down(data, size);
+	swap_u32_data(data, size);
+	blowfish_decrypt_buffer_cbc(data, size, 0);
+	swap_u32_data(data, size);
 	memcpy(data, header, sizeof(header));
 
 	printf("[*] Decrypted File Successfully!\n\n");
@@ -89,13 +46,15 @@ void encrypt_data(u8 *data, u32 size)
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
 	// header
-	swap_u32_data((u32 *)data, 0x10/4);
+	swap_u32_data(data, 0x10);
 	blowfish_encrypt_buffer(data, 0x10);
-    swap_u32_data((u32 *)data, 0x10/4);
-	xor_down(data, 0x10);
+	blowfish_decrypt_buffer_cbc(data, 0x10, 0);
+	swap_u32_data(data, 0x10);
 
 	// data
-    xor_up(data, size);
+	swap_u32_data(data, size);
+    blowfish_encrypt_buffer_cbc(data, size, 0);
+	swap_u32_data(data, size);
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
@@ -114,6 +73,7 @@ int main(int argc, char **argv)
 {
 	size_t len;
 	u8 *data;
+	u32 csum;
 	char *opt, *bak;
 
 	printf("\nPS4 re4r-decrypter\n\n");
@@ -147,6 +107,9 @@ int main(int argc, char **argv)
 	else
 	{
 		encrypt_data(data + 0x10, len - 0x10);
+		csum = murmur3_32(data, len - sizeof(u32), 0xFFFFFFFF);
+    	printf("[*] Updated Checksum: %" PRIX32 "\n", csum);
+    	memcpy(data + len - sizeof(u32), &csum, sizeof(u32));
 	}
 
 	write_buffer(argv[2], data, len);
