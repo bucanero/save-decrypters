@@ -144,14 +144,14 @@ void blowfish_encrypt_buffer_cbc(void *bf_data, uint32_t size, uint64_t iv)
 	uint32_t r_ = (uint32_t)(iv & 0xFFFFFFFF);
 	for (int i = 0; i < size; i += 2)
 	{
-		buf[0] = ES32(data[i] ^ l_);
-		buf[1] = ES32(data[i+1] ^ r_);
+		buf[0] = ES32(data[i]) ^ l_;
+		buf[1] = ES32(data[i+1]) ^ r_;
 
 		crypt_64bit_up((uint32_t *)key_buffer, buf);
 		data[i] = ES32(buf[0]);
 		data[i+1] = ES32(buf[1]);
 
-        l_ = ES32(buf[0]);
-		r_ = ES32(buf[1]);
+        l_ = ES32(data[i]);
+		r_ = ES32(data[i+1]);
 	}
 }
