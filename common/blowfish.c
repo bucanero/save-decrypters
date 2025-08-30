@@ -53,15 +53,15 @@ void apply_keycode(uint32_t* keybuf, const uint32_t* keydata, const char* keycod
 
 	memcpy(keybuf + 0x12, keydata, 0x1000);
 
-  	for (i = 0; i < 0x12; i++)
-  	{
-  		//Little-Endian
-	    tmp[3]=keycode[(i*4   ) % len];
-	    tmp[2]=keycode[(i*4 +1) % len];
-	    tmp[1]=keycode[(i*4 +2) % len];
-	    tmp[0]=keycode[(i*4 +3) % len];
+	for (i = 0; i < 0x12; i++)
+	{
+		//Little-Endian
+		tmp[3]=keycode[(i*4   ) % len];
+		tmp[2]=keycode[(i*4 +1) % len];
+		tmp[1]=keycode[(i*4 +2) % len];
+		tmp[0]=keycode[(i*4 +3) % len];
 
-	    keybuf[i] = keydata[0x400 + i] ^ *(uint32_t*)tmp;
+		keybuf[i] = keydata[0x400 + i] ^ *(uint32_t*)tmp;
 	}
 
 	for (i = 0; i < 0x412; i += 2)
@@ -81,7 +81,7 @@ void blowfish_decrypt_buffer(void* bf_data, uint32_t size)
 {
 	uint32_t buf[2];
 	uint32_t *data = bf_data;
-    size /= 4;
+	size /= 4;
 
 	for (int i = 0; i < size; i+= 2)
 	{
@@ -115,22 +115,23 @@ void blowfish_decrypt_buffer_cbc(void *bf_data, uint32_t size, uint64_t iv)
 {
 	uint32_t buf[2];
 	uint32_t *data = bf_data;
-    size /= 4;
+	size /= 4;
 	uint32_t l, r;
 	uint32_t l_ = (uint32_t)(iv >> 32);
 	uint32_t r_ = (uint32_t)(iv & 0xFFFFFFFF);
+
 	for (int i = 0; i < size; i += 2)
 	{
 		buf[0] = ES32(data[i]);
 		buf[1] = ES32(data[i+1]);
-        l = buf[0];
+		l = buf[0];
 		r = buf[1];
 
 		crypt_64bit_down((uint32_t *)key_buffer, buf);
 		data[i] = ES32(buf[0] ^ l_);
 		data[i+1] = ES32(buf[1] ^ r_);
 
-        l_ = l;
+		l_ = l;
 		r_ = r;
 	}
 }
@@ -142,6 +143,7 @@ void blowfish_encrypt_buffer_cbc(void *bf_data, uint32_t size, uint64_t iv)
 	size /= 4;
 	uint32_t l_ = (uint32_t)(iv >> 32);
 	uint32_t r_ = (uint32_t)(iv & 0xFFFFFFFF);
+
 	for (int i = 0; i < size; i += 2)
 	{
 		buf[0] = ES32(data[i]) ^ l_;
@@ -151,7 +153,7 @@ void blowfish_encrypt_buffer_cbc(void *bf_data, uint32_t size, uint64_t iv)
 		data[i] = ES32(buf[0]);
 		data[i+1] = ES32(buf[1]);
 
-        l_ = ES32(data[i]);
+		l_ = ES32(data[i]);
 		r_ = ES32(data[i+1]);
 	}
 }
