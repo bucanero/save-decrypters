@@ -31,6 +31,7 @@ all:
 	$(MAKE) -C nfs-undercover-decrypter
 	$(MAKE) -C patapon3-decrypter
 	$(MAKE) -C prototype-checksum-fixer
+	$(MAKE) -C ps2-apa-header-checksum
 	$(MAKE) -C ps4-borderlands3-decrypter
 	$(MAKE) -C ps4-nms-unpacker
 	$(MAKE) -C ps4-rdr2-decrypter
@@ -77,6 +78,7 @@ clean:
 	$(MAKE) clean -C nfs-undercover-decrypter
 	$(MAKE) clean -C patapon3-decrypter
 	$(MAKE) clean -C prototype-checksum-fixer
+	$(MAKE) clean -C ps2-apa-header-checksum
 	$(MAKE) clean -C ps4-borderlands3-decrypter
 	$(MAKE) clean -C ps4-nms-unpacker
 	$(MAKE) clean -C ps4-rdr2-decrypter
