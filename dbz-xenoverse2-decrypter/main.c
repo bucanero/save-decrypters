@@ -28,6 +28,53 @@ void md5_hash(const u8* in, u32 size, u8* out)
 	MD5Final (out, &context);
 }
 
+void add_checksums(u8* header, const u8* data, size_t size)
+{
+    int i;
+
+    // For checksum 7
+    header[0x15] = 0;
+    for (i = 0; i < 14; i++)
+        header[0x15] += header[0x6 + i];
+    printf("[i] Checksum #7: %02X\n", header[0x15]);
+
+    // For checksum 6
+    header[0x16] = 0;
+    for (i = 0; i < 8; i++)
+        header[0x16] += header[0x1C + (i * 4)];
+    printf("[i] Checksum #6: %02X\n", header[0x16]);
+
+    // For checksum 5
+    header[0x17] = 0;
+    for (i = 0; i < 8; i++)
+        header[0x17] += header[0x4C + (i * 4)];
+    printf("[i] Checksum #5: %02X\n", header[0x17]);
+
+    /// For checksum 4
+    header[0x18] = 0;
+    for (i = 0; i < 4; i++)
+        header[0x18] += header[0x3C + (i * 4)];
+    printf("[i] Checksum #4: %02X\n", header[0x18]);
+
+    // For checksum 3
+    header[0x19] = 0;
+    for (i = 0; i < 4; i++)
+        header[0x19] += header[0x6C + (i * 4)];
+    printf("[i] Checksum #3: %02X\n", header[0x19]);
+
+    // For checksum 2
+    header[0x1B] = 0;
+    for (i = 5; i < size / 0x20; i++)
+        header[0x1B] += data[i * 0x20];
+    printf("[i] Checksum #2: %02X\n", header[0x1B]);
+
+    // For checksum 1
+    header[0x14] = header[0x5];
+    for (i = 0; i < 7; i++)
+        header[0x14] += header[0x15 + i];
+    printf("[i] Checksum #1: %02X\n", header[0x14]);
+}
+
 void decrypt_data(u8* data, size_t size)
 {
 	int key_off;
@@ -65,10 +112,19 @@ void encrypt_data(u8* data, size_t size)
 
 	printf("[*] Total Encrypted Size: %zu bytes\n", size);
 
+	// For checksum 8
+	header[0x1A] = 0;
+	for (int i = 5; i < size / 0x20; i++)
+		header[0x1A] += data[i * 0x20];
+	printf("[i] Checksum #8: %02X\n", header[0x1A]);
+
 	key_off = (header[5] & 0x04) ? 0x4C : 0x1C;
 	memcpy(iv, &header[key_off + 0x20], 0x10);
 	AES_init_ctx_iv(&ctx, &header[key_off], iv);
 	AES_CTR_xcrypt_buffer(&ctx, data + 0xA0, size - 0xA0);
+
+	// Checksums 1-7 calculated over encrypted data
+	add_checksums(header, data, size);
 
 	AES_init_ctx_iv(&ctx, (u8*) SAVE_HEADER_KEY, (u8*) SAVE_HEADER_IV);
 	AES_CTR_xcrypt_buffer(&ctx, header, SAVE_HEADER_SIZE);
