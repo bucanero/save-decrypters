@@ -35,7 +35,7 @@ int main(int argc, char **argv)
 	uint32_t csum;
 	char *opt, *bak;
 
-	printf("\nPS2 APA Header checksum 0.1.0 - (c) 2024 by Bucanero\n\n");
+	printf("\nPS2 APA Header checksum 0.1.1 - (c) 2024 by Bucanero\n\n");
 
 	if (--argc < 1)
 	{
@@ -50,11 +50,13 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	printf("[*] Header Size     : %d bytes\n", 0x400);
-	printf("[*] Stored Checksum : %08X\n", ES32(*(uint32_t*)data));
+	printf("[*] Header Size        : %d bytes\n", 0x400);
+	printf("[*] Stored Checksum LE : %08X\n", (*(uint32_t*)data));
+	printf("[*] Stored Checksum BE : %08X\n", ES32(*(uint32_t*)data));
 
 	csum = ComputeHash((uint32_t*)(data + 4), 1020);
-	printf("[*] New Checksum    : %08X\n\n", ES32(csum));
+	printf("[*] New Checksum LE    : %08X\n", (csum));
+	printf("[*] New Checksum BE    : %08X\n\n", ES32(csum));
 
 	return 0;
 }
