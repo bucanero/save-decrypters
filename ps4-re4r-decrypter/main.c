@@ -75,6 +75,7 @@ int main(int argc, char **argv)
 	u8 *data;
 	u32 csum;
 	char *opt, *bak;
+	int n;
 
 	printf("\nPS4 re4r-decrypter\n\n");
 
@@ -102,11 +103,16 @@ int main(int argc, char **argv)
 	asprintf(&bak, "%s.bak", argv[2]);
 	write_buffer(bak, data, len);
 
+	if (len - 0x20 > 0 && (len - 0x20) % 8 == 0)
+		n = 8;
+	else
+		n = 0;
+
 	if (*opt == 'd')
-		decrypt_data(data + 0x10, len - 0x10);
+		decrypt_data(data + 0x10, len - 0x10 - n);
 	else
 	{
-		encrypt_data(data + 0x10, len - 0x10);
+		encrypt_data(data + 0x10, len - 0x10 - n);
 		csum = murmur3_32(data, len - sizeof(u32), 0xFFFFFFFF);
     	printf("[*] Updated Checksum: %" PRIX32 "\n", csum);
     	memcpy(data + len - sizeof(u32), &csum, sizeof(u32));
