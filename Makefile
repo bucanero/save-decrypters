@@ -6,7 +6,9 @@ all:
 	$(MAKE) -C castlevania-checksum-fixer
 	$(MAKE) -C cod-blackops-decrypter
 	$(MAKE) -C cod-checksum-fixer
+	$(MAKE) -C darksouls-remaster-decrypter
 	$(MAKE) -C dbz-checksum-fixer
+	$(MAKE) -C dbz-xenoverse2-decrypter
 	$(MAKE) -C deadrising-checksum-fixer
 	$(MAKE) -C deadspace-checksum-fixer
 	$(MAKE) -C diablo3-decrypter
@@ -53,7 +55,9 @@ clean:
 	$(MAKE) clean -C castlevania-checksum-fixer
 	$(MAKE) clean -C cod-blackops-decrypter
 	$(MAKE) clean -C cod-checksum-fixer
+	$(MAKE) clean -C darksouls-remaster-decrypter
 	$(MAKE) clean -C dbz-checksum-fixer
+	$(MAKE) clean -C dbz-xenoverse2-decrypter
 	$(MAKE) clean -C deadrising-checksum-fixer
 	$(MAKE) clean -C deadspace-checksum-fixer
 	$(MAKE) clean -C diablo3-decrypter
