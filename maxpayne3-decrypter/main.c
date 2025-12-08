@@ -2,7 +2,7 @@
 *
 *	Max Payne 3 PS3 Save Decrypter - (c) 2025 by Bucanero
 *
-* This tool is based on crypto notes by Vulnavia, and PS3 keys by Red-EyeX32
+* This tool is based on crypto notes by Vulnavia, and PS3 keys and code by Red-EyeX32
 *
 */
 
@@ -223,7 +223,7 @@ void encrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 	Mp3_AesEcb(PKDF2Key1, (uint8_t*)&headerData, sizeof(headerData), MODE_ENCRYPT);
 	memcpy(saveBuffer, &headerData, sizeof(headerData));
 
-	printf("[*] Encrypted File Successfully!\n\n");
+	printf("[*] Encrypted File Successfully!\n");
 	return;
 }
 
@@ -327,10 +327,9 @@ int main(int argc, char **argv)
 
 		storedSum = addSum(data + 0x44, saveBufferLen);
 		*(u32*)(data+0x10) = ES32(storedSum);
-		printf("[*] New Checksum: %08X\n", storedSum);
+		printf("[*] New Checksum: %08X\n\n", storedSum);
 	}
 
-//	write_buffer("out.bin", data, len);
 	write_buffer(argv[2], data, len);
 
 	free(bak);
