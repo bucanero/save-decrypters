@@ -1,0 +1,44 @@
+Cryptoanalysis by Vulnavia
+x86-Codeanalysis by Vulnavia
+PPC-Codeanalysis by Philymaster and Vulnavia
+//------------------------------------------------------------------------------
+Endianess = Mainly Little_Endian (AES is Endianless), PC-Header different
+also great care must be applied for the Salts, they need to be Endianswapped
+for the PC-Version but not for Xboxversions.
+//------------------------------------------------------------------------------
+AES-Mode = ECB, Blocksize 16, nonpadded
+StaticAES = '1AB56FED7EC3FF01227B691533975DCE47D769653FF775426A96CD6D5307565D'
+Salt1 = '0FC919E89A17C45FE716D46C3A159C75'
+Salt2 = 'E109A542F60A133B81AC0255CC39401B'
+Salt3 = '1508E96F47B847D13A658C71' + Integer_7 (see Fileformat.txt)
+SpecialKey(PC) = 'C436F327FAEA192AB7A5D8ED51315730E9086624A74A8DA67BEA08B5FAE20189'
+//^^^The SpecialKey has been extracted while tracing trough the DLL Calls and
+//probably is only static for the RLD Version
+InitKey1 = 'XEN43156A' (XBOX)
+InitKey2 = 'PCgh64rwA' (PC)
+//------------------------------------------------------------------------------
+InitialKey1(Xbox)[50] = InitKey1 + Version1 + Version2 (padded with 0x00)
+InitialKey1(PC)[50] = InitKey2 + Version1 + Version2 + SpecialKey (padded with 0x00)
+InitialKey2[50] = Initialkey1 + Integer_7 + Long_1
+//------------------------------------------------------------------------------
+Decrypt:
+01. Double HMACSHA1: Key=InitialKey1, Data1=Secblock, Data2=Secblocksize(binary)
+02. PKDF2RFC2898: Password=HMACResult, Salt=Salt1, Iterations=2000, dkLength=32
+03. AES-Decrypt(16x): Buffer=0x18~0x43, Key=PKDF2Key1
+04. PKDF2RFC2898: Password=0x18~0x43, Salt=Salt2 Iterations=2000, dkLength=32
+05. AES-Encrypt(16x): Buffer=PKDF2Key2, Key=StaticAES
+//-- Step 6 is only needed if SecblockSize-((SecblockSize SHR 4) SHL 4)) is <> 0
+06. AES-Decrypt(16x): Buffer=SecblockSize-16, Key=(Encrypted PBKDF2 Key)
+07. AES-Decrypt(16x): Buffer=Secblock, Key=(Encrypted PBKDF2 Key)
+//-- Secblock is now fully decrypted! But there is still the last HMACSHA1
+08. Double SHA1: Data1=InitialKey1, Data2=SecBlockLength(binary)
+09. HMACSHA1: Key=DoubleSHA1, Data=Secblock
+10. PKDF2RFC2898: Password=HMACResult+Initialkey2, Salt=Salt3+Integer7 Interations=2000, dkLength=32
+11. AES-Decrypt(16x): Buffer=0x18~0x43, Key=StaticAES
+12. AES-Decrypt(16x): Buffer=0x18~0x43, Key=PKDF2Key3
+//-- The 0x18~0x43 is now fully decrypted too and reveals the HMACSHA1 to verify
+//------------------------------------------------------------------------------
+// From here everything is decrypted, but still compressed with an proprietary
+// LZW/LZRW1/LZSS Variation which i rebuilded as InMemory Version and is
+// too complicated to explain here
+//------------------------------------------------------------------------------

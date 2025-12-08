@@ -4966,7 +4966,7 @@ extern "C" {
 #else
 #include <sys/stat.h>
 
-#if defined(_MSC_VER) || defined(__MINGW64__) || defined(__MINGW32__)
+#if defined(_MSC_VER)
 
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -5065,8 +5065,7 @@ static int mz_mkdir(const char *pDirname) {
 #define MZ_FREOPEN mz_freopen
 #define MZ_DELETE_FILE remove
 #define MZ_MKDIR(d) mz_mkdir(d)
-
-#elif defined(__MINGW32__) || defined(__WATCOMC__)
+#elif defined(__MINGW32__) || defined(__MINGW64__)
 #ifndef MINIZ_NO_TIME
 #include <sys/utime.h>
 #endif
