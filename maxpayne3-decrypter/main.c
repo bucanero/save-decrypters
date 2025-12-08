@@ -88,17 +88,6 @@ void Mp3_AesEcb2(const uint8_t* key, uint8_t* pbInp, int cbInp, bool encrypt)
 	}
 }
 
-void hex_dump(const uint8_t* data, size_t len)
-{
-	for (size_t i = 0; i < len; i++)
-	{
-		printf("%02X ", data[i]);
-		if ((i + 1) % 16 == 0)
-			printf("\n");
-	}
-	printf("\n");
-}
-
 void decrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 {
 	uint8_t* saveData;
@@ -125,14 +114,12 @@ void decrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 
 	// derive key1
 	gc_pbkdf2_sha1(digestKey, sizeof(digestKey), pkdfSalt1, sizeof(pkdfSalt1), 2000, PKDF2Key1, sizeof(PKDF2Key1));
-//	hex_dump(PKDF2Key1, 0x20);
 
 	// decrypt header
 	Mp3_AesEcb(PKDF2Key1, (uint8_t*)&headerData, sizeof(headerData), MODE_DECRYPT);
 
 	// derive key2
 	gc_pbkdf2_sha1(&headerData, sizeof(headerData), pkdfSalt2, sizeof(pkdfSalt2), 2000, PKDF2Key2, sizeof(PKDF2Key2));
-//	hex_dump(PKDF2Key2, 0x20);
 
 	Mp3_AesEcb(StaticAESKey, PKDF2Key2, sizeof(PKDF2Key2), MODE_ENCRYPT);
 	// decrypt save data
@@ -158,7 +145,6 @@ void decrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 
 	// derive key3
 	gc_pbkdf2_sha1(hmacInitKey2, sizeof(hmacInitKey2), saltBuffer, sizeof(saltBuffer), 2000, PKDF2Key3, sizeof(PKDF2Key3));
-//	hex_dump(PKDF2Key3, 0x20);
 
 	// decrypt header blob_1 (hmac-sha1)
 	Mp3_AesEcb(StaticAESKey, headerData.blob_1, 0x20, MODE_DECRYPT);
@@ -209,14 +195,12 @@ void encrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 
 	// derive key3
 	gc_pbkdf2_sha1(hmacInitKey2, sizeof(hmacInitKey2), saltBuffer, sizeof(saltBuffer), 2000, PKDF2Key3, sizeof(PKDF2Key3));
-//	hex_dump(PKDF2Key3, 0x20);
-
+	// encrypt header blob_1 (hmac-sha1)
 	Mp3_AesEcb(PKDF2Key3, headerData.blob_1, 0x20, MODE_ENCRYPT);
 	Mp3_AesEcb(StaticAESKey, headerData.blob_1, 0x20, MODE_ENCRYPT);
 
 	// derive key2
 	gc_pbkdf2_sha1(&headerData, sizeof(headerData), pkdfSalt2, sizeof(pkdfSalt2), 2000, PKDF2Key2, sizeof(PKDF2Key2));
-//	hex_dump(PKDF2Key2, 0x20);
 
 	Mp3_AesEcb(StaticAESKey, PKDF2Key2, sizeof(PKDF2Key2), MODE_ENCRYPT);
 	// encrypt save data
@@ -234,7 +218,6 @@ void encrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 
 	// derive key1
 	gc_pbkdf2_sha1(digestKey, sizeof(digestKey), pkdfSalt1, sizeof(pkdfSalt1), 2000, PKDF2Key1, sizeof(PKDF2Key1));
-//	hex_dump(PKDF2Key1, 0x20);
 
 	// encrypt header
 	Mp3_AesEcb(PKDF2Key1, (uint8_t*)&headerData, sizeof(headerData), MODE_ENCRYPT);
