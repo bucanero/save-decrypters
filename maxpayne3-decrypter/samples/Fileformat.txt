@@ -1,0 +1,18 @@
+- 0x0~0x3 = Integer_1, Magic
+- 0x4~0x7 = Integer_2, Version1 (0x1A=26 or 0x1B=27)
+- 0x8~0xB = Integer_3, Length of Secure Block
+- 0xC~0xF = Integer_4, Length of Secure Block + Version
+- 0x10~0x13 = Integer_5, Checksum(Sum32) of Secure Block
+- 0x14~0x17 = Integer_6, Version2 (0x06 or 0x07)
+- 0x18~0x37 = Blob_1, HMACSHA1(0x14), Integer_7, Long_1 [encrypted]
+- 0x38~0x3B = Integer_7, Salt (The manipulated Nanoseconds Part of Time/Date) 
+- 0x3C~0x43 = Long_1, Time/Date (Unixtime Integer only the other Part is 0)
+- 0x44~Integer_3 = Blob_2, Secure Block [encrypted]
+- After the Secure Block file is padded with 0x00
+
+Notes:
+Integer_7 can NOT be calculated back the manipulation is oneway and not reversible
+and because of that it is impossible for nobody to check if it is the original or not.
+Which means you can put there what you want after decryption as long as you change both,
+it will remain valid, because not even the Game can know what was the original Value and
+will simply read what is there and use it as a part of a Salt.
