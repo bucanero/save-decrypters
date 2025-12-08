@@ -22,10 +22,8 @@ Tools to decrypt specific PS3 save-games:
   - Grand Theft Auto 5
 - [la-noire-decrypter](./la-noire-decrypter)
   - L.A. Noire
-- [naughtydog-decrypter](./naughtydog-decrypter)
-  - The Last of Us
-  - Uncharted 2
-  - Uncharted 3
+- [maxpayne3-decrypter](./maxpayne3-decrypter)
+  - Max Payne 3
 - [mgs-hd-decrypter](./mgs-hd-decrypter)
   - Metal Gear Solid 2 HD - Sons of Liberty
   - Metal Gear Solid 3 HD - Snake Eater
@@ -34,6 +32,10 @@ Tools to decrypt specific PS3 save-games:
 - [mgs5-tpp-decrypter](./mgs5-tpp-decrypter)
   - Metal Gear Solid V: The Phantom Pain
   - Metal Gear Solid V: Ground Zeroes
+- [naughtydog-decrypter](./naughtydog-decrypter)
+  - The Last of Us
+  - Uncharted 2
+  - Uncharted 3
 - [nfs-rivals-decrypter](./nfs-rivals-decrypter)
   - Need For Speed: Rivals
 - [nfs-undercover-decrypter](./nfs-undercover-decrypter)
