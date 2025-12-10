@@ -55,6 +55,7 @@ Tools to decrypt specific PS4 save-games:
 | Uncharted 3 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Red Dead Redemption 2 (PS4) | [ps4-rdr2-decrypter](./ps4-rdr2-decrypter) |
 | Resident Evil Revelations 2 (PS4) | [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter) |
+| Resident Evil 2 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |
 | Resident Evil 4 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |
 | Shin Megami Tensei V (PS4) | [smt5-decrypter](./smt5-decrypter) |
 | Terraria (PS4) | [ps4-terraria-decrypter](./ps4-terraria-decrypter) |

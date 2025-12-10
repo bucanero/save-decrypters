@@ -1,14 +1,18 @@
 # ps4-re4r-decrypter
 
-A tool to decrypt Resident Evil 4 Remake savegames.
+A tool to decrypt Resident Evil 2/4 Remake savegames.
 
 ```
-USAGE: ./ps4-re4r-decrypter [option] filename
+USAGE: ./ps4-re4r-decrypter [option] [game] filename
 
 OPTIONS        Explanation:
  -d            Decrypt File
  -e            Encrypt File
-```
+
+GAME TYPE      Explanation:
+ -2            Resident Evil 2 Remake
+ -4            Resident Evil 4 Remake
+ ```
 
 ### Checksum
 
