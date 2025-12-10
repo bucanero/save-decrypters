@@ -53,6 +53,8 @@ Tools to decrypt specific PS3 save-games:
 Tools to decrypt specific PS4 save-games:
 - [ps4-borderlands3-decrypter](./ps4-borderlands3-decrypter)
   - Borderlands 3 (PS4)
+- [darksouls-remaster-decrypter](./darksouls-remaster-decrypter)
+  - Dark Souls Remastered (PS4)
 - [gta5-decrypter](./gta5-decrypter)
   - Grand Theft Auto 5 (PS4)
 - [rgg-decrypter](./rgg-decrypter)
@@ -106,6 +108,8 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
   - Dragon Ball Z: Ultimate Tenkaichi
 - [digimon-checksum-fixer](./digimon-checksum-fixer)
   - Digimon: All-Star Rumble
+- [ps4-digimon-checksum-fixer](./ps4-digimon-checksum-fixer)
+  - Digimon World Next Order (PS4)
 - [ducktales-checksum-fixer](./ducktales-checksum-fixer)
   - DuckTales: Remastered
 - [ffxhd-checksum-fixer](./ffxhd-checksum-fixer)
