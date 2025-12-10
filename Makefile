@@ -30,12 +30,14 @@ all:
 	$(MAKE) -C mgs5-tpp-decrypter
 	$(MAKE) -C monsterhunter-decrypter
 	$(MAKE) -C naughtydog-decrypter
+	$(MAKE) -C nioh2-decrypter
 	$(MAKE) -C nfs-rivals-decrypter
 	$(MAKE) -C nfs-undercover-decrypter
 	$(MAKE) -C patapon3-decrypter
 	$(MAKE) -C prototype-checksum-fixer
 	$(MAKE) -C ps2-apa-header-checksum
 	$(MAKE) -C ps4-borderlands3-decrypter
+	$(MAKE) -C ps4-digimon-checksum-fixer
 	$(MAKE) -C ps4-nms-unpacker
 	$(MAKE) -C ps4-rdr2-decrypter
 	$(MAKE) -C ps4-re-rev2-decrypter
@@ -80,12 +82,14 @@ clean:
 	$(MAKE) clean -C mgs5-tpp-decrypter
 	$(MAKE) clean -C monsterhunter-decrypter
 	$(MAKE) clean -C naughtydog-decrypter
+	$(MAKE) clean -C nioh2-decrypter
 	$(MAKE) clean -C nfs-rivals-decrypter
 	$(MAKE) clean -C nfs-undercover-decrypter
 	$(MAKE) clean -C patapon3-decrypter
 	$(MAKE) clean -C prototype-checksum-fixer
 	$(MAKE) clean -C ps2-apa-header-checksum
 	$(MAKE) clean -C ps4-borderlands3-decrypter
+	$(MAKE) clean -C ps4-digimon-checksum-fixer
 	$(MAKE) clean -C ps4-nms-unpacker
 	$(MAKE) clean -C ps4-rdr2-decrypter
 	$(MAKE) clean -C ps4-re-rev2-decrypter
