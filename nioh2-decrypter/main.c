@@ -7,7 +7,13 @@
 */
 
 #include "../common/iofile.c"
-#include "aes.c"
+#include "custom_aes.c"
+
+// flag offsets to disable checksum verification
+#define CHECKSUM_OFFSET1 (0x7B882+0x10)
+#define CHECKSUM_OFFSET2 (0x7B884+0x10)
+#define CHECKSUM_OFFSET3 (0x7B7E4+0x10)
+#define CHECKSUM_OFFSET4 (0xECF4A+0x10)
 
 
 static const uint8_t AES_KEY[16] = {
@@ -90,6 +96,16 @@ int main(int argc, char **argv)
 	}
 	else
 	{
+		if (data[CHECKSUM_OFFSET1] == 0x01 && data[CHECKSUM_OFFSET2] == 0x01 &&
+		    data[CHECKSUM_OFFSET3] == 0x01 && data[CHECKSUM_OFFSET4] == 0x01)
+			{
+				data[CHECKSUM_OFFSET1] = 0x00;
+				data[CHECKSUM_OFFSET2] = 0x00;
+				data[CHECKSUM_OFFSET3] = 0x00;
+				data[CHECKSUM_OFFSET4] = 0x00;
+				printf("[*] Disabled integrity checks\n");
+			}
+
 		custom_aes_ctr(data, len);
 	}
 

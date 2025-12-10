@@ -12,7 +12,7 @@ OPTIONS        Explanation:
 
 ### Checksum
 
-Note: this tool doesn't update the integrity checksum.
+Note: this tool doesn't update the custom checksum, but disables the integrity checks by editing flags on the game's latest version save data.
 
 ### Credits
 
