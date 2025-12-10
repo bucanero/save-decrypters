@@ -80,7 +80,7 @@ void blowfish_decrypt_buffer(void* bf_data, uint32_t size)
 {
 	uint32_t buf[2];
 	uint32_t *data = bf_data;
-	size /= 4;
+	size = (size & 0xFFFFFFF8) / 4;
 
 	for (int i = 0; i < size; i+= 2)
 	{
@@ -97,7 +97,7 @@ void blowfish_encrypt_buffer(void* bf_data, uint32_t size)
 {
 	uint32_t buf[2];
 	uint32_t *data = bf_data;
-	size /= 4;
+	size = (size & 0xFFFFFFF8) / 4;
 
 	for (int i = 0; i < size; i+= 2)
 	{
@@ -114,7 +114,7 @@ void blowfish_decrypt_buffer_cbc(void *bf_data, uint32_t size, uint64_t iv)
 {
 	uint32_t buf[2];
 	uint32_t *data = bf_data;
-	size /= 4;
+	size = (size & 0xFFFFFFF8) / 4;
 	uint32_t l, r;
 	uint32_t l_ = (uint32_t)(iv >> 32);
 	uint32_t r_ = (uint32_t)(iv & 0xFFFFFFFF);
@@ -139,7 +139,7 @@ void blowfish_encrypt_buffer_cbc(void *bf_data, uint32_t size, uint64_t iv)
 {
 	uint32_t buf[2];
 	uint32_t *data = bf_data;
-	size /= 4;
+	size = (size & 0xFFFFFFF8) / 4;
 	uint32_t l_ = (uint32_t)(iv >> 32);
 	uint32_t r_ = (uint32_t)(iv & 0xFFFFFFFF);
 
