@@ -1,5 +1,5 @@
 /*
-*	Resident Evil 4 Remake PS4 Decrypter - (c) 2025 by hzh
+*	Resident Evil 2/4 Remake PS4 Decrypter - (c) 2025 by hzh
 *	https://github.com/hzhreal/
 *
 *   Information about the Blowfish encryption method:
@@ -10,7 +10,8 @@
 #include "../common/blowfish.c"
 #include "../common/mmh3.c"
 
-#define SECRET_KEY "wa9Ui_tFKa_6E_D5gVChjM69xMKDX8QxEykYKhzb4cRNLknpCZUra"
+#define RE2R_SECRET_KEY "K<>$cl%isqA|~nV4W5~3z_Q)j]5DHdB9sb{cI9Hn&Gqc-zO8O6zf"
+#define RE4R_SECRET_KEY "wa9Ui_tFKa_6E_D5gVChjM69xMKDX8QxEykYKhzb4cRNLknpCZUra"
 
 void swap_u32_data(u8 *data, u32 size)
 {
@@ -62,10 +63,13 @@ void encrypt_data(u8 *data, u32 size)
 
 void print_usage(const char *argv0)
 {
-	printf("USAGE: %s [option] filename\n\n", argv0);
+	printf("USAGE: %s [option] [game] filename\n\n", argv0);
 	printf("OPTIONS        Explanation:\n");
 	printf(" -d            Decrypt File\n");
 	printf(" -e            Encrypt File\n\n");
+	printf("GAME TYPE      Explanation:\n");
+	printf(" -2            Resident Evil 2 Remake\n");
+	printf(" -4            Resident Evil 4 Remake\n\n");
 	return;
 }
 
@@ -77,9 +81,9 @@ int main(int argc, char **argv)
 	char *opt, *bak;
 	int n;
 
-	printf("\nPS4 re4r-decrypter\n\n");
+	printf("\nPS4 Resident Evil Remake decrypter\n\n");
 
-	if (--argc < 2)
+	if (--argc < 3)
 	{
 		print_usage(argv[0]);
 		return -1;
@@ -92,15 +96,22 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-	blowfish_init_key(SECRET_KEY);
-
-	if (read_buffer(argv[2], &data, &len) != 0)
+	bak = argv[2];
+	if (*bak++ != '-' || (*bak != '2' && *bak != '4'))
 	{
-		printf("[*] Could Not Access The File (%s)\n", argv[2]);
+		print_usage(argv[0]);
+		return -1;
+	}
+
+	blowfish_init_key(*bak == '2' ? RE2R_SECRET_KEY : RE4R_SECRET_KEY);
+
+	if (read_buffer(argv[3], &data, &len) != 0)
+	{
+		printf("[*] Could Not Access The File (%s)\n", argv[3]);
 		return -1;
 	}
 	// Save a file backup
-	asprintf(&bak, "%s.bak", argv[2]);
+	asprintf(&bak, "%s.bak", argv[3]);
 	write_buffer(bak, data, len);
 
 	if (len - 0x20 > 0 && (len - 0x20) % 8 == 0)
@@ -114,11 +125,11 @@ int main(int argc, char **argv)
 	{
 		encrypt_data(data + 0x10, len - 0x10 - n);
 		csum = murmur3_32(data, len - sizeof(u32), 0xFFFFFFFF);
-    	printf("[*] Updated Checksum: %" PRIX32 "\n", csum);
-    	memcpy(data + len - sizeof(u32), &csum, sizeof(u32));
+		printf("[*] Updated Checksum: %" PRIX32 "\n", csum);
+		memcpy(data + len - sizeof(u32), &csum, sizeof(u32));
 	}
 
-	write_buffer(argv[2], data, len);
+	write_buffer(argv[3], data, len);
 
 	free(bak);
 	free(data);

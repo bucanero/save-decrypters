@@ -2,7 +2,7 @@
 
 static uint8_t key_buffer[KEYSIZE];
 
-void crypt_64bit_up(const uint32_t* keybuf, uint32_t* ptr)
+static void crypt_64bit_up(const uint32_t* keybuf, uint32_t* ptr)
 {
 	uint32_t x = ptr[0];
 	uint32_t y = ptr[1];
@@ -23,7 +23,7 @@ void crypt_64bit_up(const uint32_t* keybuf, uint32_t* ptr)
 	ptr[0] = y ^ keybuf[0x11];
 }
 
-void crypt_64bit_down(const uint32_t* keybuf, uint32_t* ptr)
+static void crypt_64bit_down(const uint32_t* keybuf, uint32_t* ptr)
 {
 	uint32_t x = ptr[0];
 	uint32_t y = ptr[1];
@@ -44,14 +44,12 @@ void crypt_64bit_down(const uint32_t* keybuf, uint32_t* ptr)
 	ptr[0] = y ^ keybuf[0x00];
 }
 
-void apply_keycode(uint32_t* keybuf, const uint32_t* keydata, const char* keycode)
+static void apply_keycode(uint32_t* keybuf, const uint32_t* keydata, const char* keycode)
 {
 	int i;
 	uint32_t scratch[2] = {0, 0};
 	char tmp[4];
 	int len = strlen(keycode);
-
-	memcpy(keybuf + 0x12, keydata, 0x1000);
 
 	for (i = 0; i < 0x12; i++)
 	{
@@ -74,7 +72,8 @@ void apply_keycode(uint32_t* keybuf, const uint32_t* keydata, const char* keycod
 
 void blowfish_init_key(const char* key)
 {
-	apply_keycode((uint32_t*) key_buffer, (uint32_t*) KEY_DATA, key);
+	memcpy(key_buffer + 0x48, BLOWFISH_KEY_DATA, 0x1000);
+	apply_keycode((uint32_t*) key_buffer, (uint32_t*) BLOWFISH_KEY_DATA, key);
 }
 
 void blowfish_decrypt_buffer(void* bf_data, uint32_t size)
