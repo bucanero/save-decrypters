@@ -5,141 +5,105 @@ A collection of custom save-game decrypters and checksum fixers for PS3, PSP, an
 ## PS3 Decrypters
 
 Tools to decrypt specific PS3 save-games:
-- [cod-blackops-decrypter](./cod-blackops-decrypter)
-  - Call of Duty: Black Ops
-  - Call of Duty: Black Ops 2
-- [diablo3-decrypter](./diablo3-decrypter)
-  - Diablo 3
-- [dmc-decrypter](./dmc-decrypter)
-  - DmC: Devil May Cry
-- [dw8xl-decrypter](./dw8xl-decrypter)
-  - Dynasty Warriors 8 Xtreme Legends
-- [ff13-decrypter](./ff13-decrypter)
-  - Final Fantasy XIII
-  - Final Fantasy XIII-2
-  - Lightning Returns: Final Fantasy XIII
-- [gta5-decrypter](./gta5-decrypter)
-  - Grand Theft Auto 5
-- [la-noire-decrypter](./la-noire-decrypter)
-  - L.A. Noire
-- [maxpayne3-decrypter](./maxpayne3-decrypter)
-  - Max Payne 3
-- [mgs-hd-decrypter](./mgs-hd-decrypter)
-  - Metal Gear Solid 2 HD - Sons of Liberty
-  - Metal Gear Solid 3 HD - Snake Eater
-- [mgs-pw-decrypter](./mgs-pw-decrypter)
-  - Metal Gear Solid: Peace Walker HD
-- [mgs5-tpp-decrypter](./mgs5-tpp-decrypter)
-  - Metal Gear Solid V: The Phantom Pain
-  - Metal Gear Solid V: Ground Zeroes
-- [naughtydog-decrypter](./naughtydog-decrypter)
-  - The Last of Us
-  - Uncharted 2
-  - Uncharted 3
-- [nfs-rivals-decrypter](./nfs-rivals-decrypter)
-  - Need For Speed: Rivals
-- [nfs-undercover-decrypter](./nfs-undercover-decrypter)
-  - Need For Speed: Undercover
-- [re-remaster-decrypter](./re-remaster-decrypter)
-  - Resident Evil HD Remaster
-  - Resident Evil 0 (Zero)
-- [re-revelations2-decrypter](./re-revelations2-decrypter)
-  - Resident Evil Revelations 2
-- [silent-hill3-decrypter](./silent-hill3-decrypter)
-  - Silent Hill 3 HD
+
+| Game | Tool |
+| :--- | :--- |
+| Call of Duty: Black Ops | [cod-blackops-decrypter](./cod-blackops-decrypter) |
+| Call of Duty: Black Ops 2 | [cod-blackops-decrypter](./cod-blackops-decrypter) |
+| Diablo 3 | [diablo3-decrypter](./diablo3-decrypter) |
+| DmC: Devil May Cry | [dmc-decrypter](./dmc-decrypter) |
+| Dynasty Warriors 8 Xtreme Legends | [dw8xl-decrypter](./dw8xl-decrypter) |
+| Final Fantasy XIII | [ff13-decrypter](./ff13-decrypter) |
+| Final Fantasy XIII-2 | [ff13-decrypter](./ff13-decrypter) |
+| Lightning Returns: Final Fantasy XIII | [ff13-decrypter](./ff13-decrypter) |
+| Grand Theft Auto 5 | [gta5-decrypter](./gta5-decrypter) |
+| L.A. Noire | [la-noire-decrypter](./la-noire-decrypter) |
+| Max Payne 3 | [maxpayne3-decrypter](./maxpayne3-decrypter) |
+| Metal Gear Solid 2 HD - Sons of Liberty | [mgs-hd-decrypter](./mgs-hd-decrypter) |
+| Metal Gear Solid 3 HD - Snake Eater | [mgs-hd-decrypter](./mgs-hd-decrypter) |
+| Metal Gear Solid: Peace Walker HD | [mgs-pw-decrypter](./mgs-pw-decrypter) |
+| Metal Gear Solid V: The Phantom Pain | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
+| Metal Gear Solid V: Ground Zeroes | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
+| The Last of Us | [naughtydog-decrypter](./naughtydog-decrypter) |
+| Uncharted 2 | [naughtydog-decrypter](./naughtydog-decrypter) |
+| Uncharted 3 | [naughtydog-decrypter](./naughtydog-decrypter) |
+| Need For Speed: Rivals | [nfs-rivals-decrypter](./nfs-rivals-decrypter) |
+| Need For Speed: Undercover | [nfs-undercover-decrypter](./nfs-undercover-decrypter) |
+| Resident Evil HD Remaster | [re-remaster-decrypter](./re-remaster-decrypter) |
+| Resident Evil 0 (Zero) | [re-remaster-decrypter](./re-remaster-decrypter) |
+| Resident Evil Revelations 2 | [re-revelations2-decrypter](./re-revelations2-decrypter) |
+| Silent Hill 3 HD | [silent-hill3-decrypter](./silent-hill3-decrypter) |
 
 ## PS4 Decrypters
 
 Tools to decrypt specific PS4 save-games:
-- [ps4-borderlands3-decrypter](./ps4-borderlands3-decrypter)
-  - Borderlands 3 (PS4)
-- [darksouls-remaster-decrypter](./darksouls-remaster-decrypter)
-  - Dark Souls Remastered (PS4)
-- [gta5-decrypter](./gta5-decrypter)
-  - Grand Theft Auto 5 (PS4)
-- [rgg-decrypter](./rgg-decrypter)
-  - Like a Dragon: Ishin! (PS4)
-- [mgs5-tpp-decrypter](./mgs5-tpp-decrypter)
-  - Metal Gear Solid V: The Phantom Pain (PS4)
-  - Metal Gear Solid V: Ground Zeroes (PS4)
-- [ps4-nms-unpacker](./ps4-nms-unpacker)
-  - No Man's Sky (PS4)
-- [naughtydog-decrypter](./naughtydog-decrypter)
-  - The Last of Us Remastered (PS4)
-  - Uncharted 2 Remastered (PS4)
-  - Uncharted 3 Remastered (PS4)
-- [ps4-rdr2-decrypter](./ps4-rdr2-decrypter)
-  - Red Dead Redemption 2 (PS4)
-- [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter)
-  - Resident Evil Revelations 2 (PS4)
-- [ps4-re4r-decrypter](./ps4-re4r-decrypter)
-  - Resident Evil 4 Remake (PS4)
-- [smt5-decrypter](./smt5-decrypter)
-  - Shin Megami Tensei V (PS4)
-- [ps4-terraria-decrypter](./ps4-terraria-decrypter)
-  - Terraria (PS4)
+
+| Game | Tool |
+| :--- | :--- |
+| Borderlands 3 (PS4) | [ps4-borderlands3-decrypter](./ps4-borderlands3-decrypter) |
+| Dark Souls Remastered (PS4) | [darksouls-remaster-decrypter](./darksouls-remaster-decrypter) |
+| Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
+| Grand Theft Auto 5 (PS4) | [gta5-decrypter](./gta5-decrypter) |
+| Like a Dragon: Ishin! (PS4) | [rgg-decrypter](./rgg-decrypter) |
+| Metal Gear Solid V: The Phantom Pain (PS4) | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
+| Metal Gear Solid V: Ground Zeroes (PS4) | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
+| No Man's Sky (PS4) | [ps4-nms-unpacker](./ps4-nms-unpacker) |
+| The Last of Us Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
+| Uncharted 2 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
+| Uncharted 3 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
+| Red Dead Redemption 2 (PS4) | [ps4-rdr2-decrypter](./ps4-rdr2-decrypter) |
+| Resident Evil Revelations 2 (PS4) | [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter) |
+| Resident Evil 4 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |
+| Shin Megami Tensei V (PS4) | [smt5-decrypter](./smt5-decrypter) |
+| Terraria (PS4) | [ps4-terraria-decrypter](./ps4-terraria-decrypter) |
 
 ## PSP Decrypters
 
 Tools to decrypt specific PSP save-games:
-- [patapon3-decrypter](./patapon3-decrypter)
-  - Patapon 3 (PSP)
-- [monsterhunter-decrypter](./monsterhunter-decrypter)
-  - Monster Hunter Freedom Unite (PSP)
-  - Monster Hunter Portable 2nd G (PSP)
-  - Monster Hunter Portable 3rd (PSP)
+
+| Game | Tool |
+| :--- | :--- |
+| Patapon 3 (PSP) | [patapon3-decrypter](./patapon3-decrypter) |
+| Monster Hunter Freedom Unite (PSP) | [monsterhunter-decrypter](./monsterhunter-decrypter) |
+| Monster Hunter Portable 2nd G (PSP) | [monsterhunter-decrypter](./monsterhunter-decrypter) |
+| Monster Hunter Portable 3rd (PSP) | [monsterhunter-decrypter](./monsterhunter-decrypter) |
 
 ## Checksum fixers
 
 Tools to fix checksums for specific PSP/PS3/PS4 save-games:
-- [alien-checksum-fixer](./alien-checksum-fixer)
-  - Alien: Isolation (PS3/PS4)
-- [castlevania-checksum-fixer](./castlevania-checksum-fixer)
-  - Castlevania: Lords of Shadow
-  - Castlevania: Lords of Shadow 2
-- [cod-checksum-fixer](./cod-checksum-fixer)
-  - Call of Duty: Ghosts
-- [deadrising-checksum-fixer](./deadrising-checksum-fixer)
-  - Dead Rising (PS4)
-- [deadspace-checksum-fixer](./deadspace-checksum-fixer)
-  - Dead Space 2
-  - Dead Space 3
-- [dbz-checksum-fixer](./dbz-checksum-fixer)
-  - Dragon Ball Z: Ultimate Tenkaichi
-- [digimon-checksum-fixer](./digimon-checksum-fixer)
-  - Digimon: All-Star Rumble
-- [ps4-digimon-checksum-fixer](./ps4-digimon-checksum-fixer)
-  - Digimon World Next Order (PS4)
-- [ducktales-checksum-fixer](./ducktales-checksum-fixer)
-  - DuckTales: Remastered
-- [ffxhd-checksum-fixer](./ffxhd-checksum-fixer)
-  - Final Fantasy X HD
-  - Final Fantasy X-2 HD
-- [invizimals-checksum-fixer](./invizimals-checksum-fixer)
-  - Invizimals (PSP)
-  - Invizimals - Shadow Zone (PSP)
-  - Invizimals - The Lost Tribe (PSP)
-- [kh25-checksum-fixer](./kh25-checksum-fixer)
-  - Kingdom Hearts HD 2.5 ReMIX
-  - Kingdom Hearts HD Birth by Sleep (BBS)
-  - Kingdom Hearts Re: Chain of Memories (CoM)
-- [lego-checksum-fixer](./lego-checksum-fixer)
-  - LEGO Batman 2: DC Super Heroes
-  - LEGO Harry Potter: Years 5-7
-  - LEGO Pirates of the Caribbean: The Video Game
-  - LEGO The Lord of the Rings
-- [prototype-checksum-fixer](./prototype-checksum-fixer)
-  - Prototype 1
-  - Prototype 2
-- [re7-checksum-fixer](./re7-checksum-fixer)
-  - Resident Evil 7: Biohazard
-- [sw4-checksum-fixer](./sw4-checksum-fixer)
-  - Samurai Warriors 4
-  - Sengoku Musou 4
-- [tears2-checksum-fixer](./tears2-checksum-fixer)
-  - Tears to Tiara 2
-- [toz-checksum-fixer](./toz-checksum-fixer)
-  - Tales of Zestiria
+
+| Game | Tool |
+| :--- | :--- |
+| Alien: Isolation (PS3/PS4) | [alien-checksum-fixer](./alien-checksum-fixer) |
+| Castlevania: Lords of Shadow | [castlevania-checksum-fixer](./castlevania-checksum-fixer) |
+| Castlevania: Lords of Shadow 2 | [castlevania-checksum-fixer](./castlevania-checksum-fixer) |
+| Call of Duty: Ghosts | [cod-checksum-fixer](./cod-checksum-fixer) |
+| Dead Rising (PS4) | [deadrising-checksum-fixer](./deadrising-checksum-fixer) |
+| Dead Space 2 | [deadspace-checksum-fixer](./deadspace-checksum-fixer) |
+| Dead Space 3 | [deadspace-checksum-fixer](./deadspace-checksum-fixer) |
+| Dragon Ball Z: Ultimate Tenkaichi | [dbz-checksum-fixer](./dbz-checksum-fixer) |
+| Digimon: All-Star Rumble | [digimon-checksum-fixer](./digimon-checksum-fixer) |
+| Digimon World Next Order (PS4) | [ps4-digimon-checksum-fixer](./ps4-digimon-checksum-fixer) |
+| DuckTales: Remastered | [ducktales-checksum-fixer](./ducktales-checksum-fixer) |
+| Final Fantasy X HD | [ffxhd-checksum-fixer](./ffxhd-checksum-fixer) |
+| Final Fantasy X-2 HD | [ffxhd-checksum-fixer](./ffxhd-checksum-fixer) |
+| Invizimals (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
+| Invizimals - Shadow Zone (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
+| Invizimals - The Lost Tribe (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
+| Kingdom Hearts HD 2.5 ReMIX | [kh25-checksum-fixer](./kh25-checksum-fixer) |
+| Kingdom Hearts HD Birth by Sleep (BBS) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
+| Kingdom Hearts Re: Chain of Memories (CoM) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
+| LEGO Batman 2: DC Super Heroes | [lego-checksum-fixer](./lego-checksum-fixer) |
+| LEGO Harry Potter: Years 5-7 | [lego-checksum-fixer](./lego-checksum-fixer) |
+| LEGO Pirates of the Caribbean: The Video Game | [lego-checksum-fixer](./lego-checksum-fixer) |
+| LEGO The Lord of the Rings | [lego-checksum-fixer](./lego-checksum-fixer) |
+| Prototype 1 | [prototype-checksum-fixer](./prototype-checksum-fixer) |
+| Prototype 2 | [prototype-checksum-fixer](./prototype-checksum-fixer) |
+| Resident Evil 7: Biohazard | [re7-checksum-fixer](./re7-checksum-fixer) |
+| Samurai Warriors 4 | [sw4-checksum-fixer](./sw4-checksum-fixer) |
+| Sengoku Musou 4 | [sw4-checksum-fixer](./sw4-checksum-fixer) |
+| Tears to Tiara 2 | [tears2-checksum-fixer](./tears2-checksum-fixer) |
+| Tales of Zestiria | [toz-checksum-fixer](./toz-checksum-fixer) |
 
 ## License
 
