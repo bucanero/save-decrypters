@@ -45,8 +45,10 @@ Tools to decrypt specific PS4 save-games:
 | Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
 | Grand Theft Auto 5 (PS4) | [gta5-decrypter](./gta5-decrypter) |
 | Like a Dragon: Ishin! (PS4) | [rgg-decrypter](./rgg-decrypter) |
+| MC4 Cheat Decrypter (PS4) | [mc4-cheat-decrypter](./mc4-cheat-decrypter) |
 | Metal Gear Solid V: The Phantom Pain (PS4) | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
 | Metal Gear Solid V: Ground Zeroes (PS4) | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
+| Nioh 2 (PS4) | [nioh2-decrypter](./nioh2-decrypter) |
 | No Man's Sky (PS4) | [ps4-nms-unpacker](./ps4-nms-unpacker) |
 | The Last of Us Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted 2 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
@@ -99,6 +101,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | LEGO The Lord of the Rings | [lego-checksum-fixer](./lego-checksum-fixer) |
 | Prototype 1 | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | Prototype 2 | [prototype-checksum-fixer](./prototype-checksum-fixer) |
+| PS2 APA Header Checksum | [ps2-apa-header-checksum](./ps2-apa-header-checksum) |
 | Resident Evil 7: Biohazard | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Samurai Warriors 4 | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Sengoku Musou 4 | [sw4-checksum-fixer](./sw4-checksum-fixer) |
