@@ -103,6 +103,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Prototype 1 | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | Prototype 2 | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | PS2 APA Header Checksum | [ps2-apa-header-checksum](./ps2-apa-header-checksum) |
+| Resident Evil 3 Remake | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Resident Evil 7: Biohazard | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Samurai Warriors 4 | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Sengoku Musou 4 | [sw4-checksum-fixer](./sw4-checksum-fixer) |

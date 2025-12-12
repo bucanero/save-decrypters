@@ -48,9 +48,9 @@ int main(int argc, char **argv)
     write_buffer(bak, data, len);
     free(bak);
 
-    printf("[*] Current Checksum: %" PRIX32 "\n", *(u32*)(data + len - 4));
+    printf("[*] Current Checksum: %08" PRIX32 "\n", *(u32*)(data + len - 4));
     csum = murmur3_32(data, len - sizeof(u32), 0xFFFFFFFF);
-    printf("[*] Updated Checksum: %" PRIX32 "\n", csum);
+    printf("[*] Updated Checksum: %08" PRIX32 "\n", csum);
 
     memcpy(data + len - sizeof(u32), &csum, sizeof(u32));
     if (write_buffer(filename, data, len) == 0)
