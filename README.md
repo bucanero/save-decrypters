@@ -51,8 +51,12 @@ Tools to decrypt specific PS4 save-games:
 | Nioh 2 (PS4) | [nioh2-decrypter](./nioh2-decrypter) |
 | No Man's Sky (PS4) | [ps4-nms-unpacker](./ps4-nms-unpacker) |
 | The Last of Us Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
+| The Last of Us Part II (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted 2 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted 3 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
+| Uncharted 4: A Thief's End (PS4) |  [naughtydog-decrypter](./naughtydog-decrypter) |
+| Uncharted: The Lost Legacy (PS4) |  [naughtydog-decrypter](./naughtydog-decrypter) |
+| Uncharted: The Nathan Drake Collection (PS4) |  [naughtydog-decrypter](./naughtydog-decrypter) |
 | Red Dead Redemption 2 (PS4) | [ps4-rdr2-decrypter](./ps4-rdr2-decrypter) |
 | Resident Evil Revelations 2 (PS4) | [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter) |
 | Resident Evil 2 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |
