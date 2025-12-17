@@ -255,6 +255,7 @@ int main(int argc, char **argv)
 	}
 
 	type = argv[2];
+	type[1] = toupper(type[1]);
 	if (*type++ != '-' || (*type != A && *type != B && *type != C))
 	{
 		print_usage(argv[0]);
