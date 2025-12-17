@@ -81,7 +81,7 @@ void init_savestate(SaveState *ss, u8 *data, size_t len, char type)
 	if (ss->start_off + dsize > len || !dsize)
 	{
 		printf("[!] Invalid dsize!\n");
-		*ctx = NULL;
+		ss->data = NULL;
 		return;
 	}
 	ss->dsize = dsize;
