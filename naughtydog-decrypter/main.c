@@ -63,7 +63,7 @@ void init_savestate(SaveState *ss, u8 *data, size_t len, char type)
 	if (len < 0xC)
 	{
 		printf("[!] Save is too small!\n");
-		*ctx = NULL;
+		ss->data = NULL;
 		return;
 	}
 	// Check for PS3 saves (big-endian)
