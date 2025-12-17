@@ -275,7 +275,7 @@ int main(int argc, char **argv)
 	write_buffer(bak, data, len);
 
 	init_savestate(&ss, data, len, *type);
-	if (ss == NULL)
+	if (ss->data == NULL)
 		return -1;
 
 	if (*opt == 'd')
