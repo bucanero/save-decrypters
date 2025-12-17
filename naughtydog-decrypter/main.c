@@ -282,9 +282,9 @@ int main(int argc, char **argv)
 		decrypt_data(&ss);
 	else
 	{
-		if (!fix_checksum(ss))
+		if (!fix_checksum(&ss))
 			return -1;
-		encrypt_data(ss);
+		encrypt_data(&ss);
 	}
 
 	write_buffer(filepath, data, len);
