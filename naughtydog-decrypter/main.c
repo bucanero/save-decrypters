@@ -43,10 +43,9 @@ typedef struct {
 	SaveType type;
 } SaveState;
 
-void init_savestate(SaveState **ctx, u8 *data, size_t len, char type)
+void init_savestate(SaveState *ss, u8 *data, size_t len, char type)
 {
 	assert(type == A || type == B || type == C);
-	SaveState *ss = (*ctx);
 	ss->type = type;
 	switch (ss->type)
 	{
