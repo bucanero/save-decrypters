@@ -279,7 +279,7 @@ int main(int argc, char **argv)
 		return -1;
 
 	if (*opt == 'd')
-		decrypt_data(ss);
+		decrypt_data(&ss);
 	else
 	{
 		if (!fix_checksum(ss))
