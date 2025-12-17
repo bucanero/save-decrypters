@@ -82,37 +82,37 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Game | Tool |
 | :--- | :--- |
 | Alien: Isolation (PS3/PS4) | [alien-checksum-fixer](./alien-checksum-fixer) |
-| Castlevania: Lords of Shadow | [castlevania-checksum-fixer](./castlevania-checksum-fixer) |
-| Castlevania: Lords of Shadow 2 | [castlevania-checksum-fixer](./castlevania-checksum-fixer) |
-| Call of Duty: Ghosts | [cod-checksum-fixer](./cod-checksum-fixer) |
+| Castlevania: Lords of Shadow (PS3) | [castlevania-checksum-fixer](./castlevania-checksum-fixer) |
+| Castlevania: Lords of Shadow 2 (PS3) | [castlevania-checksum-fixer](./castlevania-checksum-fixer) |
+| Call of Duty: Ghosts (PS3) | [cod-checksum-fixer](./cod-checksum-fixer) |
 | Dead Rising (PS4) | [deadrising-checksum-fixer](./deadrising-checksum-fixer) |
-| Dead Space 2 | [deadspace-checksum-fixer](./deadspace-checksum-fixer) |
-| Dead Space 3 | [deadspace-checksum-fixer](./deadspace-checksum-fixer) |
-| Dragon Ball Z: Ultimate Tenkaichi | [dbz-checksum-fixer](./dbz-checksum-fixer) |
-| Digimon: All-Star Rumble | [digimon-checksum-fixer](./digimon-checksum-fixer) |
+| Dead Space 2 (PS3) | [deadspace-checksum-fixer](./deadspace-checksum-fixer) |
+| Dead Space 3 (PS3) | [deadspace-checksum-fixer](./deadspace-checksum-fixer) |
+| Dragon Ball Z: Ultimate Tenkaichi (PS3) | [dbz-checksum-fixer](./dbz-checksum-fixer) |
+| Digimon: All-Star Rumble (PS3) | [digimon-checksum-fixer](./digimon-checksum-fixer) |
 | Digimon World Next Order (PS4) | [ps4-digimon-checksum-fixer](./ps4-digimon-checksum-fixer) |
-| DuckTales: Remastered | [ducktales-checksum-fixer](./ducktales-checksum-fixer) |
-| Final Fantasy X HD | [ffxhd-checksum-fixer](./ffxhd-checksum-fixer) |
-| Final Fantasy X-2 HD | [ffxhd-checksum-fixer](./ffxhd-checksum-fixer) |
+| DuckTales: Remastered (PS3) | [ducktales-checksum-fixer](./ducktales-checksum-fixer) |
+| Final Fantasy X HD (PS3) | [ffxhd-checksum-fixer](./ffxhd-checksum-fixer) |
+| Final Fantasy X-2 HD (PS3) | [ffxhd-checksum-fixer](./ffxhd-checksum-fixer) |
 | Invizimals (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
 | Invizimals - Shadow Zone (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
 | Invizimals - The Lost Tribe (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
-| Kingdom Hearts HD 2.5 ReMIX | [kh25-checksum-fixer](./kh25-checksum-fixer) |
-| Kingdom Hearts HD Birth by Sleep (BBS) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
-| Kingdom Hearts Re: Chain of Memories (CoM) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
-| LEGO Batman 2: DC Super Heroes | [lego-checksum-fixer](./lego-checksum-fixer) |
-| LEGO Harry Potter: Years 5-7 | [lego-checksum-fixer](./lego-checksum-fixer) |
-| LEGO Pirates of the Caribbean: The Video Game | [lego-checksum-fixer](./lego-checksum-fixer) |
-| LEGO The Lord of the Rings | [lego-checksum-fixer](./lego-checksum-fixer) |
-| Prototype 1 | [prototype-checksum-fixer](./prototype-checksum-fixer) |
-| Prototype 2 | [prototype-checksum-fixer](./prototype-checksum-fixer) |
+| Kingdom Hearts HD 2.5 ReMIX (PS3) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
+| Kingdom Hearts HD Birth by Sleep (BBS) (PS3) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
+| Kingdom Hearts Re: Chain of Memories (CoM) (PS3) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
+| LEGO Batman 2: DC Super Heroes (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
+| LEGO Harry Potter: Years 5-7 (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
+| LEGO Pirates of the Caribbean: The Video Game (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
+| LEGO The Lord of the Rings (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
+| Prototype 1 (PS3) | [prototype-checksum-fixer](./prototype-checksum-fixer) |
+| Prototype 2 (PS3) | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | PS2 APA Header Checksum | [ps2-apa-header-checksum](./ps2-apa-header-checksum) |
-| Resident Evil 3 Remake | [re7-checksum-fixer](./re7-checksum-fixer) |
-| Resident Evil 7: Biohazard | [re7-checksum-fixer](./re7-checksum-fixer) |
-| Samurai Warriors 4 | [sw4-checksum-fixer](./sw4-checksum-fixer) |
-| Sengoku Musou 4 | [sw4-checksum-fixer](./sw4-checksum-fixer) |
-| Tears to Tiara 2 | [tears2-checksum-fixer](./tears2-checksum-fixer) |
-| Tales of Zestiria | [toz-checksum-fixer](./toz-checksum-fixer) |
+| Resident Evil 3 Remake (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
+| Resident Evil 7: Biohazard (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
+| Samurai Warriors 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
+| Sengoku Musou 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
+| Tears to Tiara 2 (PS3) | [tears2-checksum-fixer](./tears2-checksum-fixer) |
+| Tales of Zestiria (PS3) | [toz-checksum-fixer](./toz-checksum-fixer) |
 
 ## License
 
