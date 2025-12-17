@@ -234,8 +234,7 @@ void print_usage(const char* argv0)
 
 int main(int argc, char **argv)
 {
-	SaveState ctx = {0};
-	SaveState *ss = &ctx;
+	SaveState ss = {0};
 	size_t len;
 	u8 *data;
 	char *opt, *type, *filepath, *bak;
