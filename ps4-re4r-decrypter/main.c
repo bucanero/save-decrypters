@@ -15,10 +15,7 @@
 
 void swap_u32_data(u8 *data, u32 size)
 {
-	size &= 0xFFFFFFFC;
-	u32 count = size / 4;
-	if (count == 0)
-		return;
+	u32 count = (size & 0xFFFFFFFC) / 4;
 	u32 *d = (u32 *)data;
 	for (u32 i = 0; i < count; i++)
 		d[i] = ES32(d[i]);
