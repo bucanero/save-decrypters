@@ -15,10 +15,11 @@
 
 void swap_u32_data(u8 *data, u32 size)
 {
-	int count = size/sizeof(u32);
+	u32 count = (size & 0xFFFFFFFC) / 4;
 	u32 *d = (u32 *)data;
-	for (int i = 0; i < count; i++)
+	for (u32 i = 0; i < count; i++)
 		d[i] = ES32(d[i]);
+	return;
 }
 
 void decrypt_data(u8 *data, u32 size)
