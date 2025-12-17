@@ -91,9 +91,12 @@ void init_savestate(SaveState *ss, u8 *data, size_t len, char type)
 
 void swap_u32_data(u8 *data, u32 size)
 {
-	int count = size/sizeof(u32);
+	size &= 0xFFFFFFFC;
+	u32 count = size / 4;
+	if (count == 0)
+		return;
 	u32 *d = (u32 *)data;
-	for (int i = 0; i < count; i++)
+	for (u32 i = 0; i < count; i++)
 		d[i] = ES32(d[i]);
 	return;
 }
@@ -275,7 +278,7 @@ int main(int argc, char **argv)
 	write_buffer(bak, data, len);
 
 	init_savestate(&ss, data, len, *type);
-	if (ss->data == NULL)
+	if (ss.data == NULL)
 		return -1;
 
 	if (*opt == 'd')
