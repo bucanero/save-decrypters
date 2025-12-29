@@ -1,6 +1,6 @@
 # re7-checksum-fixer
 
-A tool calculate the checksum of `Resident Evil 7: Biohazard` and `Resident Evil 3 Remake` save files.
+A tool calculate the checksum of `Resident Evil 7: Biohazard`, `Resident Evil Resistance`, and `Resident Evil 3 Remake` save files.
 
 ```
 USAGE: ./re7-checksum-fixer filename
