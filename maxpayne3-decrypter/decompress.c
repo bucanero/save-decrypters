@@ -32,7 +32,7 @@ int Mp3_DecompressData(const uint8_t* data, int len, int maxlen, uint8_t* outBuf
     if (!data || !outBuf || !outLen || len < 2)
         return -1;
 
-    memset(outBuf, 0, MP3_MAX_DECOMPRESSION_BUFFER);
+    memset(outBuf, 0, maxlen);  // Clear output buffer to the specified max length
 
     int op_pos = 0;          // Output position
     int ip_end = len;
@@ -84,25 +84,22 @@ int Mp3_DecompressData(const uint8_t* data, int len, int maxlen, uint8_t* outBuf
                     pos++;  // Skip the second byte
                     
                     // Copy bytes from earlier in output
-                    while (a-- > 0 && a <= maxlen)
+                    while (a-- > 0 && op_pos < maxlen)
                     {
                         outBuf[op_pos++] = outBuf[c++];
                     }
                 }
                 else
                 {
-                    // Invalid back-reference - this shouldn't happen in valid compressed data
-                    // But if it does, we need to handle it gracefully
-                    // According to reference code, we still consume the bytes
+                    // Invalid back-reference - advance output position with bounds check
                     a = (a & 0xF) + 3;
                     pos++;  // Skip the second byte
                     
-                    // Don't write anything, just advance the output position
-                    // This leaves zeros in the buffer (from memset)
-                    op_pos += a;
+                    // Advance output position, ensuring we don't exceed buffer
+                    op_pos += (op_pos + a <= maxlen) ? a : (maxlen - op_pos);
                 }
             }
-            else if (op_pos < maxlen)
+            else if (op_pos < maxlen && pos < ip_end)
             {
                 // Literal byte: copy directly from input
                 outBuf[op_pos++] = data[pos++];
