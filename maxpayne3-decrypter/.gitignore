@@ -3,3 +3,4 @@ decompressor
 test-*
 *_decomp
 *_decomp.c
+output.bin
