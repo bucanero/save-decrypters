@@ -12,6 +12,7 @@
 #include "../common/sha1.c"
 #include "../common/hmac-sha1.c"
 #include "../common/pbkdf2-sha1.c"
+#include "decompress.c"
 
 // Max Payne 3 init key
 // PlayStation: PS35675hA
@@ -242,7 +243,8 @@ void print_usage(const char* argv0)
 	printf("USAGE: %s [option] filename\n\n", argv0);
 	printf("OPTIONS        Explanation:\n");
 	printf(" -d            Decrypt File\n");
-	printf(" -e            Encrypt File\n\n");
+	printf(" -e            Encrypt File\n");
+	printf(" -u            Decompress File\n\n");
 	return;
 }
 
@@ -263,7 +265,7 @@ int main(int argc, char **argv)
 	}
 	
 	opt = argv[1];
-	if (*opt++ != '-' || (*opt != 'd' && *opt != 'e'))
+	if (*opt++ != '-' || (*opt != 'd' && *opt != 'e' && *opt != 'u'))
 	{
 		print_usage(argv[0]);
 		return -1;
@@ -273,6 +275,33 @@ int main(int argc, char **argv)
 	{
 		printf("[*] Could Not Access The File (%s)\n", argv[2]);
 		return -1;
+	}
+
+	// Handle decompression mode separately (no mp3 header expected)
+	if (*opt == 'u')
+	{
+		const int MAX_DECOMP_SIZE = 0xC800; // Maximum decompressed size
+		u8* outBuf = (u8*)malloc(MAX_DECOMP_SIZE);
+		int outLen = 0;
+		
+		printf("[*] Decompressing file (%zu bytes)...\n", len);
+		
+		if (Mp3_DecompressData(data, len, MAX_DECOMP_SIZE, outBuf, &outLen) != 0)
+		{
+			printf("[!] Error: Decompression failed.\n");
+			free(outBuf);
+			free(data);
+			return -1;
+		}
+		
+		printf("[*] Decompressed size: %d bytes\n", outLen);
+		
+		// Write decompressed data to output file
+		write_buffer("unpacked.bin", outBuf, outLen);
+		printf("[*] Saved decompressed data to: unpacked.bin\n");
+		free(outBuf);
+		free(data);
+		return 0;
 	}
 
 	HeaderLength = ES32(*(u32*)(data+4));
