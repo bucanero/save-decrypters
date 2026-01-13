@@ -1,6 +1,10 @@
 # Max Payne 3 PS3 Save Decrypter
 
-A tool to decrypt Max Payne 3 PS3 save-games
+Tools to decrypt and decompress Max Payne 3 PS3 save-games
+
+## Decrypter
+
+Decrypts/encrypts the save file encryption.
 
 ```
 USAGE: ./maxpayne3-decrypter [option] filename
@@ -8,6 +12,27 @@ USAGE: ./maxpayne3-decrypter [option] filename
 OPTIONS        Explanation:
  -d            Decrypt File
  -e            Encrypt File
+```
+
+## Decompressor
+
+Decompresses the decrypted save data.
+
+```
+USAGE: ./decompressor <input_file> <output_file>
+
+Example: ./decompressor decrypted decrypted-decomp
+```
+
+The decompressor implements the LZ77-style compression algorithm used by Max Payne 3 save files,
+based on the reference C# implementation in [samples/Decompress.cs](samples/Decompress.cs).
+
+### Building
+
+```bash
+make          # Build both tools
+make decrypter    # Build only the decrypter
+make decompressor # Build only the decompressor
 ```
 
 ### Checksums
