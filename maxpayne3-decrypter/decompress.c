@@ -70,7 +70,14 @@ int Mp3_DecompressData(const uint8_t* data, int len, int maxlen, uint8_t* outBuf
                 int f = (a >> 4) | rotl32(data[m_pos], 4);
                 c = (op_pos - f) - 1;
                 
-                if (c >= 0)
+                // Handle invalid offsets: when c < 0, use mod 16
+                if (c < 0)
+                {
+                    f = f % 16;
+                    c = op_pos - f - 1;
+                }
+                
+                if (c >= 0 && c < op_pos)
                 {
                     // Valid back-reference
                     a = (a & 0xF) + 3;  // Length in lower 4 bits + 3

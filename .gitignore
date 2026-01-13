@@ -49,4 +49,7 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-maxpayne3-decrypter/maxpayne3-decrypter
+
+# Max Payne 3 decompression output
+maxpayne3-decrypter/unpacked.bin
+maxpayne3-decrypter/*.unpacked
