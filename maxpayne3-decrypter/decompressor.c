@@ -67,14 +67,15 @@ static int Mp3_DecompressData(uint8_t* input_data, int input_len, int max_output
                 a = input_data[ip_pos];
                 
                 // Calculate offset: f = (a >> 4) | ROTL32(peek_byte(m_pos), 4)
-                // ROTL32(x, 4) for byte is (x << 4) | (x >> 4)
+                // ROTL32(x, 4) for 8-bit value rotated in 8-bit space: (x << 4) | (x >> 4)
                 uint8_t peek = peek_byte(input_data, m_pos);
                 f = (a >> 4) | ((peek << 4) | (peek >> 4));
                 
                 // Calculate back reference position
                 c = op_pos - f - 1;
                 
-                if (c >= 0)
+                // Validate back reference is within bounds
+                if (c >= 0 && c < op_pos)
                 {
                     // Calculate length: (a & 0xF) + 3
                     int copy_len = (a & 0xF) + 3;
