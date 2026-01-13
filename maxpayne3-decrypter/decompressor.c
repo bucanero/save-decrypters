@@ -64,7 +64,8 @@ static int Mp3_DecompressData(uint8_t* input_data, int input_len, int max_output
                 if (ip_pos >= ip_end)
                     break;
                 
-                a = input_data[ip_pos];
+                // Read encoding byte (this advances ip_pos like C# line 30)
+                a = input_data[ip_pos++];
                 
                 // Calculate offset: f = (a >> 4) | ROTL32(peek_byte(m_pos), 4)
                 // ROTL32(x, 4) for 8-bit value rotated in 8-bit space: (x << 4) | (x >> 4)
@@ -79,6 +80,7 @@ static int Mp3_DecompressData(uint8_t* input_data, int input_len, int max_output
                 {
                     // Calculate length: (a & 0xF) + 3
                     int copy_len = (a & 0xF) + 3;
+                    // Skip one more byte (C# line 37)
                     ip_pos++;
                     
                     // Copy from back reference
@@ -88,6 +90,7 @@ static int Mp3_DecompressData(uint8_t* input_data, int input_len, int max_output
                         copy_len--;
                     }
                 }
+                // If invalid back-ref (c < 0), we've still consumed 1 byte above
             }
             else if (op_pos < max_output_len)
             {
