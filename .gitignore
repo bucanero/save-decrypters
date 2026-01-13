@@ -53,3 +53,9 @@ dkms.conf
 # Max Payne 3 decompression output
 maxpayne3-decrypter/unpacked.bin
 maxpayne3-decrypter/*.unpacked
+# Build artifacts from all subdirectories
+*-decrypter/*-decrypter
+*-checksum-fixer/*-checksum-fixer
+*-unpacker/*-unpacker
+ps2-apa-header-checksum/ps2-apa-checksum
+_codeql_detected_source_root
