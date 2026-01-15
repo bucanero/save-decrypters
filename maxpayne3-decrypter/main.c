@@ -290,7 +290,8 @@ uint8_t* lz77_CompressData(uint8_t* data, uint32_t in_size, uint32_t *out_size)
 	uint8_t* outstream;
 	uint32_t op_pos = 0;
 	uint32_t ip_pos = 0;
-	uint32_t max_out_size = in_size + (in_size / 8) + 256; // Worst case: all literals + control bytes + header
+	// Worst case: all literals (1 byte each + 1 control byte per 8 literals) + 2 byte header
+	uint32_t max_out_size = in_size + (in_size / 8) + 16;
 	
 	outstream = malloc(max_out_size);
 	memset(outstream, 0, max_out_size);
@@ -309,7 +310,9 @@ uint8_t* lz77_CompressData(uint8_t* data, uint32_t in_size, uint32_t *out_size)
 			int best_off = 0;
 			
 			// Search for matches in the sliding window (up to 4096 bytes back)
-			int search_start = (ip_pos > 4095) ? ip_pos - 4095 : 0;
+			// The offset is stored in 12 bits, allowing values 0-4095, which represents
+			// actual offsets of 1-4096 bytes back
+			int search_start = (ip_pos > 4096) ? ip_pos - 4096 : 0;
 			
 			for (int j = search_start; j < (int)ip_pos; j++)
 			{
@@ -486,8 +489,9 @@ int main(int argc, char **argv)
 		{
 			printf("[*] Compressed Size: %d bytes (from %d bytes)\n", compressedSize, saveBufferLen);
 			
-			// Check if compressed size fits in the buffer
-			if (compressedSize <= saveBufferLen)
+			// Check if compressed size fits in the allocated buffer
+			// The buffer at data + 0x44 has (len - 0x44) bytes available
+			if (compressedSize <= saveBufferLen && compressedSize <= (len - 0x44))
 			{
 				// Copy compressed data back
 				memcpy(data + 0x44, compressedData, compressedSize);
@@ -502,7 +506,7 @@ int main(int argc, char **argv)
 			}
 			else
 			{
-				printf("[!] Warning: Compressed data is larger than original, skipping compression\n");
+				printf("[!] Warning: Compressed data is larger than original or available buffer, skipping compression\n");
 			}
 			
 			free(compressedData);
