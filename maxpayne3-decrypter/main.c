@@ -470,6 +470,40 @@ int main(int argc, char **argv)
 	}
 	else
 	{
+		// Try to compress the data before encryption
+		uint32_t compressedSize = 0;
+		uint8_t* compressedData = lz77_CompressData(data + 0x44, saveBufferLen, &compressedSize);
+		
+		if (compressedData)
+		{
+			printf("[*] Compressed Size: %d bytes (from %d bytes)\n", compressedSize, saveBufferLen);
+			
+			// Check if compressed size fits in the buffer
+			if (compressedSize <= saveBufferLen)
+			{
+				// Copy compressed data back
+				memcpy(data + 0x44, compressedData, compressedSize);
+				
+				// Update the save buffer length
+				saveBufferLen = compressedSize;
+				*(u32*)(data+8) = ES32(saveBufferLen);
+				
+				// Update save data length (saveBufferLen + HeaderLength)
+				saveDataLen = saveBufferLen + HeaderLength;
+				*(u32*)(data+0x0C) = ES32(saveDataLen);
+			}
+			else
+			{
+				printf("[!] Warning: Compressed data is larger than original, skipping compression\n");
+			}
+			
+			free(compressedData);
+		}
+		else
+		{
+			printf("[!] Warning: Compression failed, encrypting uncompressed data\n");
+		}
+		
 		encrypt_data(data+0x18, saveBufferLen, ProfileKey);
 
 		storedSum = addSum(data + 0x44, saveBufferLen);
