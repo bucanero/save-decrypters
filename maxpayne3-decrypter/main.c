@@ -21,6 +21,7 @@
 #define PROFILE_KEY_SIZE 0x32
 #define MODE_ENCRYPT 1
 #define MODE_DECRYPT 0
+#define MAX_DECOMP_BUF_SIZE 0x0C800
 
 //- 0x18~0x37 = Blob_1, HMACSHA1(0x14) [encrypted]
 //- 0x38~0x3B = Integer_7, Salt (The manipulated Nanoseconds Part of Time/Date)
@@ -227,6 +228,63 @@ void encrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 	return;
 }
 
+uint8_t* lz77_DecompressData(uint8_t* data, int ip_end, uint32_t *out_size)
+{
+	uint8_t* outstream;
+	uint32_t op_pos = 0;
+	int code, off, pos = 2;
+
+	if ((data[0] + (data[1] << 8) + 2) != ip_end)
+	{
+		printf("[!] Decompression error: invalid input size.\n");
+		return NULL;
+	}
+
+	outstream = malloc(MAX_DECOMP_BUF_SIZE);
+	memset(outstream, 0, MAX_DECOMP_BUF_SIZE);
+
+	while (pos < ip_end)
+	{
+		code = data[pos++];
+
+		for (int i = 0; i < 8 && pos < ip_end; i++)
+		{
+			code &= 0xFF;
+
+			if (code & 0x80)
+			{
+				if (op_pos < MAX_DECOMP_BUF_SIZE)
+					outstream[op_pos++] = data[pos++];
+			}
+			else
+			{
+				int k = data[pos++];
+
+				off = op_pos - 1;
+				off -= (k >> 4) | (data[pos++] << 4);
+
+				if (off < 0)
+				{
+					printf("[!] Decompression error: invalid offset.\n");
+					free(outstream);
+					return NULL;
+				}
+
+				for (int j = (k & 0x0F) + 3; j && op_pos < MAX_DECOMP_BUF_SIZE; j--)
+				{
+					outstream[op_pos++] = outstream[off++];
+				}
+			}
+
+			code <<= 1;
+		}
+	}
+
+	*out_size = op_pos;
+
+	return outstream;
+}
+
 uint32_t addSum(uint8_t* data, u32 len)
 {
 	uint32_t sum = 0;
@@ -320,6 +378,15 @@ int main(int argc, char **argv)
 		}
 
 		decrypt_data(data+0x18, saveBufferLen, ProfileKey);
+
+		uint32_t decompSize = 0;
+		uint8_t* decompressedData = lz77_DecompressData(data + 0x44, saveBufferLen, &decompSize);
+		if (decompressedData)
+		{
+			printf("[*] Decompressed Size: %d bytes\n\n", decompSize);
+			memcpy(data + 0x44, decompressedData, decompSize);
+			free(decompressedData);
+		}
 	}
 	else
 	{
