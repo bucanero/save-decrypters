@@ -466,6 +466,14 @@ int main(int argc, char **argv)
 			printf("[*] Decompressed Size: %d bytes\n\n", decompSize);
 			memcpy(data + 0x44, decompressedData, decompSize);
 			free(decompressedData);
+			
+			// Update saveBufferLen to reflect the decompressed size
+			saveBufferLen = decompSize;
+			*(u32*)(data+8) = ES32(saveBufferLen);
+			
+			// Update save data length (saveBufferLen + HeaderLength)
+			saveDataLen = saveBufferLen + HeaderLength;
+			*(u32*)(data+0x0C) = ES32(saveDataLen);
 		}
 	}
 	else
