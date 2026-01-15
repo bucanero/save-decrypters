@@ -285,6 +285,86 @@ uint8_t* lz77_DecompressData(uint8_t* data, int ip_end, uint32_t *out_size)
 	return outstream;
 }
 
+uint8_t* lz77_CompressData(uint8_t* data, uint32_t in_size, uint32_t *out_size)
+{
+	uint8_t* outstream;
+	uint32_t op_pos = 0;
+	uint32_t ip_pos = 0;
+	uint32_t max_out_size = in_size + (in_size / 8) + 256; // Worst case: all literals + control bytes + header
+	
+	outstream = malloc(max_out_size);
+	memset(outstream, 0, max_out_size);
+	
+	// Reserve space for size header (will be written at the end)
+	op_pos = 2;
+	
+	while (ip_pos < in_size)
+	{
+		uint8_t code = 0;
+		uint32_t code_pos = op_pos++;
+		
+		for (int i = 0; i < 8 && ip_pos < in_size; i++)
+		{
+			int best_len = 0;
+			int best_off = 0;
+			
+			// Search for matches in the sliding window (up to 4096 bytes back)
+			int search_start = (ip_pos > 4095) ? ip_pos - 4095 : 0;
+			
+			for (int j = search_start; j < (int)ip_pos; j++)
+			{
+				int match_len = 0;
+				
+				// Count matching bytes
+				while (match_len < 18 && 
+				       (ip_pos + match_len) < in_size && 
+				       data[j + match_len] == data[ip_pos + match_len])
+				{
+					match_len++;
+				}
+				
+				// Only consider matches of length 3 or more
+				if (match_len >= 3 && match_len > best_len)
+				{
+					best_len = match_len;
+					best_off = ip_pos - j;
+				}
+			}
+			
+			if (best_len >= 3 && best_len <= 18)
+			{
+				// Encode as back-reference (bit = 0)
+				// Length: best_len - 3 (stored in low 4 bits)
+				// Offset: best_off - 1 (stored in 12 bits across 2 bytes)
+				int offset = best_off - 1;
+				int length = best_len - 3;
+				
+				outstream[op_pos++] = ((offset & 0x0F) << 4) | (length & 0x0F);
+				outstream[op_pos++] = (offset >> 4) & 0xFF;
+				
+				ip_pos += best_len;
+			}
+			else
+			{
+				// Encode as literal (bit = 1)
+				code |= (1 << (7 - i));
+				outstream[op_pos++] = data[ip_pos++];
+			}
+		}
+		
+		outstream[code_pos] = code;
+	}
+	
+	// Write the size header (compressed size - 2)
+	uint32_t compressed_size = op_pos - 2;
+	outstream[0] = compressed_size & 0xFF;
+	outstream[1] = (compressed_size >> 8) & 0xFF;
+	
+	*out_size = op_pos;
+	
+	return outstream;
+}
+
 uint32_t addSum(uint8_t* data, u32 len)
 {
 	uint32_t sum = 0;
