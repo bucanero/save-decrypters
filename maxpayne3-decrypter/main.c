@@ -285,6 +285,89 @@ uint8_t* lz77_DecompressData(uint8_t* data, int ip_end, uint32_t *out_size)
 	return outstream;
 }
 
+uint8_t* lz77_CompressData(uint8_t* data, uint32_t in_size, uint32_t *out_size)
+{
+	uint8_t* outstream;
+	uint32_t op_pos = 0;
+	uint32_t ip_pos = 0;
+	// Worst case: all literals (1 byte each + 1 control byte per 8 literals) + 2 byte header
+	uint32_t max_out_size = in_size + (in_size / 8) + 16;
+	
+	outstream = malloc(max_out_size);
+	memset(outstream, 0, max_out_size);
+	
+	// Reserve space for size header (will be written at the end)
+	op_pos = 2;
+	
+	while (ip_pos < in_size)
+	{
+		uint8_t code = 0;
+		uint32_t code_pos = op_pos++;
+		
+		for (int i = 0; i < 8 && ip_pos < in_size; i++)
+		{
+			int best_len = 0;
+			int best_off = 0;
+			
+			// Search for matches in the sliding window (up to 4096 bytes back)
+			// The offset is stored in 12 bits, allowing values 0-4095, which represents
+			// actual offsets of 1-4096 bytes back
+			int search_start = (ip_pos > 4096) ? ip_pos - 4096 : 0;
+			
+			for (int j = search_start; j < (int)ip_pos; j++)
+			{
+				int match_len = 0;
+				
+				// Count matching bytes
+				while (match_len < 18 && 
+				       (ip_pos + match_len) < in_size && 
+				       data[j + match_len] == data[ip_pos + match_len])
+				{
+					match_len++;
+				}
+				
+				// Only consider matches of length 3 or more
+				if (match_len >= 3 && match_len > best_len)
+				{
+					best_len = match_len;
+					best_off = ip_pos - j;
+				}
+			}
+			
+			if (best_len >= 3 && best_len <= 18)
+			{
+				// Encode as back-reference (bit = 0)
+				// Length: best_len - 3 (stored in low 4 bits)
+				// Offset: best_off - 1 (stored in 12 bits across 2 bytes)
+				int offset = best_off - 1;
+				int length = best_len - 3;
+				
+				outstream[op_pos++] = ((offset & 0x0F) << 4) | (length & 0x0F);
+				outstream[op_pos++] = (offset >> 4) & 0xFF;
+				
+				ip_pos += best_len;
+			}
+			else
+			{
+				// Encode as literal (bit = 1)
+				code |= (1 << (7 - i));
+				outstream[op_pos++] = data[ip_pos++];
+			}
+		}
+		
+		outstream[code_pos] = code;
+	}
+	
+	// Write the size header (compressed size - 2)
+	uint32_t compressed_size = op_pos - 2;
+	outstream[0] = compressed_size & 0xFF;
+	outstream[1] = (compressed_size >> 8) & 0xFF;
+	
+	*out_size = op_pos;
+	
+	return outstream;
+}
+
 uint32_t addSum(uint8_t* data, u32 len)
 {
 	uint32_t sum = 0;
@@ -386,10 +469,53 @@ int main(int argc, char **argv)
 			printf("[*] Decompressed Size: %d bytes\n\n", decompSize);
 			memcpy(data + 0x44, decompressedData, decompSize);
 			free(decompressedData);
+			
+			// Update saveBufferLen to reflect the decompressed size
+			saveBufferLen = decompSize;
+			*(u32*)(data+8) = ES32(saveBufferLen);
+			
+			// Update save data length (saveBufferLen + HeaderLength)
+			saveDataLen = saveBufferLen + HeaderLength;
+			*(u32*)(data+0x0C) = ES32(saveDataLen);
 		}
 	}
 	else
 	{
+		// Try to compress the data before encryption
+		uint32_t compressedSize = 0;
+		uint8_t* compressedData = lz77_CompressData(data + 0x44, saveBufferLen, &compressedSize);
+		
+		if (compressedData)
+		{
+			printf("[*] Compressed Size: %d bytes (from %d bytes)\n", compressedSize, saveBufferLen);
+			
+			// Check if compressed size fits in the allocated buffer
+			// The buffer at data + 0x44 has (len - 0x44) bytes available
+			if (compressedSize <= saveBufferLen && compressedSize <= (len - 0x44))
+			{
+				// Copy compressed data back
+				memcpy(data + 0x44, compressedData, compressedSize);
+				
+				// Update the save buffer length
+				saveBufferLen = compressedSize;
+				*(u32*)(data+8) = ES32(saveBufferLen);
+				
+				// Update save data length (saveBufferLen + HeaderLength)
+				saveDataLen = saveBufferLen + HeaderLength;
+				*(u32*)(data+0x0C) = ES32(saveDataLen);
+			}
+			else
+			{
+				printf("[!] Warning: Compressed data is larger than original or available buffer, skipping compression\n");
+			}
+			
+			free(compressedData);
+		}
+		else
+		{
+			printf("[!] Warning: Compression failed, encrypting uncompressed data\n");
+		}
+		
 		encrypt_data(data+0x18, saveBufferLen, ProfileKey);
 
 		storedSum = addSum(data + 0x44, saveBufferLen);

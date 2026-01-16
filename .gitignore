@@ -49,3 +49,16 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Backup files
+*.bak
+
+# Build artifacts - executables without extension
+*-decrypter
+*-checksum-fixer
+*-cheat-decrypter
+*-unpacker
+*-checksum
+
+# CodeQL artifacts
+_codeql_detected_source_root
