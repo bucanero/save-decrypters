@@ -21,7 +21,7 @@
 #include <string.h>
 #include "hmac-sha1.h"
 
-int gc_hmac_sha1(const void *key, uint16_t keylen, const void *in, uint32_t inlen, void *resbuf)
+static int gc_hmac_sha1(const void *key, uint16_t keylen, const void *in, uint32_t inlen, void *resbuf)
 {
 	hmac_sha1(resbuf, key, keylen, in, inlen);
 	return 1;
@@ -33,8 +33,7 @@ int gc_hmac_sha1(const void *key, uint16_t keylen, const void *in, uint32_t inle
    desired derived output length DKLEN.  Output buffer is DK which
    must have room for at least DKLEN octets.  The output buffer will
    be filled with the derived data.  */
-int
-gc_pbkdf2_sha1 (const void *P, size_t Plen,
+int pbkdf2_sha1 (const void *P, size_t Plen,
                 const void *S, size_t Slen,
                 unsigned int c,
                 unsigned char *DK, size_t dkLen)
