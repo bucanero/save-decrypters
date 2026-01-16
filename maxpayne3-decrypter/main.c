@@ -152,13 +152,14 @@ void decrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 	Mp3_AesEcb(PKDF2Key3, headerData.blob_1, 0x20, MODE_DECRYPT);
 
 	memcpy(saveBuffer, &headerData, sizeof(headerData));
+	printf("[*] Data Hash: " SHA1_FMT(headerData.blob_1, "\n"));
 
 	if (memcmp(headerData.blob_1, hmacInitKey2, 0x20) != 0)
 	{
 		printf("[!] Warning: save data could not be verified.\n");
 	}
 
-	printf("[*] Decrypted File Successfully!\n\n");
+	printf("[*] Decrypted File Successfully!\n");
 	return;
 }
 
@@ -196,6 +197,10 @@ void encrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 
 	// derive key3
 	gc_pbkdf2_sha1(hmacInitKey2, sizeof(hmacInitKey2), saltBuffer, sizeof(saltBuffer), 2000, PKDF2Key3, sizeof(PKDF2Key3));
+	// store new header blob_1
+	printf("[*] Old Hash : " SHA1_FMT(headerData.blob_1, "\n"));
+	printf("[*] New Hash : " SHA1_FMT(hmacInitKey2, "\n"));
+	memcpy(headerData.blob_1, hmacInitKey2, 0x20);
 	// encrypt header blob_1 (hmac-sha1)
 	Mp3_AesEcb(PKDF2Key3, headerData.blob_1, 0x20, MODE_ENCRYPT);
 	Mp3_AesEcb(StaticAESKey, headerData.blob_1, 0x20, MODE_ENCRYPT);
@@ -228,13 +233,13 @@ void encrypt_data(uint8_t* saveBuffer, u32 saveLen, const char* ProfileKey)
 	return;
 }
 
-uint8_t* lz77_DecompressData(uint8_t* data, int ip_end, uint32_t *out_size)
+uint8_t* lz77_DecompressData(uint8_t* data, uint32_t in_size, uint32_t *out_size)
 {
 	uint8_t* outstream;
-	uint32_t op_pos = 0;
-	int code, off, pos = 2;
+	uint32_t pos = 2, op_pos = 0;
+	int code, off;
 
-	if ((data[0] + (data[1] << 8) + 2) != ip_end)
+	if ((data[0] + (data[1] << 8) + 2) != in_size)
 	{
 		printf("[!] Decompression error: invalid input size.\n");
 		return NULL;
@@ -243,11 +248,11 @@ uint8_t* lz77_DecompressData(uint8_t* data, int ip_end, uint32_t *out_size)
 	outstream = malloc(MAX_DECOMP_BUF_SIZE);
 	memset(outstream, 0, MAX_DECOMP_BUF_SIZE);
 
-	while (pos < ip_end)
+	while (pos < in_size)
 	{
 		code = data[pos++];
 
-		for (int i = 0; i < 8 && pos < ip_end; i++)
+		for (int i = 0; i < 8 && pos < in_size; i++)
 		{
 			code &= 0xFF;
 
@@ -395,7 +400,7 @@ int main(int argc, char **argv)
 	char ProfileKey[PROFILE_KEY_SIZE];
 	char *opt, *bak;
 
-	printf("\nmax-payne3-decrypter 0.1.0 - (c) 2025 by Bucanero\n\n");
+	printf("\nmax-payne3-decrypter 0.2.0 - (c) 2026 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{
@@ -464,20 +469,24 @@ int main(int argc, char **argv)
 
 		uint32_t decompSize = 0;
 		uint8_t* decompressedData = lz77_DecompressData(data + 0x44, saveBufferLen, &decompSize);
-		if (decompressedData)
+		if (!decompressedData)
 		{
-			printf("[*] Decompressed Size: %d bytes\n\n", decompSize);
-			memcpy(data + 0x44, decompressedData, decompSize);
-			free(decompressedData);
-			
-			// Update saveBufferLen to reflect the decompressed size
-			saveBufferLen = decompSize;
-			*(u32*)(data+8) = ES32(saveBufferLen);
-			
-			// Update save data length (saveBufferLen + HeaderLength)
-			saveDataLen = saveBufferLen + HeaderLength;
-			*(u32*)(data+0x0C) = ES32(saveDataLen);
+			printf("[!] ERROR: Decompression failed, can't decrypt data\n");
+			return -1;
 		}
+
+		printf("[*] Compressed Size: %d bytes\n", saveBufferLen);
+		printf("[*] Decompressed Size: %d bytes\n\n", decompSize);
+		memcpy(data + 0x44, decompressedData, decompSize);
+		free(decompressedData);
+		
+		// Update saveBufferLen to reflect the decompressed size
+		saveBufferLen = decompSize;
+		*(u32*)(data+8) = ES32(saveBufferLen);
+		
+		// Update save data length (saveBufferLen + HeaderLength)
+		saveDataLen = saveBufferLen + HeaderLength;
+		*(u32*)(data+0x0C) = ES32(saveDataLen);
 	}
 	else
 	{
@@ -485,37 +494,36 @@ int main(int argc, char **argv)
 		uint32_t compressedSize = 0;
 		uint8_t* compressedData = lz77_CompressData(data + 0x44, saveBufferLen, &compressedSize);
 		
-		if (compressedData)
+		if (!compressedData)
 		{
-			printf("[*] Compressed Size: %d bytes (from %d bytes)\n", compressedSize, saveBufferLen);
-			
-			// Check if compressed size fits in the allocated buffer
-			// The buffer at data + 0x44 has (len - 0x44) bytes available
-			if (compressedSize <= saveBufferLen && compressedSize <= (len - 0x44))
-			{
-				// Copy compressed data back
-				memcpy(data + 0x44, compressedData, compressedSize);
-				
-				// Update the save buffer length
-				saveBufferLen = compressedSize;
-				*(u32*)(data+8) = ES32(saveBufferLen);
-				
-				// Update save data length (saveBufferLen + HeaderLength)
-				saveDataLen = saveBufferLen + HeaderLength;
-				*(u32*)(data+0x0C) = ES32(saveDataLen);
-			}
-			else
-			{
-				printf("[!] Warning: Compressed data is larger than original or available buffer, skipping compression\n");
-			}
-			
-			free(compressedData);
+			printf("[!] ERROR: Compression failed, can't encrypt data\n");
+			return -1;
 		}
-		else
+
+		printf("[*] Compressed Size: %d bytes (from %d bytes)\n", compressedSize, saveBufferLen);
+			
+		// Check if compressed size fits in the allocated buffer
+		// The buffer at data + 0x44 has (len - 0x44) bytes available
+		if (compressedSize > (len - 0x44))
 		{
-			printf("[!] Warning: Compression failed, encrypting uncompressed data\n");
+			printf("[!] ERROR: Compressed data is larger than available file buffer\n");
+			return -1;
 		}
+
+		// Copy compressed data back
+		memcpy(data + 0x44, compressedData, compressedSize);
+		free(compressedData);
 		
+		// Update the save buffer length
+		saveBufferLen = compressedSize;
+		*(u32*)(data+8) = ES32(saveBufferLen);
+		
+		// Update save data length (saveBufferLen + HeaderLength)
+		saveDataLen = saveBufferLen + HeaderLength;
+		*(u32*)(data+0x0C) = ES32(saveDataLen);
+
+		printf("[*] New Save Buffer Length: %d\n", saveBufferLen);
+		printf("[*] New Save Data Length: %d\n", saveDataLen);
 		encrypt_data(data+0x18, saveBufferLen, ProfileKey);
 
 		storedSum = addSum(data + 0x44, saveBufferLen);
