@@ -54,11 +54,11 @@ dkms.conf
 *.bak
 
 # Build artifacts - executables without extension
-*-decrypter
-*-checksum-fixer
-*-cheat-decrypter
-*-unpacker
-*-checksum
+/*/*-decrypter
+/*/*-checksum-fixer
+/*/*-cheat-decrypter
+/*/*-unpacker
+/*/*-checksum
 
 # CodeQL artifacts
 _codeql_detected_source_root
