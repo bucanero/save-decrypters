@@ -242,15 +242,14 @@ class AES:
         tmp_keys = [key_columns[4*i : 4*(i+1)] for i in range(len(key_columns) // 4)]
         # CUSTOM MODIFICATION
         for item in tmp_keys:
-            for x in range(len(item)):
-                item[x] = bytearray(item[x])
+            for k in range(len(item)):
+                j = bytearray(item[k])
                 # Swap byte order for each 4-byte word
-                j = item[x][0]
-                item[x][0] = item[x][3]
-                item[x][3] = j
-                j = item[x][1]
-                item[x][1] = item[x][2]
-                item[x][2] = j
+                j[0] = item[k][3]
+                j[1] = item[k][2]
+                j[2] = item[k][1]
+                j[3] = item[k][0]
+                item[k] = j
 
         return tmp_keys
 
