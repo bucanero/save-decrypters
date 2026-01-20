@@ -12,6 +12,12 @@
 
 #define RE2R_SECRET_KEY "K<>$cl%isqA|~nV4W5~3z_Q)j]5DHdB9sb{cI9Hn&Gqc-zO8O6zf"
 #define RE4R_SECRET_KEY "wa9Ui_tFKa_6E_D5gVChjM69xMKDX8QxEykYKhzb4cRNLknpCZUra"
+#define HEADER_SIZE 0x10
+/*
+ * Resident Evil 7 PC:
+ * #define RE7_PC_SECRET_KEY "hHGb4nS653aRT29jy"
+ * #define HEADER_SIZE 0x20
+ */
 
 void swap_u32_data(u8 *data, u32 size)
 {
@@ -27,7 +33,7 @@ void decrypt_data(u8 *data, u32 size)
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
 	// header
-	u8 header[0x10] = {0};
+	u8 header[HEADER_SIZE] = {0};
 	memcpy(header, data, sizeof(header));
     swap_u32_data(header, sizeof(header));
 	blowfish_decrypt_buffer(header, sizeof(header));
@@ -48,10 +54,10 @@ void encrypt_data(u8 *data, u32 size)
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
 	// header
-	swap_u32_data(data, 0x10);
-	blowfish_encrypt_buffer(data, 0x10);
-	blowfish_decrypt_buffer_cbc(data, 0x10, 0);
-	swap_u32_data(data, 0x10);
+	swap_u32_data(data, HEADER_SIZE);
+	blowfish_encrypt_buffer(data, HEADER_SIZE);
+	blowfish_decrypt_buffer_cbc(data, HEADER_SIZE, 0);
+	swap_u32_data(data, HEADER_SIZE);
 
 	// data
 	swap_u32_data(data, size);
