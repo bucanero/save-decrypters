@@ -44,6 +44,7 @@ Tools to decrypt specific PS4 save-games:
 | Dark Souls Remastered (PS4) | [darksouls-remaster-decrypter](./darksouls-remaster-decrypter) |
 | Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
 | Grand Theft Auto 5 (PS4) | [gta5-decrypter](./gta5-decrypter) |
+| L.A. Noire | [la-noire-decrypter](./la-noire-decrypter) |
 | Like a Dragon: Ishin! (PS4) | [rgg-decrypter](./rgg-decrypter) |
 | MC4 Cheat Decrypter (PS4) | [mc4-cheat-decrypter](./mc4-cheat-decrypter) |
 | Metal Gear Solid V: The Phantom Pain (PS4) | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
@@ -110,6 +111,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Resident Evil 3 Remake (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Resident Evil 7: Biohazard (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Resident Evil Resistance (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
+| Resident Evil Village (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Samurai Warriors 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Sengoku Musou 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Tears to Tiara 2 (PS3) | [tears2-checksum-fixer](./tears2-checksum-fixer) |

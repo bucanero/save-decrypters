@@ -42,8 +42,10 @@ void show_usage(const char* cmd)
 	printf(" -d            Decrypt File\n");
 	printf(" -e            Encrypt File\n");
 	printf("TYPE\n");
-	printf(" -s            SaveData\n");
-	printf(" -p            Profile\n");
+	printf(" -1            SaveData (PS3)\n");
+	printf(" -2            Profile  (PS3)\n");
+	printf(" -3            SaveData (PS4)\n");
+	printf(" -4            Profile  (PS4)\n\n");
 }
 
 int is_valid_option(char *option)
@@ -56,7 +58,7 @@ int is_valid_option(char *option)
 
 int main(int argc, char *argv[])
 {
-	printf("\n\nla_noire_save_decrypter 0.1.0 (c) 2014 by Red-EyeX32\n\n");
+	printf("\n\nla_noire_save_decrypter 0.2.0 (c) 2026 by Red-EyeX32 / Bucanero\n\n");
 
 	if (argc != 4 || !is_valid_option(argv[1])) {
 		show_usage(argv[0]);
@@ -77,7 +79,10 @@ int main(int argc, char *argv[])
 	fseek(fp, 0, SEEK_SET);
 	fread(fileData, fileSize, 1, fp);
 
-	if (strcmp(argv[2], "-p") == 0)
+	if (strcmp(argv[2], "-1") == 0 || strcmp(argv[2], "-2") == 0)
+		isPS3 = 1;
+
+	if (strcmp(argv[2], "-2") == 0 || strcmp(argv[2], "-4") == 0)
 		la_noire_key = la_noire_profile_aes_key;
 
 	if (strcmp(argv[1], "-d") == 0)

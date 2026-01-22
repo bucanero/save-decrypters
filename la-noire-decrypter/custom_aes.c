@@ -71,7 +71,7 @@ NOTE:   String length must be evenly divisible by 16byte (str_len % 16 == 0)
 // state - array holding the intermediate results during decryption.
 typedef uint8_t state_t[4][4];
 
-
+int isPS3 = 0;
 
 // The lookup-tables are marked const so they can be placed in read-only storage instead of RAM
 // The numbers below can be computed dynamically trading ROM for RAM -
@@ -151,11 +151,21 @@ static void KeyExpansion(uint8_t* RoundKey, const uint8_t* Key)
     // The first round key is the key itself.
     for (i = 0; i < Nk; ++i)
     {
-        // Swap byte order when copying the first 16 bytes (4 words)
-        RoundKey[(i * 4) + 0] = Key[(i * 4) + 3]; // Swap byte order (little-endian to big-endian)
-        RoundKey[(i * 4) + 1] = Key[(i * 4) + 2];
-        RoundKey[(i * 4) + 2] = Key[(i * 4) + 1];
-        RoundKey[(i * 4) + 3] = Key[(i * 4) + 0];
+        if (isPS3)
+        {
+            // Swap byte order when copying the first 16 bytes (4 words)
+            RoundKey[(i * 4) + 0] = Key[(i * 4) + 3]; // Swap byte order (little-endian to big-endian)
+            RoundKey[(i * 4) + 1] = Key[(i * 4) + 2];
+            RoundKey[(i * 4) + 2] = Key[(i * 4) + 1];
+            RoundKey[(i * 4) + 3] = Key[(i * 4) + 0];
+        }
+        else
+        {
+            RoundKey[(i * 4) + 0] = Key[(i * 4) + 0];
+            RoundKey[(i * 4) + 1] = Key[(i * 4) + 1];
+            RoundKey[(i * 4) + 2] = Key[(i * 4) + 2];
+            RoundKey[(i * 4) + 3] = Key[(i * 4) + 3];
+        }
     }
 
     // All other round keys are found from the previous round keys.
@@ -212,7 +222,7 @@ static void KeyExpansion(uint8_t* RoundKey, const uint8_t* Key)
         RoundKey[j + 3] = RoundKey[k + 3] ^ tempa[3];
     }
 
-    for (int i = 0; i < Nb * (Nr + 1); i++) {
+    for (int i = 0; isPS3 && i < Nb * (Nr + 1); i++) {
         j = i * 4;
 
         // Swap byte order for each 4-byte word (little-endian <-> big-endian)
