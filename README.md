@@ -110,6 +110,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Resident Evil 3 Remake (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Resident Evil 7: Biohazard (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Resident Evil Resistance (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
+| Resident Evil Village (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Samurai Warriors 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Sengoku Musou 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Tears to Tiara 2 (PS3) | [tears2-checksum-fixer](./tears2-checksum-fixer) |
