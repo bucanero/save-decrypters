@@ -30,7 +30,7 @@ release:
 		file="$$dir/$$base"; \
 		if [ -f "$$file" ]; then \
 			echo "✓ Adding $$file"; \
-			7z a release.zip "$$file"; \
+			7z a release.zip "$$file*" >/dev/null; \
 		else \
 			echo "✗ Skipping $$file (not found)"; \
 		fi; \
