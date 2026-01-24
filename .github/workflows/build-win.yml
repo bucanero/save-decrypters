@@ -35,7 +35,7 @@ jobs:
       - name: Install MinGW requirements
         run: |
           echo "$GITHUB_WORKSPACE"
-          #pacman -S --noconfirm ${{ matrix.package }}-python3-setuptools
+          pacman -S --noconfirm zip
           # build the project
           #python3 setup.py install
       - name: Build binaries
@@ -53,4 +53,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: build-${{ steps.slug.outputs.sha8 }}-${{matrix.mingw}}
-          path: package.zip
+          path: release.zip
