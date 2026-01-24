@@ -42,8 +42,7 @@ jobs:
           make
 
       - name: Get short SHA
-        id: slug
-        run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
+        run: echo "sha_name=$(echo ${GITHUB_SHA} | cut -c1-8)" >> $GITHUB_ENV
     
       - name: Pack release
         run: |
@@ -51,5 +50,5 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: build-${{ steps.slug.outputs.sha8 }}-${{matrix.mingw}}
+          name: build-${{ env.sha_name }}-${{matrix.mingw}}
           path: release.zip
