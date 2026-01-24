@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o kh25remix-checksum-fixer main.c
+	gcc -D _GNU_SOURCE -o kh25-checksum-fixer main.c
 
 clean:
-	-rm -f kh25remix-checksum-fixer
+	-rm -f kh25-checksum-fixer

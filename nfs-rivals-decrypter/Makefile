@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o nfsrivals-decrypter main.c
+	gcc -D _GNU_SOURCE -o nfs-rivals-decrypter main.c
 
 clean:
-	-rm -f nfsrivals-decrypter
+	-rm -f nfs-rivals-decrypter

@@ -44,7 +44,7 @@ Tools to decrypt specific PS4 save-games:
 | Dark Souls Remastered (PS4) | [darksouls-remaster-decrypter](./darksouls-remaster-decrypter) |
 | Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
 | Grand Theft Auto 5 (PS4) | [gta5-decrypter](./gta5-decrypter) |
-| L.A. Noire | [la-noire-decrypter](./la-noire-decrypter) |
+| L.A. Noire (PS4) | [la-noire-decrypter](./la-noire-decrypter) |
 | Like a Dragon: Ishin! (PS4) | [rgg-decrypter](./rgg-decrypter) |
 | MC4 Cheat Decrypter (PS4) | [mc4-cheat-decrypter](./mc4-cheat-decrypter) |
 | Metal Gear Solid V: The Phantom Pain (PS4) | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
@@ -58,7 +58,7 @@ Tools to decrypt specific PS4 save-games:
 | Uncharted 4: A Thief's End (PS4) |  [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted: The Lost Legacy (PS4) |  [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted: The Nathan Drake Collection (PS4) |  [naughtydog-decrypter](./naughtydog-decrypter) |
-| Red Dead Redemption 2 (PS4) | [ps4-rdr2-decrypter](./ps4-rdr2-decrypter) |
+| Red Dead Redemption 2 (PS4) | [rdr2-decrypter](./rdr2-decrypter) |
 | Resident Evil Revelations 2 (PS4) | [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter) |
 | Resident Evil 2 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |
 | Resident Evil 4 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |

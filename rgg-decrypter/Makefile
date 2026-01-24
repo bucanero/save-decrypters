@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o rgg-ishin-decrypter main.c
+	gcc -D _GNU_SOURCE -o rgg-decrypter main.c
 
 clean:
-	-rm -f rgg-ishin-decrypter
+	-rm -f rgg-decrypter

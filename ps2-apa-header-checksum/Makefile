@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o ps2-apa-checksum main.c
+	gcc -D _GNU_SOURCE -o ps2-apa-header-checksum main.c
 
 clean:
-	-rm -f ps2-apa-checksum
+	-rm -f ps2-apa-header-checksum
