@@ -35,7 +35,6 @@ jobs:
       - name: Install MinGW requirements
         run: |
           echo "$GITHUB_WORKSPACE"
-          7z a pepe.zip *.md
           # build the project
           #python3 setup.py install
       - name: Build binaries
