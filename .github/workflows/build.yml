@@ -38,43 +38,11 @@ jobs:
       id: slug
       run: echo "::set-output name=sha8::$(echo ${GITHUB_SHA} | cut -c1-8)"
     
-    - name: Compress output
+    - name: Pack release
       run: |
-        tar -zcvf build.tar.gz \
-            alien-checksum-fixer/alien-checksum-fixer \
-            castlevania-checksum-fixer/castlevania-checksum-fixer \
-            cod-blackops-decrypter/cod-blackops-decrypter \
-            cod-checksum-fixer/cod-checksum-fixer \
-            dbz-checksum-fixer/dbz-checksum-fixer \
-            deadspace-checksum-fixer/ds-checksum-fixer \
-            diablo3-decrypter/diablo3-decrypter \
-            digimon-checksum-fixer/digimon-checksum-fixer \
-            dmc-decrypter/dmc-decrypter \
-            ducktales-checksum-fixer/ducktales-checksum-fixer \
-            dw8xl-decrypter/dw8xl-decrypter \
-            ff13-decrypter/ff13-decrypter \
-            ffxhd-checksum-fixer/ffxhd-checksum-fixer \
-            gta5-decrypter/gta5-decrypter \
-            kh25-checksum-fixer/kh25remix-checksum-fixer \
-            lego-checksum-fixer/lego-checksum-fixer \
-            mgs-hd-decrypter/mgs-hd-decrypter \
-            mgs-pw-decrypter/mgs-pw-decrypter \
-            mgs5-tpp-decrypter/mgs5-tpp-decrypter \
-            naughtydog-decrypter/naughtydog-decrypter \
-            nfs-rivals-decrypter/nfsrivals-decrypter \
-            nfs-undercover-decrypter/nfs-undercover-decrypter \
-            prototype-checksum-fixer/prototype-checksum-fixer \
-            ps4-borderlands3-decrypter/ps4-borderlands3-decrypter \
-            ps4-rdr2-decrypter/rdr2-decrypter \
-            ps4-re-rev2-decrypter/re-revelations2-decrypter \
-            re-remaster-decrypter/re-remaster-decrypter \
-            re-revelations2-decrypter/re-revelations2-decrypter \
-            silent-hill3-decrypter/silent-hill3-decrypter \
-            sw4-checksum-fixer/sw4-checksum-fixer \
-            tears2-checksum-fixer/tears2-checksum-fixer \
-            toz-checksum-fixer/toz-checksum-fixer
+        make release
 
     - uses: actions/upload-artifact@v4
       with:
         name: build-${{ steps.slug.outputs.sha8 }}-${{matrix.os}}
-        path: build.tar.gz
+        path: release.zip
