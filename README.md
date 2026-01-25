@@ -49,6 +49,7 @@ Tools to decrypt specific PS4 save-games:
 | MC4 Cheat Decrypter (PS4) | [mc4-cheat-decrypter](./mc4-cheat-decrypter) |
 | Metal Gear Solid V: The Phantom Pain (PS4) | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
 | Metal Gear Solid V: Ground Zeroes (PS4) | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
+| Monster Hunter World (PS4) | [monsterhunter-world-decrypter](./monsterhunter-world-decrypter) |
 | Nioh 2 (PS4) | [nioh2-decrypter](./nioh2-decrypter) |
 | No Man's Sky (PS4) | [ps4-nms-unpacker](./ps4-nms-unpacker) |
 | The Last of Us Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
