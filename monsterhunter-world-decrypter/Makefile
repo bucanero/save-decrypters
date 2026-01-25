@@ -1,5 +1,5 @@
-# Monster Hunter 2/3 PSP Save Decrypter
-# (c)2023 Damian Parrino
+# Monster Hunter World PS4 Save Decrypter
+# (c)2026 EnderHDMC
 
 all: decrypter
 
