@@ -12,7 +12,7 @@ OPTIONS        Explanation:
 
 ### Hash
 
-**Note:** the tool also updates the custom SHA1 integrity hash.
+**Note:** the tool also updates the custom CRC32 integrity hash.
 
 ### Credits
 

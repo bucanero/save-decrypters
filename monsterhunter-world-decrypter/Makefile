@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o mhw-ps4-decrypter main.c
+	gcc -D _GNU_SOURCE -o monsterhunter-world-decrypter main.c
 
 clean:
-	-rm -f mhw-ps4-decrypter
+	-rm -f monsterhunter-world-decrypter
