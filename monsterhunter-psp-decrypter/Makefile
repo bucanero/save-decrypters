@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o monsterhunter-decrypter main.c
+	gcc -D _GNU_SOURCE -o monsterhunter-psp-decrypter main.c
 
 clean:
-	-rm -f monsterhunter-decrypter
+	-rm -f monsterhunter-psp-decrypter
