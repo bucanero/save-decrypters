@@ -73,9 +73,9 @@ Tools to decrypt specific PSP save-games:
 | Game | Tool |
 | :--- | :--- |
 | Patapon 3 (PSP) | [patapon3-decrypter](./patapon3-decrypter) |
-| Monster Hunter Freedom Unite (PSP) | [monsterhunter-decrypter](./monsterhunter-decrypter) |
-| Monster Hunter Portable 2nd G (PSP) | [monsterhunter-decrypter](./monsterhunter-decrypter) |
-| Monster Hunter Portable 3rd (PSP) | [monsterhunter-decrypter](./monsterhunter-decrypter) |
+| Monster Hunter Freedom Unite (PSP) | [monsterhunter-psp-decrypter](./monsterhunter-psp-decrypter) |
+| Monster Hunter Portable 2nd G (PSP) | [monsterhunter-psp-decrypter](./monsterhunter-psp-decrypter) |
+| Monster Hunter Portable 3rd (PSP) | [monsterhunter-psp-decrypter](./monsterhunter-psp-decrypter) |
 
 ## Checksum fixers
 
