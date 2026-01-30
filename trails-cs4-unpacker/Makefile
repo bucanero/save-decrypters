@@ -1,5 +1,5 @@
-# Need For Speed: Rivals PS3 Save Decrypter
-# (c)2020 Damian Parrino
+# The Legend of Heroes: Trails of Cold Steel IV - Save Unpacker
+# (c)2026 Damian Parrino
 
 all: decrypter
 
