@@ -309,7 +309,6 @@ static bool CompressType1(char* compressedData,
     return true;
 }
 
-
 void* decompress_data(void* data, size_t* size)
 {
 	uint32_t original_size = ReadUInt32((char*)data);
