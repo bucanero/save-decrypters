@@ -63,7 +63,7 @@ uint32_t ReadUInt32(const char* buffer)
 		   ((uint32_t)(uint8_t)(buffer[3]) << 24);
 }
 
-static bool DecompressType1(char* uncompressedDataBuffer,
+static bool DecompressType1(char* target,
                             uint32_t uncompressedSize,
                             const char* compressedData,
                             uint32_t compressedSize)
@@ -74,9 +74,6 @@ static bool DecompressType1(char* uncompressedDataBuffer,
 
     // decompression algorithm derived from 0x41aa50 in CS2
     // very simple, can only copy verbatim bytes or reference already written bytes
-    char* target = uncompressedDataBuffer;
-    // the game ignores the target size here...
-    const uint32_t targetSize = ReadUInt32(&compressedData[0]);
     const uint32_t sourceSize = ReadUInt32(&compressedData[4]);
     // this is in fact read and compared as 32-bit, very odd
     const uint32_t backrefByte = ReadUInt32(&compressedData[8]);
