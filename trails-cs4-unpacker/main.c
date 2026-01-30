@@ -375,8 +375,12 @@ void* compress_data(void* data, size_t* size)
 		return data;
 	}
 
-	printf("[*] Encrypted File Successfully!\n\n");
 	*size = compressed_size;
+	free(data);
+
+	printf("[*] Total Compressed Size Is %d bytes\n", compressed_size);
+	printf("[*] Packed File Successfully!\n\n");
+
 	return compressed_data;
 }
 
