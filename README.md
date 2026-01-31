@@ -118,7 +118,10 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Sengoku Musou 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Tears to Tiara 2 (PS3) | [tears2-checksum-fixer](./tears2-checksum-fixer) |
 | Tales of Zestiria (PS3) | [toz-checksum-fixer](./toz-checksum-fixer) |
+| The Legend of Heroes: Beyond the Horizon (PS4) | [trails-checksum-fixer](./trails-checksum-fixer) |
 | The Legend of Heroes: Trails from Zero (PS4) | [trails-zero-checksum-fixer](./trails-zero-checksum-fixer) |
+| The Legend of Heroes: Trails through Daybreak (PS4) | [trails-checksum-fixer](./trails-checksum-fixer) |
+| The Legend of Heroes: Trails through Daybreak II (PS4) | [trails-checksum-fixer](./trails-checksum-fixer) |
 | The Legend of Heroes: Trails to Azure (PS4) | [trails-zero-checksum-fixer](./trails-zero-checksum-fixer) |
 
 ## License
