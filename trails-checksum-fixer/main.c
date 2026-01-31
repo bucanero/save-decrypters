@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 	// Write new checksum to file data
 	memcpy(data + 8, &crc, sizeof(u32));
 
-	//	if (write_buffer(argv[1], data, len) == 0)
+	if (write_buffer(argv[1], data, len) == 0)
 		printf("[*] Successfully Wrote New Checksum!\n\n");
 
 	free(bak);
