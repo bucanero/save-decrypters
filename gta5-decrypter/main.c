@@ -14,7 +14,12 @@ const u8 GTAV_PS3_KEY[32] = {
 		0x0D, 0x80, 0x26, 0x48, 0xDB, 0x37, 0xB9, 0xED, 0x0F, 0x48, 0xC5, 0x73, 0x42, 0xC0, 0x22, 0xF5
 	};
 
-int search_data(const u8* data, size_t size, int start, const char* search, int len)
+const u8 CHKS_HEADER[8] = {
+	'C', 'H', 'K', 'S',
+	0x00, 0x00, 0x00, 0x14
+};
+
+int search_data(const u8* data, size_t size, int start, const u8* search, int len)
 {
 	for (size_t i = start; i <= (size-len); i++)
 		if (memcmp(data + i, search, len) == 0)
@@ -149,7 +154,7 @@ int main(int argc, char **argv)
 		// fix general checksum
 
 		uint32_t chks, chks_len;
-		int chks_off = search_data(data, len, 0, "CHKS", 5);
+		int chks_off = search_data(data, len, 0, CHKS_HEADER, sizeof(CHKS_HEADER));
 	
 		if (chks_off < 0)
 		{
@@ -157,12 +162,9 @@ int main(int argc, char **argv)
 			return -1;
 		}
 	
-		chks     = ES32(*(uint32_t*)(data + chks_off + 4));
+		chks     = ES32(*(uint32_t*)(data + chks_off + 4)); // 0x14
 		chks_len = ES32(*(uint32_t*)(data + chks_off + 8));
 	
-		if (chks != 0x14)
-			printf(" ! CHKS Header Mismatch!\n   > Expected: %08X\n   > Detected: %08X\n\n", 0x14, chks);
-
 		printf(" - CHKS Offset : 0x%X\n", chks_off);
 		printf(" - CHKS Size   : 0x%X (%d bytes)\n", chks_len, chks_len);
 		printf(" - Old Checksum: %08X\n", ES32(*(uint32_t*)(data + chks_off + 0xC)));
