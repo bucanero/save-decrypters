@@ -78,6 +78,14 @@ Tools to decrypt specific PSP save-games:
 | Monster Hunter Portable 2nd G (PSP) | [monsterhunter-psp-decrypter](./monsterhunter-psp-decrypter) |
 | Monster Hunter Portable 3rd (PSP) | [monsterhunter-psp-decrypter](./monsterhunter-psp-decrypter) |
 
+## PS Vita Decrypters
+
+Tools to decrypt specific PS Vita save-games:
+
+| Game | Tool |
+| :--- | :--- |
+| Resident Evil Revelations 2 (Vita) | [vita-re-rev2-unpacker](./vita-re-rev2-unpacker) |
+
 ## Checksum fixers
 
 Tools to fix checksums for specific PSP/PS3/PS4 save-games:
