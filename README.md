@@ -25,6 +25,7 @@ Tools to decrypt specific PS3 save-games:
 | Metal Gear Solid V: The Phantom Pain | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
 | Metal Gear Solid V: Ground Zeroes | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
 | The Last of Us | [naughtydog-decrypter](./naughtydog-decrypter) |
+| The Legend of Heroes: Trails of Cold Steel II (PS3) | [trails-cs-unpacker](./trails-cs-unpacker) |
 | Uncharted 2 | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted 3 | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Need For Speed: Rivals | [nfs-rivals-decrypter](./nfs-rivals-decrypter) |
@@ -54,7 +55,7 @@ Tools to decrypt specific PS4 save-games:
 | No Man's Sky (PS4) | [ps4-nms-unpacker](./ps4-nms-unpacker) |
 | The Last of Us Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | The Last of Us Part II (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
-| The Legend of Heroes: Trails of Cold Steel IV (PS4) | [trails-cs4-unpacker](./trails-cs4-unpacker) |
+| The Legend of Heroes: Trails of Cold Steel IV (PS4) | [trails-cs-unpacker](./trails-cs-unpacker) |
 | Uncharted 2 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted 3 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted 4: A Thief's End (PS4) |  [naughtydog-decrypter](./naughtydog-decrypter) |
@@ -85,6 +86,7 @@ Tools to decrypt specific PS Vita save-games:
 | Game | Tool |
 | :--- | :--- |
 | Resident Evil Revelations 2 (Vita) | [vita-re-rev2-unpacker](./vita-re-rev2-unpacker) |
+| The Legend of Heroes: Trails of Cold Steel II (Vita) | [trails-cs-unpacker](./trails-cs-unpacker) |
 
 ## Checksum fixers
 

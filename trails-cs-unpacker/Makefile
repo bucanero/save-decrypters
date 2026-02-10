@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o trails-cs4-unpacker main.c
+	gcc -D _GNU_SOURCE -o trails-cs-unpacker main.c
 
 clean:
-	-rm -f trails-cs4-unpacker
+	-rm -f trails-cs-unpacker
