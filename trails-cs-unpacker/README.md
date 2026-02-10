@@ -4,6 +4,7 @@ A tool to unpack The Legend of Heroes: Trails of Cold Steel save-games. The tool
 
 Supported games:
 - The Legend of Heroes: Trails of Cold Steel IV (PS4)
+- The Legend of Heroes: Trails of Cold Steel II (PS3)
 - The Legend of Heroes: Trails of Cold Steel II (PS Vita)
 
 ```

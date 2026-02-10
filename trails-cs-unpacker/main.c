@@ -309,10 +309,11 @@ static bool CompressType1(char* compressedData,
     return true;
 }
 
-static bool isVita(const char* data)
+static bool isPS4(const char* data)
 {
     // The uncompressed Vita save data start with 0x08000000 and have no CRC
-    return (ReadUInt32(data) == 8 && ReadUInt32(data + 12) == 0);
+    // The uncompressed PS3 save data start with 0x00000008 and have no CRC
+    return !((ReadUInt32(data) == 8 || ReadUInt32(data) == 0x08000000) && ReadUInt32(data + 12) == 0);
 }
 
 void* decompress_data(void* data, size_t* size)
@@ -339,7 +340,7 @@ void* decompress_data(void* data, size_t* size)
 	free(data);
 	*size = original_size;
 
-	int crc = isVita(decompressed_data) ? 0 : calc_crc32(decompressed_data + 0x10, original_size - 0x10);
+	int crc = isPS4(decompressed_data) ? calc_crc32(decompressed_data + 0x10, original_size - 0x10) : 0;
 	if (memcmp(&crc, decompressed_data + 0x0C, 4) != 0)
 		printf("[*] Warning: CRC32 Mismatch After Decompression!\n");
 	else
@@ -401,7 +402,7 @@ int main(int argc, char **argv)
 	u8* data;
 	char *opt, *bak;
 
-	printf("\nTrails of Cold Steel (Vita/PS4) Save Unpacker 0.2.0 - (c) 2026 by Bucanero\n\n");
+	printf("\nTrails of Cold Steel (Vita/PS3/PS4) Save Unpacker 0.2.0 - (c) 2026 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{
@@ -430,7 +431,7 @@ int main(int argc, char **argv)
 	else
 	{
 		u32 crc = calc_crc32(data + 0x10, len - 0x10);
-		if (!isVita((char*)data))
+		if (isPS4((char*)data))
 		{
 			printf("[*] Stored Checksum: %08X\n", *(u32*)&data[12]);
 			printf("[*] Update Checksum: %08X\n", crc);

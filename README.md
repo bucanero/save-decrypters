@@ -25,6 +25,7 @@ Tools to decrypt specific PS3 save-games:
 | Metal Gear Solid V: The Phantom Pain | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
 | Metal Gear Solid V: Ground Zeroes | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
 | The Last of Us | [naughtydog-decrypter](./naughtydog-decrypter) |
+| The Legend of Heroes: Trails of Cold Steel II (PS3) | [trails-cs-unpacker](./trails-cs-unpacker) |
 | Uncharted 2 | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted 3 | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Need For Speed: Rivals | [nfs-rivals-decrypter](./nfs-rivals-decrypter) |
