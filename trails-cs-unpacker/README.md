@@ -7,7 +7,7 @@ Supported games:
 - The Legend of Heroes: Trails of Cold Steel II (PS Vita)
 
 ```
-USAGE: ./trails-cs4-unpacker [option] filename
+USAGE: ./trails-cs-unpacker [option] filename
 
 OPTIONS        Explanation:
  -u            Unpack File
