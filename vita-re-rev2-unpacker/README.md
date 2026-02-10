@@ -12,7 +12,7 @@ OPTIONS        Explanation:
 
 ### Hashes
 
-**Note:** this tool also updates the SHA1 integrity hash.
+**Note:** this tool also updates the DWADD checksum and SHA1 integrity hash.
 
 #### DWADD (Little-endian)
 
