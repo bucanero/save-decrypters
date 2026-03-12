@@ -456,7 +456,7 @@ int main(int argc, char **argv)
 	size_t len;
 	u8* data;
 	char *opt, *bak;
-  uint32_t enc_len;
+	uint32_t enc_len;
 
 	printf("\nFF7 Crisis Core PS4 Save Decrypter 0.1.0 - (c) 2026 by Bucanero\n\n");
 
