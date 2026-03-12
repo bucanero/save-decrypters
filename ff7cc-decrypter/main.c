@@ -2,6 +2,7 @@
 *
 *	Crisis Core Final Fantasy VII PS4 Save Decrypter - (c) 2026 by Bucanero - www.bucanero.com.ar
 *
+* based on https://github.com/RyudoSynbios/game-tools-collection/blob/master/src/lib/templates/crisis-core-final-fantasy-vii-reunion-windows/saveEditor/utils/crypto.ts
 */
 
 #include "../common/iofile.c"
