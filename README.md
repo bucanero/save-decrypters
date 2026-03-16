@@ -57,6 +57,7 @@ Tools to decrypt specific PS4 save-games:
 | The Last of Us Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | The Last of Us Part II (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | The Legend of Heroes: Trails of Cold Steel IV (PS4) | [trails-cs-unpacker](./trails-cs-unpacker) |
+| Tomb Raider VI: Angel of Darkness Remaster (PS4) | [tr6r-unpacker](./tr6r-unpacker) |
 | Uncharted 2 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted 3 Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | Uncharted 4: A Thief's End (PS4) |  [naughtydog-decrypter](./naughtydog-decrypter) |

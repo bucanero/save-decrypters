@@ -21,4 +21,4 @@ OPTIONS        Explanation:
 
 ### Credits
 
-The compression is based on [SenPatcher](https://github.com/AdmiralCurtiss/SenPatcher) by AdmiralCurtiss
+The compression is based on [SenPatcher](https://github.com/AdmiralCurtiss/SenPatcher) by [AdmiralCurtiss](https://github.com/AdmiralCurtiss)
