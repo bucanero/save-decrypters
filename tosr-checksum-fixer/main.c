@@ -2,7 +2,7 @@
 *
 *	Tales of Symphonia Remastered (PS4) Checksum Fixer - (c) 2026 by Bucanero - www.bucanero.com.ar
 *
-* This tool is based on the "Castlevania LOS Save Editor" by JizzaBeez
+* This tool is based on https://github.com/Meth962/SymphoniaSaveEdit by Meth962
 *
 */
 
