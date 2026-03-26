@@ -24,6 +24,7 @@ Tools to decrypt specific PS3 save-games:
 | Metal Gear Solid: Peace Walker HD | [mgs-pw-decrypter](./mgs-pw-decrypter) |
 | Metal Gear Solid V: The Phantom Pain | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
 | Metal Gear Solid V: Ground Zeroes | [mgs5-tpp-decrypter](./mgs5-tpp-decrypter) |
+| Tales of Berseria (PS3) | [berseria-decrypter](./berseria-decrypter) |
 | The Last of Us | [naughtydog-decrypter](./naughtydog-decrypter) |
 | The Legend of Heroes: Trails of Cold Steel II (PS3) | [trails-cs-unpacker](./trails-cs-unpacker) |
 | Uncharted 2 | [naughtydog-decrypter](./naughtydog-decrypter) |
@@ -54,6 +55,7 @@ Tools to decrypt specific PS4 save-games:
 | Monster Hunter World (PS4) | [monsterhunter-world-decrypter](./monsterhunter-world-decrypter) |
 | Nioh 2 (PS4) | [nioh2-decrypter](./nioh2-decrypter) |
 | No Man's Sky (PS4) | [ps4-nms-unpacker](./ps4-nms-unpacker) |
+| Tales of Berseria Remastered (PS4) | [berseria-decrypter](./berseria-decrypter) |
 | The Last of Us Remastered (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | The Last of Us Part II (PS4) | [naughtydog-decrypter](./naughtydog-decrypter) |
 | The Legend of Heroes: Trails of Cold Steel IV (PS4) | [trails-cs-unpacker](./trails-cs-unpacker) |
