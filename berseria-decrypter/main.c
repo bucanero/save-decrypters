@@ -10,9 +10,9 @@
 #include "../common/iofile.c"
 #include "../common/sha1.c"
 
-#define HASH_POS		0x0001C
-#define HASH_NONCE		0x0000C
-#define HASH_START		0x007B0
+#define HASH_POS		0x001C
+#define HASH_SALT		0x000C
+#define HASH_START		0x0034
 
 typedef struct tob_entry
 {
@@ -20,30 +20,30 @@ typedef struct tob_entry
 	uint32_t data_offset;
 	uint32_t data_len;
 	uint32_t flags;
-	uint8_t nonce[12];
+	uint8_t salt[12];
 	uint8_t sha1_key[20];
 } tob_entry_t;
 
 int isPS3 = 0;
 
 
-void sha1_Custom(u8* hash_out, const u8* msg, u32 length, const u8* nonce, u32 nlen)
+void sha1_Custom(u8* hash_out, const u8* msg, u32 length, const u8* salt, u32 slen)
 {
 	u8* tmp;
 
-	tmp = (u8*)malloc(length + nlen);
+	tmp = (u8*)malloc(length + slen);
 	memcpy(tmp, msg, length);
-	memcpy(tmp + length, nonce, nlen);
+	memcpy(tmp + length, salt, slen);
 
-	sha1(hash_out, tmp, length + nlen);
+	sha1(hash_out, tmp, length + slen);
 	free(tmp);
 }
 
-u32 read32_val(const u8* buf, int is_be)
+u32 read32_val(const u8* buf)
 {
 	u32 ret = (u32)buf[0] | ((u32)buf[1] << 8) | ((u32)buf[2] << 16) | ((u32)buf[3] << 24);
 
-	if (is_be)
+	if (isPS3)
 		ret = ES32(ret);
 
 	return ret;
@@ -53,7 +53,7 @@ void encrypt_entry(tob_entry_t* entry, u8* entry_data)
 {
 	entry_data += entry->data_offset;
 
-	sha1_Custom(entry->sha1_key, entry_data, entry->data_len, entry->nonce, sizeof(entry->nonce));
+	sha1_Custom(entry->sha1_key, entry_data, entry->data_len, entry->salt, sizeof(entry->salt));
 
 	for (int i = 0; i < entry->data_len; i++)
 		entry_data[i] ^= entry->sha1_key[i % 20] ^ (i & 0xFF);
@@ -63,7 +63,7 @@ void encrypt_data(u8* data, u32 entry_count)
 {
 	tob_entry_t *entry;
 
-	printf("[i] Encrypting Entries");
+	printf("[*] Encrypting Entries");
 	for (int i = 0; i < entry_count; i++)
 	{
 		entry = (tob_entry_t*)(data + 0x30 + i * 0x30);
@@ -95,8 +95,8 @@ void decrypt_entry(const tob_entry_t* entry, u8* entry_data)
 	for (int i = 0; i < entry->data_len; i++)
 		entry_data[i] ^= entry->sha1_key[i % 20] ^ (i & 0xFF);
 
-	sha1_Custom(sha_chk, entry_data, entry->data_len, entry->nonce, sizeof(entry->nonce));
-	if (memcmp(sha_chk, entry->sha1_key, 20) != 0)
+	sha1_Custom(sha_chk, entry_data, entry->data_len, entry->salt, sizeof(entry->salt));
+	if (memcmp(sha_chk, entry->sha1_key, sizeof(sha_chk)) != 0)
 		printf("[!] Warning: Entry ID %08X failed integrity check!\n", entry->item_id);
 }
 
@@ -104,7 +104,7 @@ void decrypt_data(u8* data, u32 entry_count)
 {
 	tob_entry_t entry;
 
-	printf("[i] Decrypting Entries");
+	printf("[*] Decrypting Entries");
 	for (int i = 0; i < entry_count; i++)
 	{
 		memcpy(&entry, data + 0x30 + i * 0x30, sizeof(tob_entry_t));
@@ -135,7 +135,7 @@ int main(int argc, char **argv)
 	size_t len;
 	u8 *data;
 	char *opt, *bak;
-    u32 magic, entry_count, data_size;
+    u32 magic, entry_count, data_size, data_start;
 
 	printf("\nTales of Berseria (PS3/PS4/PC) Save Decrypter 0.1.0 - (c) 2026 by Bucanero\n\n");
 
@@ -159,9 +159,10 @@ int main(int argc, char **argv)
 	}
 
 	isPS3 = memcmp(data, "\x00\x00\x00\x64\x00\x00\x00", 7) == 0;
-    magic = read32_val(data + 0x00, 0);
-    entry_count = read32_val(data + 0x04, isPS3);
-    data_size   = read32_val(data + 0x08, isPS3);
+	magic = read32_val(data + 0x00);
+	entry_count = read32_val(data + 0x04);
+	data_size   = read32_val(data + 0x08);
+	data_start  = read32_val(data + HASH_START);
 
 	if (!isPS3 && magic != 0x64)
 	{
@@ -173,9 +174,9 @@ int main(int argc, char **argv)
 	asprintf(&bak, "%s.bak", argv[2]);
 	write_buffer(bak, data, len);
 
-    printf("[*] Magic      : %08X\n", magic);
-    printf("[*] Entries    : %d\n", entry_count);
-    printf("[*] Data Size  : %d bytes\n", data_size);
+	printf("[*] Magic      : %08X\n", magic);
+	printf("[*] Entries    : %d\n", entry_count);
+	printf("[*] Data Size  : %d bytes\n", data_size);
 	printf("[*] File Size  : %lu bytes\n", len);
 	printf("[*] Stored SHA1: " SHA1_FMT(data + HASH_POS, "\n"));
 
@@ -183,8 +184,8 @@ int main(int argc, char **argv)
 	{
 		u8 sha_chk[20];
 
-		sha1_Custom(sha_chk, data + HASH_START, data_size - HASH_START, data + HASH_NONCE, 16);
-		if (memcmp(sha_chk, data + HASH_POS, 20) != 0)
+		sha1_Custom(sha_chk, data + data_start, data_size - data_start, data + HASH_SALT, 16);
+		if (memcmp(sha_chk, data + HASH_POS, sizeof(sha_chk)) != 0)
 			printf("[*] Warning: Invalid Checksum! The file may be already decrypted or corrupted.\n");
 
 		decrypt_data(data, entry_count);
@@ -194,7 +195,7 @@ int main(int argc, char **argv)
 	{
 		encrypt_data(data, entry_count);
 
-		sha1_Custom(data + HASH_POS, data + HASH_START, data_size - HASH_START, data + HASH_NONCE, 16);
+		sha1_Custom(data + HASH_POS, data + data_start, data_size - data_start, data + HASH_SALT, 16);
 		printf("[*] New SHA1   : " SHA1_FMT(data + HASH_POS, "\n"));
 		printf("[*] Encrypted Successfully!\n\n");
 	}
