@@ -12,7 +12,7 @@ OPTIONS        Explanation:
 GAME TYPE      Explanation:
  -1            Final Fantasy XIII
  -2            Final Fantasy XIII-2
- -3            Lightning Returns: Fantasy XIII
+ -3            Lightning Returns: Final Fantasy XIII
 ```
 
 ### Credits

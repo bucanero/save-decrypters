@@ -251,9 +251,6 @@ void decrypt_data(u8* data, u32 size, u64 key)
 	ff_init_key(&KeyBlocksArray[0][0], key);
 	ff_decrypt_data(data, size);
 
-//	if (ffgame == 3 && size > 547904)
-//		size = 547904;
-
 	ff_csum = ff_xiii_checksum(data, size - 8);
 	csum = *(u32*)(data + size - 4);
 
@@ -276,9 +273,6 @@ void encrypt_data(u8* data, u32 size, u64 key)
 	ff_init_key(&KeyBlocksArray[0][0], key);
 	ff_encrypt_data(data, size);
 
-//	if (ffgame == 3 && size == 547904)
-//		Array.Resize<byte>(ref array3, 560736);
-
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
 }
@@ -292,7 +286,7 @@ void print_usage(const char* argv0)
 	printf("GAME TYPE      Explanation:\n");
 	printf(" -1            Final Fantasy XIII\n");
 	printf(" -2            Final Fantasy XIII-2\n");
-	printf(" -3            Lightning Returns: Fantasy XIII\n\n");
+	printf(" -3            Lightning Returns: Final Fantasy XIII\n\n");
 	return;
 }
 
