@@ -46,6 +46,7 @@ Tools to decrypt specific PS4 save-games:
 | Crisis Core: Final Fantasy VII (PS4) | [ff7cc-decrypter](./ff7cc-decrypter) |
 | Dark Souls Remastered (PS4) | [darksouls-remaster-decrypter](./darksouls-remaster-decrypter) |
 | Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
+| Final Fantasy Pixel Remaster (PS4) | [ff-pixel-decrypter](./ff-pixel-decrypter) |
 | Grand Theft Auto 5 (PS4) | [gta5-decrypter](./gta5-decrypter) |
 | L.A. Noire (PS4) | [la-noire-decrypter](./la-noire-decrypter) |
 | Like a Dragon: Ishin! (PS4) | [rgg-decrypter](./rgg-decrypter) |
