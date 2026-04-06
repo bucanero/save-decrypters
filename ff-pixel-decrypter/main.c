@@ -101,6 +101,12 @@ int main(int argc, char **argv)
 	{
 		decrypt_data(data, len);
 		u8* decomp = tinfl_decompress_mem_to_heap(data, len, &len, 0);
+		if (!decomp)
+		{
+			printf("[*] Decompression Failed!\n");
+			return -1;
+		}
+
 		printf("[*] Decompressed Size Is %ld bytes\n", len);
 		free(data);
 		data = decomp;
@@ -109,6 +115,12 @@ int main(int argc, char **argv)
 	{
 		size_t comp_len;
 		u8* comp = tdefl_compress_mem_to_heap(data, len, &comp_len, 0);
+		if (!comp)
+		{
+			printf("[*] Compression Failed!\n");
+			return -1;
+		}
+
 		printf("[*] Compressed Size Is %ld bytes\n", comp_len);
 		len = (comp_len + 31) & ~31;
 		memcpy(data, comp, comp_len);
@@ -117,8 +129,7 @@ int main(int argc, char **argv)
 		encrypt_data(data, len);
 	}
 
-	write_buffer("out.bin", data, len);
-//	write_buffer(argv[2], data, len);
+	write_buffer(argv[2], data, len);
 
 	free(bak);
 	free(data);
