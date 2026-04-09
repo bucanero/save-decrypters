@@ -45,7 +45,7 @@ Tools to decrypt specific PS4 save-games:
 | Borderlands 3 (PS4) | [ps4-borderlands3-decrypter](./ps4-borderlands3-decrypter) |
 | Crisis Core: Final Fantasy VII (PS4) | [ff7cc-decrypter](./ff7cc-decrypter) |
 | Dark Souls Remastered (PS4) | [darksouls-remaster-decrypter](./darksouls-remaster-decrypter) |
-| Diablo III (PS4) | [diablo3-decrypter](./diablo3-decrypter)
+| Diablo III (PS4) | [diablo3-decrypter](./diablo3-decrypter) |
 | Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
 | Final Fantasy Pixel Remaster (PS4) | [ff-pixel-decrypter](./ff-pixel-decrypter) |
 | Grand Theft Auto 5 (PS4) | [gta5-decrypter](./gta5-decrypter) |
