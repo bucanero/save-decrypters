@@ -3,6 +3,12 @@
 *	https://github.com/hzhreal/
 */
 
+#include <inttypes.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "../common/iofile.c"
 
 int patch_checksum_1(u8 *data, size_t len)
 {
