@@ -71,7 +71,7 @@ Tools to decrypt specific PS4 save-games:
 | Resident Evil Revelations 2 (PS4) | [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter) |
 | Resident Evil 2 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |
 | Resident Evil 4 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |
-| Shantae: Risky's Revenge: Director's Cut (PS4) | [shantae-pirates-curse-unpacker](./shantae-pirates-curse-unpacker)
+| Shantae: Risky's Revenge: Director's Cut (PS4) | [shantae-pirates-curse-unpacker](./shantae-pirates-curse-unpacker) |
 | Shin Megami Tensei V (PS4) | [smt5-decrypter](./smt5-decrypter) |
 | Terraria (PS4) | [ps4-terraria-decrypter](./ps4-terraria-decrypter) |
 
