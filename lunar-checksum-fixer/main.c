@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 		}
 	}
 
-    if (write_buffer(filename, data, len) != 0) {
+	if (write_buffer(filename, data, len) != 0) {
 		free(data);
 		printf("[!] Failed to write file.\n");
 		return 1;
