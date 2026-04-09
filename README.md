@@ -106,6 +106,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Dead Rising (PS4) | [deadrising-checksum-fixer](./deadrising-checksum-fixer) |
 | Dead Space 2 (PS3) | [deadspace-checksum-fixer](./deadspace-checksum-fixer) |
 | Dead Space 3 (PS3) | [deadspace-checksum-fixer](./deadspace-checksum-fixer) |
+| Death Stranding (PS4) | [dstranding-checksum-fixer](./dstranding-checksum-fixer) |
 | Dragon Ball Z: Ultimate Tenkaichi (PS3) | [dbz-checksum-fixer](./dbz-checksum-fixer) |
 | Digimon: All-Star Rumble (PS3) | [digimon-checksum-fixer](./digimon-checksum-fixer) |
 | Digimon World Next Order (PS4) | [ps4-digimon-checksum-fixer](./ps4-digimon-checksum-fixer) |
