@@ -118,7 +118,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Invizimals (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
 | Invizimals - Shadow Zone (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
 | Invizimals - The Lost Tribe (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
-| Kingdom Hearts III (PS4) | [kh3-checksum-fixer](./kh3-checksum-fixer)
+| Kingdom Hearts III (PS4) | [kh3-checksum-fixer](./kh3-checksum-fixer) |
 | Kingdom Hearts HD 2.5 ReMIX (PS3) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
 | Kingdom Hearts HD Birth by Sleep (BBS) (PS3) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
 | Kingdom Hearts Re: Chain of Memories (CoM) (PS3) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
