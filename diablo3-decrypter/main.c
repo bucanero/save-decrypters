@@ -1,6 +1,6 @@
 /*
 *
-*	Diablo III PS3 Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
+*	Diablo III PS3 and PS4 Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
 *
 * This tool is based (reversed) on the original diablo_3_save_data_decrypter by Red-EyeX32
 *
@@ -20,7 +20,7 @@ void decrypt_data(u8* data, u32 size)
 
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-	for (int i = 0; i < size; i++)
+	for (u32 i = 0; i < size; i++)
 	{
 		data[i] ^= (xor_key1 & 0xFF);
 		tmp = data[i] ^ xor_key1;
@@ -40,7 +40,7 @@ void encrypt_data(u8* data, u32 size)
 
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-	for (int i = 0; i < size; i++)
+	for (u32 i = 0; i < size; i++)
 	{
 		tmp = data[i] ^ xor_key1;
 		data[i] ^= (xor_key1 & 0xFF);
