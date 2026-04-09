@@ -126,8 +126,8 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | LEGO Harry Potter: Years 5-7 (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
 | LEGO Pirates of the Caribbean: The Video Game (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
 | LEGO The Lord of the Rings (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
-| LUNAR Remastered Collection (PS4) | [lunar-checksum-fixer](./lunar-checksum-fixer)
-| Mafia III (PS4) | [mafia3-checksum-fixer](./mafia3-checksum-fixer)
+| LUNAR Remastered Collection (PS4) | [lunar-checksum-fixer](./lunar-checksum-fixer) |
+| Mafia III (PS4) | [mafia3-checksum-fixer](./mafia3-checksum-fixer) |
 | Prototype 1 (PS3) | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | Prototype 2 (PS3) | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | PS2 APA Header Checksum | [ps2-apa-header-checksum](./ps2-apa-header-checksum) |
