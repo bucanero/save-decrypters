@@ -9,6 +9,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#define PS4_JHASH_MAGIC_VALUE 0x4900DC7C
+// #define PC_STEAM_JHASH_MAGIC_VALUE 0x20D4ACC1
+
+#ifndef JHASH_MAGIC_VALUE
+#define JHASH_MAGIC_VALUE PS4_JHASH_MAGIC_VALUE
+#endif
+
 #include "../common/jhash.h"
 #include "../common/miniz.h"
 #include "../common/iofile.c"
@@ -82,7 +89,7 @@ int patch_checksum(u8 *data, size_t len)
 
 	memcpy(&sum, data, sizeof(sum));
 	printf("[*] Old checksum: (%" PRIX32 ").\n", ES32(sum));
-	sum = jhash(data + 4, (u32)(len - 4), 0) + 0x4900DC7C;
+	sum = jhash(data + 4, (u32)(len - 4), 0) + JHASH_MAGIC_VALUE;
 	printf("[*] New checksum: (%" PRIX32 ").\n", ES32(sum));
 	memcpy(data, &sum, sizeof(sum));
 	return 0;
