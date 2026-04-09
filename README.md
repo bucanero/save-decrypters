@@ -45,6 +45,7 @@ Tools to decrypt specific PS4 save-games:
 | Borderlands 3 (PS4) | [ps4-borderlands3-decrypter](./ps4-borderlands3-decrypter) |
 | Crisis Core: Final Fantasy VII (PS4) | [ff7cc-decrypter](./ff7cc-decrypter) |
 | Dark Souls Remastered (PS4) | [darksouls-remaster-decrypter](./darksouls-remaster-decrypter) |
+| Diablo III (PS4) | [diablo3-decrypter](./diablo3-decrypter)
 | Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
 | Final Fantasy Pixel Remaster (PS4) | [ff-pixel-decrypter](./ff-pixel-decrypter) |
 | Grand Theft Auto 5 (PS4) | [gta5-decrypter](./gta5-decrypter) |
@@ -70,6 +71,7 @@ Tools to decrypt specific PS4 save-games:
 | Resident Evil Revelations 2 (PS4) | [ps4-re-rev2-decrypter](./ps4-re-rev2-decrypter) |
 | Resident Evil 2 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |
 | Resident Evil 4 Remake (PS4) | [ps4-re4r-decrypter](./ps4-re4r-decrypter) |
+| Shantae: Risky's Revenge: Director's Cut (PS4) | [shantae-pirates-curse-unpacker](./shantae-pirates-curse-unpacker)
 | Shin Megami Tensei V (PS4) | [smt5-decrypter](./smt5-decrypter) |
 | Terraria (PS4) | [ps4-terraria-decrypter](./ps4-terraria-decrypter) |
 
@@ -116,6 +118,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Invizimals (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
 | Invizimals - Shadow Zone (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
 | Invizimals - The Lost Tribe (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
+| Kingdom Hearts III (PS4) | [kh3-checksum-fixer](./kh3-checksum-fixer)
 | Kingdom Hearts HD 2.5 ReMIX (PS3) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
 | Kingdom Hearts HD Birth by Sleep (BBS) (PS3) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
 | Kingdom Hearts Re: Chain of Memories (CoM) (PS3) | [kh25-checksum-fixer](./kh25-checksum-fixer) |
@@ -123,6 +126,8 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | LEGO Harry Potter: Years 5-7 (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
 | LEGO Pirates of the Caribbean: The Video Game (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
 | LEGO The Lord of the Rings (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
+| LUNAR Remastered Collection (PS4) | [lunar-checksum-fixer](./lunar-checksum-fixer)
+| Mafia III (PS4) | [mafia3-checksum-fixer](./mafia3-checksum-fixer)
 | Prototype 1 (PS3) | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | Prototype 2 (PS3) | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | PS2 APA Header Checksum | [ps2-apa-header-checksum](./ps2-apa-header-checksum) |
@@ -132,6 +137,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Resident Evil Village (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Samurai Warriors 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Sengoku Musou 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
+| Strider (PS4) | [strider-checksum-fixer](./strider-checksum-fixer) |
 | Tales of Symphonia Remastered (PS4) | [tosr-checksum-fixer](./tosr-checksum-fixer) |
 | Tales of Zestiria (PS3) | [toz-checksum-fixer](./toz-checksum-fixer) |
 | Tears to Tiara 2 (PS3) | [tears2-checksum-fixer](./tears2-checksum-fixer) |
