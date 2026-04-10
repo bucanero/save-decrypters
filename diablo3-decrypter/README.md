@@ -1,6 +1,6 @@
 # diablo3-decrypter
 
-A tool to decrypt Diablo III PS3 save-games
+A tool to decrypt Diablo III PS3 and PS4 save-games
 
 ```
 USAGE: ./diablo3-decrypter [option] filename
