@@ -7,37 +7,17 @@
 */
 
 #include "../common/iofile.c"
+#include "../common/crc32.c"
 
-#define CRC32_POLY    0x04C11DB7
-#define CRC32_INIT    0xFFFFFFFF
+/* Override standard CRC32 poly (this tool uses CRC32-B / big-endian variant) */
+#define CRC32B_POLY    0x04C11DB7
 
-
-void init_crc32_table(uint32_t* crc_table, uint32_t poly)
+static u32 calc_crc32(const u8* data, u32 len, u32 init)
 {
-    for (int i = 0; i < 256; ++i)
-    {
-        uint32_t r = i << 24;
-        
-        for (int j = 0; j < 8; ++j)
-            r = (r & 0x80000000) ? (r << 1) ^ poly : (r << 1);
-        
-        crc_table[i] = r;
-    }
+	u32 table[256];
 
-	return;
-}
-
-u32 calc_crc32(const u8* data, u32 len, u32 init)
-{
-	u32 crc32_table[256];
-	u32 crc = init;
-
-	init_crc32_table(crc32_table, CRC32_POLY);
-
-	while (len--)
-        crc = (crc << 8) ^ crc32_table[((crc >> 24) ^ *data++) & 0xFF];
-
-    return crc;
+	crc32_init_table_be(table, CRC32B_POLY);
+	return crc32_calculate_be(data, len, table, init);
 }
 
 

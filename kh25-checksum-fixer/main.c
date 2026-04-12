@@ -7,10 +7,11 @@
 *
 */
 
-#include "../common/iofile.c"
-
+/* Override standard CRC32 poly before including crc32.c (this tool uses CRC32-B / big-endian variant) */
 #define CRC32_POLY    0x04C11DB7
-#define CRC32_INIT    0xFFFFFFFF
+
+#include "../common/iofile.c"
+#include "../common/crc32.c"
 
 
 void kh25_crc32_table(uint32_t* crc_table, uint32_t polynomial)
@@ -25,17 +26,12 @@ void kh25_crc32_table(uint32_t* crc_table, uint32_t polynomial)
     }
 }
 
-u32 calc_crc32(const u8* data, u32 len, u32 init)
+static u32 calc_crc32(const u8* data, u32 len, u32 init)
 {
-	u32 crc32_table[256];
-	u32 crc = init;
+	u32 table[256];
 
-	kh25_crc32_table(crc32_table, CRC32_POLY);
-
-	while (len--)
-        crc = (crc << 8) ^ crc32_table[((crc >> 24) ^ *data++) & 0xFF];
-
-    return crc;
+	kh25_crc32_table(table, CRC32_POLY);
+	return crc32_calculate_be(data, len, table, init);
 }
 
 u32 dwadd_le(const u32* data, u32 len)
