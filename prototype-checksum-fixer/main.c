@@ -6,6 +6,7 @@
 *
 */
 
+/* Override standard CRC32 poly before including crc32.c (this tool uses CRC32-B / big-endian variant) */
 #define CRC32_POLY    0x04C11DB7
 
 #include "../common/iofile.c"
