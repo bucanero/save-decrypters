@@ -11,39 +11,9 @@
 
 #include "../common/iofile.c"
 #include "../common/blowfish.c"
+#include "../common/crc32.c"
 
-#define CRC32_POLY    0xEDB88320
-#define CRC32_INIT    0xedcba987
 #define SECRET_KEY    "\x23\x91\xF2\x01\xB3\x6C\x85\xE8\x1B\x12\x72\xD6\x90\xFF\xA5\x45"
-
-
-void init_crc32_table(uint32_t* crc32_table, uint32_t poly)
-{
-	for (int b = 0; b < 256; ++b)
-	{
-		uint32_t r = b;
-
-		for (int i = 0; i < 8; ++i)
-			r = (r & 1) ? (r >> 1) ^ poly : (r >> 1);
-
-		crc32_table[b] = r;
-	}
-
-	return;
-}
-
-u32 calc_crc32(const u8* data, u32 len)
-{
-	u32 crc32_table[256];
-	u32 crc = CRC32_INIT;
-
-	init_crc32_table(crc32_table, CRC32_POLY);
-
-	while (len--)
-		crc = crc32_table[(crc ^ *data++) & 0xFF] ^ (crc >> 8);
-
-	return ~crc;
-}
 
 void decrypt_data(void* data, u32 size)
 {
@@ -115,7 +85,7 @@ int main(int argc, char **argv)
 	{
 		encrypt_data((data+4), len-8);
 
-		u32 crc = ES32(calc_crc32(data+4, len-4));
+		u32 crc = ES32(crc32_calculate(data+4, len-4, CRC32_POLY, 0xedcba987));
 		memcpy(data, &crc, 4);
 
 		printf("[*] Calculated Checksum: 0x%X%X%X%X\n", data[0], data[1], data[2], data[3]);

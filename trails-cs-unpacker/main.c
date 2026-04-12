@@ -9,42 +9,13 @@
 
 #include <stdbool.h>
 #include "../common/iofile.c"
-
-#define CRC32_POLY    0xEDB88320
+#include "../common/crc32.c"
 
 typedef struct {
     size_t Length;
     size_t Position;
 } Backref;
 
-
-void init_crc32_table(uint32_t* crc32_table, uint32_t poly)
-{
-	for (int b = 0; b < 256; ++b)
-	{
-		uint32_t r = b;
-
-		for (int i = 0; i < 8; ++i)
-			r = (r & 1) ? (r >> 1) ^ poly : (r >> 1);
-
-		crc32_table[b] = r;
-	}
-
-	return;
-}
-
-u32 calc_crc32(const u8* data, u32 len)
-{
-	u32 crc32_table[256];
-	u32 crc = len;
-
-	init_crc32_table(crc32_table, CRC32_POLY);
-
-	while (len--)
-		crc = crc32_table[(crc ^ *data++) & 0xFF] ^ (crc >> 8);
-
-	return crc;
-}
 
 // Helper function to write 32-bit value in little endian
 static void WriteUInt32LE(char* dest, uint32_t value) {
@@ -340,7 +311,7 @@ void* decompress_data(void* data, size_t* size)
 	free(data);
 	*size = original_size;
 
-	int crc = isPS4(decompressed_data) ? calc_crc32(decompressed_data + 0x10, original_size - 0x10) : 0;
+	u32 crc = isPS4(decompressed_data) ? ~crc32_calculate(decompressed_data + 0x10, original_size - 0x10, CRC32_POLY, original_size - 0x10) : 0;
 	if (memcmp(&crc, decompressed_data + 0x0C, 4) != 0)
 		printf("[*] Warning: CRC32 Mismatch After Decompression!\n");
 	else
@@ -430,7 +401,7 @@ int main(int argc, char **argv)
 		data = decompress_data(data, &len);
 	else
 	{
-		u32 crc = calc_crc32(data + 0x10, len - 0x10);
+		u32 crc = ~crc32_calculate(data + 0x10, len - 0x10, CRC32_POLY, len - 0x10);
 		if (isPS4((char*)data))
 		{
 			printf("[*] Stored Checksum: %08X\n", *(u32*)&data[12]);

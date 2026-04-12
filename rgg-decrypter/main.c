@@ -7,6 +7,7 @@
 */
 
 #include "../common/iofile.c"
+#include "../common/crc32.c"
 
 #define RGG_LAD_ISHIN	"fuEw5rWN8MBS"
 
@@ -25,20 +26,6 @@ void xor_data(uint8_t* data, u32 sz, const char* Key)
 
 	for (int i = 0; i < sz; i++)
 		data[i] ^= Key[i % KeyLen];
-}
-
-unsigned int crc32b(unsigned char *message, int len)
-{
-   int j;
-   unsigned int crc = 0xFFFFFFFF;
-
-   while (len--)
-   {
-      crc ^= *message++;            // Get next byte.
-      for (j = 7; j >= 0; j--)      // Do eight times.
-         crc = (crc >> 1) ^ (0xEDB88320 & -(crc & 1));
-   }
-   return ~crc;
 }
 
 void print_usage(const char* argv0)
@@ -88,7 +75,7 @@ int main(int argc, char **argv)
 		xor_data(data, len - 0x10, RGG_LAD_ISHIN);
 	else
 	{
-		csum = crc32b(data, len - 0x10);
+		csum = crc32_calculate(data, len - 0x10, CRC32_POLY, CRC32_INIT);
 		printf("[*] Stored Checksum : %08X\n", *(u32*)(data + len - 8));
 		printf("[*] New Checksum    : %08X\n", csum);
 

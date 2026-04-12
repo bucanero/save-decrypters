@@ -7,37 +7,7 @@
 */
 
 #include "../common/iofile.c"
-
-#define CRC32_POLY    0xEDB88320
-
-
-void init_crc32_table(uint32_t* crc32_table, uint32_t poly)
-{
-	for (int b = 0; b < 256; ++b)
-	{
-		uint32_t r = b;
-
-		for (int i = 0; i < 8; ++i)
-			r = (r & 1) ? (r >> 1) ^ poly : (r >> 1);
-
-		crc32_table[b] = r;
-	}
-
-	return;
-}
-
-u32 calc_crc32(const u8* data, u32 len)
-{
-	u32 crc32_table[256];
-	u32 crc = len;
-
-	init_crc32_table(crc32_table, CRC32_POLY);
-
-	while (len--)
-		crc = crc32_table[(crc ^ *data++) & 0xFF] ^ (crc >> 8);
-
-	return crc;
-}
+#include "../common/crc32.c"
 
 void print_usage(const char* argv0)
 {
@@ -70,7 +40,7 @@ int main(int argc, char **argv)
 	asprintf(&bak, "%s.bak", argv[1]);
 	write_buffer(bak, data, len);
 
-	crc = calc_crc32(data + 12, len - 12);
+	crc = ~crc32_calculate(data + 12, len - 12, CRC32_POLY, len - 12);
 
 	printf("[*] File Size       : %lu bytes\n", len);
 	printf("[*] Stored Checksum : %08X\n", *(u32*)(data + 8));

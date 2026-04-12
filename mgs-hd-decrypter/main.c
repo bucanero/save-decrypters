@@ -13,7 +13,7 @@
 #define MGS2_ALPHABET       "ghijklmn01234567opqrstuvEFGHIJKL89abcdefUVWXYZ_.wxyzABCDMNOPQRST"
 #define MGS3_ALPHABET       "ghijklmn01234567opqrstuvEFGHIJKL89abcdefUVWXYZ+-wxyzABCDMNOPQRST"
 
-#define CRC_POLY            0xEDB88320
+#include "../common/crc32.c"
 
 int CalculateCRC32(const u8* data, int size)
 {
@@ -28,36 +28,12 @@ int CalculateCRC32(const u8* data, int size)
             crc = crc >> 1 & 0x7fffffff;
             if (num != 0)
             {
-                crc ^= CRC_POLY;
+                crc ^= CRC32_POLY;
             }
         }
     }
 
     return ~crc;
-}
-
-void crc32_fill(uint32_t *table, uint32_t poly)
-{
-    uint8_t index=0, z;
-    do
-    {
-        table[index]=index;
-        for(z=8; z; z--)
-        	table[index] = (table[index] & 1) ? (table[index] >> 1)^poly : table[index] >> 1;
-    } while(++index);
-}
-
-u32 crc32(u8* input, u32 len)
-{
-	u32 crc_table[256];
-	u32 crc = 0xFFFFFFFF;
-
-	crc32_fill(crc_table, CRC_POLY);
-
-	for (int i = 0; i < len; i++)
-		crc = (crc >> 8 ^ crc_table[((crc ^ (u32)input[i]) & 0xFF)]);
-
-	return ~crc;
 }
 
 void Decrypt(const char* key, u8* data, int size)
@@ -208,7 +184,7 @@ u32 mgs2_encrypt_data(u8* data, u32 size)
     Encrypt("", data + 0x15aa, 0x1c00);
     Encrypt("", data + 0x31aa, 0x4000);
 
-    crc = crc32(data + 4, 0x71a6);
+    crc = crc32_calculate(data + 4, 0x71a6, CRC32_POLY, CRC32_INIT);
     Encrypt(MGS2_KEY, data + 4, 0x71a6);
 
     printf("[*] New Checksum: %08X\n", crc);
@@ -230,7 +206,7 @@ u32 mgs3_encrypt_data(u8* data, u32 size)
 {
 	printf("[*] MGS3 Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-    u32 crc = crc32(data, 0x497c);
+    u32 crc = crc32_calculate(data, 0x497c, CRC32_POLY, CRC32_INIT);
     Encrypt(MGS3_KEY, data, 0x497c);
 
     printf("[*] New Checksum: %08X\n", crc);

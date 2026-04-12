@@ -18,13 +18,10 @@
 #include "../common/blowfish.c"
 #include "../common/sha1.c"
 #include "../common/hmac-sha1.c"
+#include "../common/crc32.c"
 
 #define SECRET_KEY      "(SH[@2>r62%5+QKpy|g6"
 #define SHA1_HMAC_KEY   "xM;6X%/p^L/:}-5QoA+K8:F*M!~sb(WK<E%6sW_un0a[7Gm6,()kHoXY+yI/s;Ba"
-
-#define CRC32_POLY    0xEDB88320
-#define CRC32C_POLY   0x82F63B78
-#define CRC32_INIT    0xFFFFFFFF
 
 typedef enum {
 	// PS3: The Last of Us, Uncharted 2, Uncharted 3
@@ -127,34 +124,6 @@ void encrypt_data(const SaveState *ss)
 	return;
 }
 
-void init_crc32_table(u32 *crc32_table, u32 poly)
-{
-	for (int b = 0; b < 256; ++b)
-	{
-		u32 r = b;
-
-		for (int i = 0; i < 8; ++i)
-			r = (r & 1) ? (r >> 1) ^ poly : (r >> 1);
-
-		crc32_table[b] = r;
-	}
-
-	return;
-}
-
-u32 calc_crc32(const u8 *data, u32 len, u32 poly)
-{
-	u32 crc32_table[256];
-	u32 crc = CRC32_INIT;
-
-	init_crc32_table(crc32_table, poly);
-
-	while (len--)
-		crc = crc32_table[(crc ^ *data++) & 0xFF] ^ (crc >> 8);
-
-	return ~crc;
-}
-
 bool fix_checksum(const SaveState *ss)
 {
 	size_t size = ss->start_off + ss->dsize;
@@ -197,7 +166,7 @@ bool fix_checksum(const SaveState *ss)
 	// compute crc32
 	if (crc_bl_off + crc_bl > size)
 		goto error;
-	crc = calc_crc32(ss->data + crc_bl_off, crc_bl - 4, crc_poly);
+	crc = crc32_calculate(ss->data + crc_bl_off, crc_bl - 4, crc_poly, CRC32_INIT);
 	if (ss->isPS3)
 		crc = ES32(crc);
 

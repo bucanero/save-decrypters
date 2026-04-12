@@ -7,33 +7,15 @@
 */
 
 #include "../common/iofile.c"
+#include "../common/crc32.c"
 
-
-#define CRC32_POLY    0xEDB88320
-#define CRC32_INIT    0xFFFFFFFF
-
-
-void init_crc32_table(uint32_t* crc32_table, uint32_t poly)
-{
-	for (int b = 0; b < 256; ++b)
-	{
-		uint32_t r = b;
-
-		for (int i = 0; i < 8; ++i)
-			r = (r & 1) ? (r >> 1) ^ poly : (r >> 1);
-
-		crc32_table[b] = r;
-	}
-
-	return;
-}
 
 u32 calc_crc32(const u8* data, u32 len)
 {
 	u32 crc32_table[256];
 	u32 crc = CRC32_INIT;
 
-	init_crc32_table(crc32_table, CRC32_POLY);
+	crc32_init_table(crc32_table, CRC32_POLY);
 
 	while (len--)
 		crc = crc32_table[(crc ^ *data++) & 0xFF] ^ (crc >> 8);
