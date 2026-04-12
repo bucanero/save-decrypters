@@ -13,6 +13,7 @@
 #include "../common/blowfish.c"
 #include "../common/crc32.c"
 
+#define CRC_INIT      0xedcba987
 #define SECRET_KEY    "\x23\x91\xF2\x01\xB3\x6C\x85\xE8\x1B\x12\x72\xD6\x90\xFF\xA5\x45"
 
 void decrypt_data(void* data, u32 size)
@@ -85,7 +86,7 @@ int main(int argc, char **argv)
 	{
 		encrypt_data((data+4), len-8);
 
-		u32 crc = ES32(crc32_calculate(data+4, len-4, CRC32_POLY, 0xedcba987));
+		u32 crc = ES32(crc32_calculate(data+4, len-4, CRC32_POLY, CRC_INIT));
 		memcpy(data, &crc, 4);
 
 		printf("[*] Calculated Checksum: 0x%X%X%X%X\n", data[0], data[1], data[2], data[3]);
