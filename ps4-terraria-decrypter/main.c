@@ -22,7 +22,7 @@ void decrypt_data(uint8_t* data, size_t size)
 	struct AES_ctx ctx;
 	AES_init_ctx_iv(&ctx, SECRET_KEY, SECRET_KEY);
 
-	printf("[*] Total Decrypted Size Is 0x%X (%zu bytes)\n", size, size);
+	printf("[*] Total Decrypted Size Is 0x%lX (%zu bytes)\n", size, size);
 
 	AES_CBC_decrypt_buffer(&ctx, data, size);
 
@@ -35,7 +35,7 @@ void encrypt_data(uint8_t* data, size_t size)
 	struct AES_ctx ctx;
 	AES_init_ctx_iv(&ctx, SECRET_KEY, SECRET_KEY);
 
-	printf("[*] Total Encrypted Size Is 0x%X (%zu bytes)\n", size, size);
+	printf("[*] Total Encrypted Size Is 0x%lX (%zu bytes)\n", size, size);
 
 	AES_CBC_encrypt_buffer(&ctx, data, size);
 
