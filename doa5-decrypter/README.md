@@ -1,6 +1,6 @@
 # Dead or Alive 5 Save Decrypter
 
-A tool to decrypt Dead or Alive 5 PS3 and PS4 save-games.
+A tool to decrypt Dead or Alive 5 PS3, PS4, and PS Vita save-games.
 
 ```
 USAGE: ./doa5-decrypter [option] filename

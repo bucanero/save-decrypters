@@ -94,6 +94,7 @@ Tools to decrypt specific PS Vita save-games:
 
 | Game | Tool |
 | :--- | :--- |
+| Dead or Alive 5 (Vita) | [doa5-decrypter](./doa5-decrypter) |
 | Resident Evil Revelations 2 (Vita) | [vita-re-rev2-unpacker](./vita-re-rev2-unpacker) |
 | The Legend of Heroes: Trails of Cold Steel II (Vita) | [trails-cs-unpacker](./trails-cs-unpacker) |
 
