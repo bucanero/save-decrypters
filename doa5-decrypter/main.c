@@ -176,8 +176,7 @@ int main(int argc, char **argv)
 	else
 		encrypt_data(data, len);
 
-//	write_buffer(argv[2], data, len);
-	write_buffer("out.bin", data, len);
+	write_buffer(argv[2], data, len);
 
 	free(bak);
 	free(data);
