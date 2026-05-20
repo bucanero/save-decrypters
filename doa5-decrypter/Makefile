@@ -1,5 +1,5 @@
-# DOA5 PS3 Save Decrypter
-# (c)2021 Damian Parrino
+# DOA5 Save Decrypter for PS3/PS4/Vita
+# (c)2026 Bucanero
 
 all: decrypter
 
