@@ -10,6 +10,7 @@ Tools to decrypt specific PS3 save-games:
 | :--- | :--- |
 | Call of Duty: Black Ops | [cod-blackops-decrypter](./cod-blackops-decrypter) |
 | Call of Duty: Black Ops 2 | [cod-blackops-decrypter](./cod-blackops-decrypter) |
+| Dead or Alive 5 | [doa5-decrypter](./doa5-decrypter) |
 | Diablo 3 | [diablo3-decrypter](./diablo3-decrypter) |
 | DmC: Devil May Cry | [dmc-decrypter](./dmc-decrypter) |
 | Dynasty Warriors 8 Xtreme Legends | [dw8xl-decrypter](./dw8xl-decrypter) |
@@ -45,6 +46,7 @@ Tools to decrypt specific PS4 save-games:
 | Borderlands 3 (PS4) | [ps4-borderlands3-decrypter](./ps4-borderlands3-decrypter) |
 | Crisis Core: Final Fantasy VII (PS4) | [ff7cc-decrypter](./ff7cc-decrypter) |
 | Dark Souls Remastered (PS4) | [darksouls-remaster-decrypter](./darksouls-remaster-decrypter) |
+| Dead or Alive 5 (PS4) | [doa5-decrypter](./doa5-decrypter) |
 | Diablo III (PS4) | [diablo3-decrypter](./diablo3-decrypter) |
 | Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
 | Final Fantasy Pixel Remaster (PS4) | [ff-pixel-decrypter](./ff-pixel-decrypter) |
@@ -92,6 +94,7 @@ Tools to decrypt specific PS Vita save-games:
 
 | Game | Tool |
 | :--- | :--- |
+| Dead or Alive 5 (Vita) | [doa5-decrypter](./doa5-decrypter) |
 | Resident Evil Revelations 2 (Vita) | [vita-re-rev2-unpacker](./vita-re-rev2-unpacker) |
 | The Legend of Heroes: Trails of Cold Steel II (Vita) | [trails-cs-unpacker](./trails-cs-unpacker) |
 
