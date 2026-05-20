@@ -2,7 +2,7 @@
 *
 *	Dead or Alive 5 PS3/PS4/Vita Save Decrypter - (c) 2026 by Bucanero - www.bucanero.com.ar
 *
-* This tool is based on the original doa5.py script by alfazari911
+* This tool is based on the original doa5.py script by alfizari (github.com/alfizari)
 *
 */
 
