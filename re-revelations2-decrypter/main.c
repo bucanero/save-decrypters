@@ -19,29 +19,15 @@ static const u8 PS4_FINGERPRINT[] = { 0x00, 0x24, 0x12, 0x14, 0xD0, 0x84, 0x12 }
 
 
 /* PS3: big-endian dword addition */
-u32 dwadd_ps3(const u8* data, u32 len)
-{
-	u32 csum = 0;
-
-	len /= 4;
-	while (len--)
-	{
-		csum += ES32(*(u32*)data);
-		data += 4;
-	}
-
-	return csum;
-}
-
 /* PS4: little-endian dword addition */
-u32 dwadd_ps4(const u8* data, u32 len)
+u32 dwadd(const u8* data, u32 len, int is_ps4)
 {
 	u32 csum = 0;
 
 	len /= 4;
 	while (len--)
 	{
-		csum += (*(u32*)data);
+		csum += is_ps4 ? *(u32*)data : ES32(*(u32*)data);
 		data += 4;
 	}
 
@@ -55,46 +41,30 @@ void swap_u32_data(u32* data, int count)
 }
 
 /* PS3 decrypt/encrypt (no endian swap needed) */
-void decrypt_data_ps3(void* data, u32 size)
-{
-	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
-
-	blowfish_decrypt_buffer(data, size);
-
-	printf("[*] Decrypted File Successfully!\n\n");
-	return;
-}
-
-void encrypt_data_ps3(void* data, u32 size)
-{
-	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
-
-	blowfish_encrypt_buffer(data, size);
-
-	printf("[*] Encrypted File Successfully!\n\n");
-	return;
-}
-
 /* PS4 decrypt/encrypt (swap u32 words before/after blowfish) */
-void decrypt_data_ps4(u32* data, u32 size)
+void decrypt_data(u32* data, u32 size, int is_ps4)
 {
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-	swap_u32_data(data, size / 4);
+	if (is_ps4)
+		swap_u32_data(data, size / 4);
 	blowfish_decrypt_buffer(data, size);
-	swap_u32_data(data, size / 4);
+	if (is_ps4)
+		swap_u32_data(data, size / 4);
 
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
 }
 
-void encrypt_data_ps4(u32* data, u32 size)
+void encrypt_data(u32* data, u32 size, int is_ps4)
 {
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-	swap_u32_data(data, size / 4);
+	if (is_ps4)
+		swap_u32_data(data, size / 4);
 	blowfish_encrypt_buffer(data, size);
-	swap_u32_data(data, size / 4);
+	if (is_ps4)
+		swap_u32_data(data, size / 4);
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
@@ -146,12 +116,12 @@ int main(int argc, char **argv)
 		printf("[*] Detected PS4 save file\n");
 
 		if (*opt == 'd')
-			decrypt_data_ps4((u32*)(data + 0x20), len - 0x20);
+			decrypt_data((u32*)(data + 0x20), len - 0x20, 1);
 		else
 		{
 			printf("[*] Source DWADD : %" PRIx32 "\n", ES32(*(u32*)(data + 0x18)));
-			u32 chks = dwadd_ps4(data + 0x20, 0x19490 - 0x20);
-			chks += dwadd_ps4(data + 0x194A0, 0x1284C0 - 0x194A0);
+			u32 chks = dwadd(data + 0x20, 0x19490 - 0x20, 1);
+			chks += dwadd(data + 0x194A0, 0x1284C0 - 0x194A0, 1);
 			*(u32*)(data + 0x18) = chks;
 			printf("[*] Source SHA1  : " SHA1_FMT(data + len - 0x20, "\n"));
 			sha1(data + len - 0x20, data + 0x20, (len - 0x40));
@@ -159,7 +129,7 @@ int main(int argc, char **argv)
 			printf("[*] Updated DWADD: %" PRIx32 "\n", ES32(*(u32*)(data + 0x18)));
 			printf("[*] Updated SHA1 : " SHA1_FMT(data + len - 0x20, "\n"));
 
-			encrypt_data_ps4((u32*)(data + 0x20), len - 0x20);
+			encrypt_data((u32*)(data + 0x20), len - 0x20, 1);
 		}
 	}
 	else
@@ -167,17 +137,17 @@ int main(int argc, char **argv)
 		printf("[*] Detected PS3 save file\n");
 
 		if (*opt == 'd')
-			decrypt_data_ps3((data + 0x10), len - 0x10);
+			decrypt_data((u32*)(data + 0x10), len - 0x10, 0);
 		else
 		{
-			u32 crc = ES32(dwadd_ps3(data + 0x10, len - 0x30));
+			u32 crc = ES32(dwadd(data + 0x10, len - 0x30, 0));
 			memcpy(data + 0x08, &crc, sizeof(u32));
 			printf("[*] Updated DWADD: %08X\n", ES32(crc));
 
 			sha1(data + 0x127590, data + 0x10, (len - 0x30));
 			printf("[*] Updated SHA1 : " SHA1_FMT(data + 0x127590, "\n"));
 
-			encrypt_data_ps3((data + 0x10), len - 0x10);
+			encrypt_data((u32*)(data + 0x10), len - 0x10, 0);
 		}
 	}
 
