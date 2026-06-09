@@ -105,10 +105,15 @@ int main(int argc, char **argv)
 		decrypt_data((u32*)(data + 0x20), len - 0x20);
 	else
 	{
-		printf("[*] Source SHA1  : " SHA1_FMT(data + len - 0x20, "\n"));
+		printf("[*] Source DWADD  : %" PRIx32 "\n", ES32(*(u32*)(data + 0x18)));
+		u32 chks = dwadd(data + 0x20, 0x19490 - 0x20);
+		chks += dwadd(data + 0x194A0, 0x1284C0 - 0x194A0);
+		*(u32*)(data + 0x18) = chks;
+		printf("[*] Source SHA1   : " SHA1_FMT(data + len - 0x20, "\n"));
 		sha1(data + len - 0x20, data + 0x20, (len - 0x40));
 		swap_u32_data((u32*)(data + len - 0x20), 5);
-		printf("[*] Updated SHA1 : " SHA1_FMT(data + len - 0x20, "\n"));
+		printf("[*] Updated DWADD : %" PRIx32 "\n", ES32(*(u32*)(data + 0x18)));
+		printf("[*] Updated SHA1  : " SHA1_FMT(data + len - 0x20, "\n"));
 
 		encrypt_data((u32*)(data + 0x20), len - 0x20);
 	}
