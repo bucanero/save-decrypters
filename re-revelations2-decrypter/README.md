@@ -38,10 +38,21 @@ write at 0x127590:[hash]
 
 #### PS4 Hashes
 
+##### DWADD LE
+
+```
+[Update DWADD LE for data1.dat (Required)]
+set [csum]:0
+set [csum]:dwadd_le(0x000020,0x19490)
+set [csum]:dwadd_le(0x0194A0,0x1284C0)
+set [csum]:endian_swap
+write at 0x000018:[csum]
+```
+
 ##### SHA1
 
 ```
-[Update SHA1 for DATA.DAT (Required)]
+[Update SHA1 for data1.dat (Required)]
 set range:0x000020,0x1284BF
 set [hash]:SHA1
 write at 0x1284C0:[hash]
