@@ -135,6 +135,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Prototype 2 (PS3) | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | PS2 APA Header Checksum | [ps2-apa-header-checksum](./ps2-apa-header-checksum) |
 | Resident Evil 3 Remake (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
+| Resident Evil 5 (PS4) | [re5-checksum-fixer](./re5-checksum-fixer) |
 | Resident Evil 7: Biohazard (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Resident Evil Resistance (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Resident Evil Village (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
