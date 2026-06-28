@@ -116,6 +116,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Digimon: All-Star Rumble (PS3) | [digimon-checksum-fixer](./digimon-checksum-fixer) |
 | Digimon World Next Order (PS4) | [ps4-digimon-checksum-fixer](./ps4-digimon-checksum-fixer) |
 | DuckTales: Remastered (PS3) | [ducktales-checksum-fixer](./ducktales-checksum-fixer) |
+| Far Cry 5 (PS4) | [far-cry-5-checksum-fixer](./far-cry-5-checksum-fixer) |
 | Final Fantasy X HD (PS3) | [ffxhd-checksum-fixer](./ffxhd-checksum-fixer) |
 | Final Fantasy X-2 HD (PS3) | [ffxhd-checksum-fixer](./ffxhd-checksum-fixer) |
 | Invizimals (PSP) | [invizimals-checksum-fixer](./invizimals-checksum-fixer) |
