@@ -144,6 +144,7 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | Samurai Warriors 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Sengoku Musou 4 (PS3) | [sw4-checksum-fixer](./sw4-checksum-fixer) |
 | Strider (PS4) | [strider-checksum-fixer](./strider-checksum-fixer) |
+| Sword Art Online: Fatal Bullet (PS4) | [sao-fb-checksum-fixer](./sao-fb-checksum-fixer) |
 | Tales of Symphonia Remastered (PS4) | [tosr-checksum-fixer](./tosr-checksum-fixer) |
 | Tales of Zestiria (PS3) | [toz-checksum-fixer](./toz-checksum-fixer) |
 | Tears to Tiara 2 (PS3) | [tears2-checksum-fixer](./tears2-checksum-fixer) |
