@@ -132,6 +132,8 @@ Tools to fix checksums for specific PSP/PS3/PS4 save-games:
 | LEGO The Lord of the Rings (PS3) | [lego-checksum-fixer](./lego-checksum-fixer) |
 | LUNAR Remastered Collection (PS4) | [lunar-checksum-fixer](./lunar-checksum-fixer) |
 | Mafia III (PS4) | [mafia3-checksum-fixer](./mafia3-checksum-fixer) |
+| Middle-Earth: Shadow of Mordor (PS4) | [mearth-checksum-fixer](./mearth-checksum-fixer) |
+| Middle-Earth: Shadow of War (PS4) | [mearth-checksum-fixer](./mearth-checksum-fixer) |
 | Monster Hunter Rise (PS4) | [re7-checksum-fixer](./re7-checksum-fixer) |
 | Prototype 1 (PS3) | [prototype-checksum-fixer](./prototype-checksum-fixer) |
 | Prototype 2 (PS3) | [prototype-checksum-fixer](./prototype-checksum-fixer) |
