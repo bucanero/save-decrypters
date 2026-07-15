@@ -49,6 +49,7 @@ Tools to decrypt specific PS4 save-games:
 | Dead or Alive 5 (PS4) | [doa5-decrypter](./doa5-decrypter) |
 | Diablo III (PS4) | [diablo3-decrypter](./diablo3-decrypter) |
 | Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
+| Dying Light 2 (PS4) | [dl2-unpacker](./dl2-unpacker) |
 | Final Fantasy Pixel Remaster (PS4) | [ff-pixel-decrypter](./ff-pixel-decrypter) |
 | Grand Theft Auto 5 (PS4) | [gta5-decrypter](./gta5-decrypter) |
 | L.A. Noire (PS4) | [la-noire-decrypter](./la-noire-decrypter) |
