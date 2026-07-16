@@ -136,7 +136,7 @@ int main(int argc, char **argv)
                 uint8_t *comp;
                 size_t comp_len;
 
-                comp = tdefl_compress_mem_to_heap(data, len, &comp_len, TINFL_FLAG_PARSE_ZLIB_HEADER);
+                comp = tdefl_compress_mem_to_heap(data, len, &comp_len, TDEFL_WRITE_ZLIB_HEADER);
                 if (!comp) {
                     printf("Compression failed!\n");
                     break;
