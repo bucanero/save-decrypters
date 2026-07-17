@@ -34,6 +34,50 @@
 
 #define likely(x) (__builtin_expect(!!(x), 1))
 
+static uint32_t bswap32(const uint32_t x) {
+
+  uint32_t y = x;
+
+  for (size_t i = 0; i<sizeof(uint32_t)>> 1; i++) {
+
+    uint32_t d = sizeof(uint32_t) - i - 1;
+
+    uint32_t mh = ((uint32_t)0xff) << (d << 3);
+    uint32_t ml = ((uint32_t)0xff) << (i << 3);
+
+    uint32_t h = x & mh;
+    uint32_t l = x & ml;
+
+    uint64_t t = (l << ((d - i) << 3)) | (h >> ((d - i) << 3));
+
+    y = t | (y & ~(mh | ml));
+  }
+
+  return y;
+}
+
+static uint64_t bswap64(const uint64_t x) {
+
+  uint64_t y = x;
+
+  for (size_t i = 0; i<sizeof(uint64_t)>> 1; i++) {
+
+    uint64_t d = sizeof(uint64_t) - i - 1;
+
+    uint64_t mh = ((uint64_t)0xff) << (d << 3);
+    uint64_t ml = ((uint64_t)0xff) << (i << 3);
+
+    uint64_t h = x & mh;
+    uint64_t l = x & ml;
+
+    uint64_t t = (l << ((d - i) << 3)) | (h >> ((d - i) << 3));
+
+    y = t | (y & ~(mh | ml));
+  }
+
+  return y;
+}
+
 #ifdef LITTLE_ENDIAN
 #define uint32_t_in_expected_order(x) (x)
 #define uint64_t_in_expected_order(x) (x)
@@ -85,50 +129,6 @@ static uint64_t fetch64(const uint8_t* p) {
 
 static uint32_t fetch32(const uint8_t* p) {
   return uint32_t_in_expected_order(uload32(p));
-}
-
-static uint32_t bswap32(const uint32_t x) {
-
-  uint32_t y = x;
-
-  for (size_t i = 0; i<sizeof(uint32_t)>> 1; i++) {
-
-    uint32_t d = sizeof(uint32_t) - i - 1;
-
-    uint32_t mh = ((uint32_t)0xff) << (d << 3);
-    uint32_t ml = ((uint32_t)0xff) << (i << 3);
-
-    uint32_t h = x & mh;
-    uint32_t l = x & ml;
-
-    uint64_t t = (l << ((d - i) << 3)) | (h >> ((d - i) << 3));
-
-    y = t | (y & ~(mh | ml));
-  }
-
-  return y;
-}
-
-static uint64_t bswap64(const uint64_t x) {
-
-  uint64_t y = x;
-
-  for (size_t i = 0; i<sizeof(uint64_t)>> 1; i++) {
-
-    uint64_t d = sizeof(uint64_t) - i - 1;
-
-    uint64_t mh = ((uint64_t)0xff) << (d << 3);
-    uint64_t ml = ((uint64_t)0xff) << (i << 3);
-
-    uint64_t h = x & mh;
-    uint64_t l = x & ml;
-
-    uint64_t t = (l << ((d - i) << 3)) | (h >> ((d - i) << 3));
-
-    y = t | (y & ~(mh | ml));
-  }
-
-  return y;
 }
 
 static void swap32(uint32_t* a, uint32_t* b) {
