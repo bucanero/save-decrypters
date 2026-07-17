@@ -72,18 +72,28 @@ int decompress_data(u8 **data, size_t *len)
 	void *block;
 	void *tmp;
 	while (i < end) {
-		if (i >= SIZE_MAX - 8)
+		if (i >= SIZE_MAX - 8) {
+			free(out);
 			return -8;
-		cs = U_U32_LE(*data, i    );
-		if (i >= SIZE_MAX - 8 - cs)
+		}
+		cs = U_U32_LE(*data, i);
+		if (i >= SIZE_MAX - 8 - cs) {
+			free(out);
 			return -9;
-		if (i + 8 + cs > end)
+		}
+		if (i + 8 + cs > end) {
+			free(out);
 			return -10;
+		}
 		ds = U_U32_LE(*data, i + 4);
-		if (out_len >= SIZE_MAX - ds)
+		if (out_len >= SIZE_MAX - ds) {
+			free(out);
 			return -11;
-		if (cs == 0 || ds == 0)
+		}
+		if (cs == 0 || ds == 0) {
+			free(out);
 			return -12;
+		}
 
 		// trusting input
 		block = malloc(ds);
