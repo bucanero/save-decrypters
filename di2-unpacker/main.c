@@ -52,7 +52,7 @@ int decompress_data(u8 **data, size_t *len)
 	if (*len < start)
 		return -3;
 	size_t end;
-	if (rfind(*data, *len, END_MARKER, sizeof(END_MARKER), &end, *len, 0) != 0)
+	if (rfind(*data, *len, END_MARKER, sizeof(END_MARKER), &end, *len - 8, start) != 0)
 		return -4;
 	if (end >= SIZE_MAX - 12)
 		return -5;
@@ -230,7 +230,7 @@ int patch_checksum(u8 *data, size_t len)
 	if (len < start)
 		return -3;
 	size_t end;
-	if (rfind(data, len, END_MARKER, sizeof(END_MARKER), &end, len, 0) != 0)
+	if (rfind(data, len, END_MARKER, sizeof(END_MARKER), &end, len - 8, start) != 0)
 		return -4;
 	if (end >= SIZE_MAX - 12)
 		return -5;
