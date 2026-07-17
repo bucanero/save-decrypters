@@ -52,6 +52,7 @@ Tools to decrypt specific PS4 save-games:
 | Dragon Ball Z Xenoverse 2 (PS4) | [dbz-xenoverse2-decrypter](./dbz-xenoverse2-decrypter) |
 | Dying Light 2 (PS4) | [dl2-unpacker](./dl2-unpacker) |
 | Final Fantasy Pixel Remaster (PS4) | [ff-pixel-decrypter](./ff-pixel-decrypter) |
+| Goat Simulator 3 (PS4) | [gs3-decrypter](./gs3-decrypter) |
 | Grand Theft Auto 5 (PS4) | [gta5-decrypter](./gta5-decrypter) |
 | L.A. Noire (PS4) | [la-noire-decrypter](./la-noire-decrypter) |
 | Like a Dragon: Ishin! (PS4) | [rgg-decrypter](./rgg-decrypter) |
