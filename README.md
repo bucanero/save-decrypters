@@ -44,6 +44,8 @@ Tools to decrypt specific PS4 save-games:
 | Game | Tool |
 | :--- | :--- |
 | Borderlands 3 (PS4) | [ps4-borderlands3-decrypter](./ps4-borderlands3-decrypter) |
+| Call of Duty: Black Ops (PS4)  | [cod-blackops-decrypter](./cod-blackops-decrypter) |
+| Call of Duty: Black Ops 2 (PS4) | [cod-blackops-decrypter](./cod-blackops-decrypter) |
 | Crisis Core: Final Fantasy VII (PS4) | [ff7cc-decrypter](./ff7cc-decrypter) |
 | Dark Souls Remastered (PS4) | [darksouls-remaster-decrypter](./darksouls-remaster-decrypter) |
 | Dead Island 2 (PS4) | [di2-unpacker](./di2-unpacker) |
