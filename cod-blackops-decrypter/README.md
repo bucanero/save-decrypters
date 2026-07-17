@@ -1,6 +1,6 @@
 # cod-blackops-decrypter
 
-A tool to decrypt Call of Duty: Black Ops/Black Ops 2 PS3 save-games
+A tool to decrypt Call of Duty: Black Ops/Black Ops 2 PS3 and PS4 save-games
 
 ```
 USAGE: ./cod-blackops-decrypter [option] filename

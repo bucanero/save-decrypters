@@ -1,6 +1,6 @@
 # re7-checksum-fixer
 
-A tool calculate the checksum of `Resident Evil 7: Biohazard`, `Resident Evil 3 Remake`, `Resident Evil Resistance`, and `Resident Evil Village` save files.
+A tool calculate the checksum of `Monster Hunter Rise`, `Resident Evil 7: Biohazard`, `Resident Evil 3 Remake`, `Resident Evil Resistance`, and `Resident Evil Village` save files.
 
 ```
 USAGE: ./re7-checksum-fixer filename
@@ -19,4 +19,7 @@ write next (0):[hash]
 
 ### Credits
 
+The `Monster Hunter Rise` entry was contributed by [alfizari](https://github.com/alfizari)
+
 This tool was created by [hzh](https://github.com/hzhreal/)
+
