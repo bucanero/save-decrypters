@@ -1,6 +1,6 @@
 /*
 *
-*	Call of Duty Black Ops PS3 Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
+*	Call of Duty Black Ops PS3 and PS4 Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
 *
 * This tool is based (reversed) on the original black_ops_save_decrypter by Red-EyeX32
 *
