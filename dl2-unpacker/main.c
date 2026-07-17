@@ -119,12 +119,14 @@ int compress_data(u8 **data, size_t *len)
 	if (out == NULL) {
 		return -1;
 	}
-	u32 isize = out_len;
-	u32 crc   = crc32_calculate(out, out_len, CRC32_POLY, CRC32_INIT);
+	u32 isize = *len;
+	u32 crc   = crc32_calculate(*data, *len, CRC32_POLY, CRC32_INIT);
 
-	if (out_len >= SIZE_MAX - sizeof(header) - sizeof(isize) - sizeof(crc))
+	if (out_len >= SIZE_MAX - sizeof(header) - sizeof(crc) - sizeof(isize)) {
+		free(out);
 		return -2;
-	size_t l = sizeof(header) + out_len + sizeof(isize) + sizeof(crc);
+	}
+	size_t l = sizeof(header) + out_len + sizeof(crc) + sizeof(isize);
 	void *p = realloc(*data, l);
 	if (p == NULL) {
 		free(out);
@@ -132,11 +134,11 @@ int compress_data(u8 **data, size_t *len)
 	}
 	printf("[*] Compressed %zu bytes into %zu bytes.", *len, l);
 	*data = p;
-	*len = sizeof(header) + out_len + sizeof(isize) + sizeof(crc);
+	*len = l;
 	memcpy(*data, header, sizeof(header));
 	memcpy(*data + sizeof(header), out, out_len);
-	memcpy(*data + sizeof(header) + out_len, &isize, sizeof(isize));
-	memcpy(*data + sizeof(header) + out_len + sizeof(isize), &crc, sizeof(crc));
+	P_U32_LE(*data, sizeof(header) + out_len, crc);
+	P_U32_LE(*data, sizeof(header) + out_len + sizeof(crc), isize);
 	free(out);
 
 	return 0;
