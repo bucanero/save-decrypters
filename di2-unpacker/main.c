@@ -138,7 +138,7 @@ int compress_data(u8 **data, size_t *len)
 	u32 length = U_U32_LE(*data, 12);
 	size_t start = 12 + sizeof(length) + length;
 	size_t end;
-	rfind(*data, *len, END_MARKER, sizeof(END_MARKER), &end, *len, 0);
+	rfind(*data, *len, END_MARKER, sizeof(END_MARKER), &end, *len - 8, start);
 
 	u8 *out = malloc(start);
 	if (out == NULL)
