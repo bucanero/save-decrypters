@@ -43,16 +43,18 @@ int decompress_data(u8 **data, size_t *len)
 		return -3;
 	if (flg & FEXTRA)
 		return -4;
-	if (flg & FCOMMENT)
+	if (flg & FNAME)
 		return -5;
-	if (flg & RES1)
+	if (flg & FCOMMENT)
 		return -6;
-	if (flg & RES2)
+	if (flg & RES1)
 		return -7;
-	if (flg & RES3)
+	if (flg & RES2)
 		return -8;
-	if (*len < 10 + 8)
+	if (flg & RES3)
 		return -9;
+	if (*len < 10 + 8)
+		return -10;
 
 	u32 crc   = U_U32_LE(*data, *len - 8);
 	u32 isize = U_U32_LE(*data, *len - 4);
@@ -68,22 +70,22 @@ int decompress_data(u8 **data, size_t *len)
 		0
 	);
 	if (out == NULL)
-		return -10;
+		return -11;
 	isize_ = out_len;
 	if (isize != isize_) {
 		free(out);
-		return -11;
+		return -12;
 	}
 	crc_ = crc32_calculate(out, out_len, CRC32_POLY, CRC32_INIT);
 	if (crc != crc_) {
 		free(out);
-		return -12;
+		return -13;
 	}
 
 	void *p = realloc(*data, out_len);
 	if (p == NULL) {
 		free(out);
-		return -13;
+		return -14;
 	}
 	printf("[*] Decompressed %zu bytes into %zu bytes.", *len, out_len);
 	*data = p;
@@ -259,7 +261,7 @@ int main(int argc, char **argv)
 		int ret = decompress_data(&data, &len);
 		if (ret != 0) {
 			free(data);
-			if (ret == -13)
+			if (ret == -14)
 				printf("[!] Memory allocation error.\n");
 			else
 				printf("[!] Failed to decompress save.\n");
