@@ -3,7 +3,7 @@
 A tool to decrypt `Goat Simulator 3` savegames.
 
 ```
-USAGE: ./gs3-unpacker [option] filename
+USAGE: ./gs3-decrypter [option] filename
 
 OPTIONS        Explanation:
  -d            Decrypt file
