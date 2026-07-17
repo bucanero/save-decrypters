@@ -75,7 +75,7 @@ int patch_checksum(u8 *data, size_t len)
 	// checksum is written before the start offset
 	// no bounds check needed
 	u32 sum;
-	printf("[*] Checksum start offset: 0x%" PRIu32 ".\n", start_off);
+	printf("[*] Checksum start offset: 0x%" PRIX32 ".\n", start_off);
 	printf("[*] Checksum size: %" PRIu32 ".\n", size);
 	for (u32 i = 0; i < ctx.write_count; i++) {
 		sum = U_U32_BE(data, ctx.write_offsets[i]);
