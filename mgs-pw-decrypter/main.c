@@ -1,12 +1,28 @@
 /*
 *
-*	MGS PW PS3 Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
+*	MGS PW PS3/PSP Save Decrypter - (c) 2021 by Bucanero - www.bucanero.com.ar
 *
 * This tool is based (reversed) on the original XBOX MGS Peace Walker - SecFixer by Philymaster
 *
 */
 
 #include "../common/iofile.c"
+
+/*
+* Save layout (word offsets/byte sizes)
+*
+* The PS3 (HD Edition) save holds two encrypted blocks: the main save data,
+* followed by a second block with the online/comrade data. The PSP save only
+* has the main block, so the second one is skipped when it's not present.
+*/
+#define PW_BLOCK1_OFF		16			/* 0x40   */
+#define PW_BLOCK1_SIZE		0x35998
+#define PW_HEADER2_OFF		0xD676		/* 0x359D8 */
+#define PW_BLOCK2_OFF		0xD686		/* 0x35A18 */
+#define PW_BLOCK2_SIZE		0xF0D0
+
+#define PW_MIN_SAVE_SIZE	(PW_HEADER2_OFF * 4)
+#define PW_PS3_SAVE_SIZE	((PW_BLOCK2_OFF * 4) + PW_BLOCK2_SIZE)
 
 const uint32_t PW_TABLE[256] = { 
 	0x50b85761, 0x27bf67f7, 0xbeb6364d, 0xc9b106db, 0x57d59378, 0x20d2a3ee, 0xb9dbf254, 0xcedcc2c2, 
@@ -81,17 +97,36 @@ void SwapBlock(u32* data, int len)
     	data[i] = ES32(data[i]);
 }
 
-void PW_Decrypt(u32* data)
+/*
+* The PS3 second block is preceded by a plain-text header that follows the same
+* layout as the main one. Checking that it decodes to a valid seed offset tells
+* PS3 saves from PSP ones, and works on both encrypted and decrypted files.
+*/
+int HasSecondBlock(const u32* data, size_t len)
+{
+	if (len < PW_PS3_SAVE_SIZE)
+		return 0;
+
+	return (((ES32(data[PW_HEADER2_OFF + 1]) | 0xAD47DE8F) ^ ES32(data[PW_HEADER2_OFF])) < 0x10);
+}
+
+void PW_Decrypt(u32* data, size_t len)
 {
     u32 salts[2] = {0, 0};
+    int ps3 = HasSecondBlock(data, len);
 
-    SwapBlock(data, 0xd676);
+    printf("[*] Save Type: %s\n", ps3 ? "PS3 (HD Edition)" : "PSP");
+
+    SwapBlock(data, PW_HEADER2_OFF);
     SetSalts(salts, data);
-    DeEncryptBlock(data + 16, 0x35998, salts);
+    DeEncryptBlock(data + PW_BLOCK1_OFF, PW_BLOCK1_SIZE, salts);
 
-    SetSalts(salts, data + 0xD676);
-    DeEncryptBlock(data + 0xD686, 0xf0d0, salts);
-	SwapBlock(data + 17, 0xd665);
+    if (ps3)
+    {
+        SetSalts(salts, data + PW_HEADER2_OFF);
+        DeEncryptBlock(data + PW_BLOCK2_OFF, PW_BLOCK2_SIZE, salts);
+    }
+	SwapBlock(data + 17, PW_HEADER2_OFF - 17);
 
     if (CalculateChecksum((u8*)data + 68, 0x1af24) != ES32(data[14]))
         printf("[!] Checksum error (%x)\n", 68);
@@ -102,31 +137,43 @@ void PW_Decrypt(u32* data)
     if (CalculateChecksum((u8*)data + 0x1cb68, 0x18e68) != ES32(data[12]))
         printf("[!] Checksum error (%x)\n", 0x1cb68);
 
-    if (CalculateChecksum((u8*)data + 0x35a18, 0xf0d0) != ES32(data[0xD683]))
+    if (ps3 && CalculateChecksum((u8*)data + 0x35a18, 0xf0d0) != ES32(data[0xD683]))
         printf("[!] Checksum error (%x)\n", 0x35a18);
 
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
 }
 
-void PW_Encrypt(u32* data)
+void PW_Encrypt(u32* data, size_t len)
 {
     u32 salts[2] = {0, 0};
+    int ps3 = HasSecondBlock(data, len);
 
-    data[0xD683] = ES32(CalculateChecksum((u8*)data + 0x35a18, 0xf0d0));
+    printf("[*] Save Type: %s\n", ps3 ? "PS3 (HD Edition)" : "PSP");
+
+    if (ps3)
+        data[0xD683] = ES32(CalculateChecksum((u8*)data + 0x35a18, 0xf0d0));
+
     data[12] = ES32(CalculateChecksum((u8*)data + 0x1cb68, 0x18e68));
     data[15] = ES32(CalculateChecksum((u8*)data + 0x1af68, 0x1c00));
     data[14] = ES32(CalculateChecksum((u8*)data + 68, 0x1af24));
 
-    printf("[*] New Checksums: %08X %08X %08X %08X\n", data[12], data[14], data[15], data[0xD683]);
+    printf("[*] New Checksums: %08X %08X %08X", data[12], data[14], data[15]);
+    if (ps3)
+        printf(" %08X", data[0xD683]);
+    printf("\n");
 
-	SwapBlock(data + 17, 0xd665);
-    SetSalts(salts, data + 0xD676);
-    DeEncryptBlock(data + 0xD686, 0xf0d0, salts);
+	SwapBlock(data + 17, PW_HEADER2_OFF - 17);
+
+    if (ps3)
+    {
+        SetSalts(salts, data + PW_HEADER2_OFF);
+        DeEncryptBlock(data + PW_BLOCK2_OFF, PW_BLOCK2_SIZE, salts);
+    }
 
     SetSalts(salts, data);
-    DeEncryptBlock(data + 16, 0x35998, salts);
-	SwapBlock(data, 0xD676);
+    DeEncryptBlock(data + PW_BLOCK1_OFF, PW_BLOCK1_SIZE, salts);
+	SwapBlock(data, PW_HEADER2_OFF);
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
@@ -147,7 +194,7 @@ int main(int argc, char **argv)
 	u8* data;
 	char *opt, *bak;
 
-	printf("\nMetal Gear Solid Peace Walker save decrypter 0.1.0 - (c) 2021 by Bucanero\n\n");
+	printf("\nMetal Gear Solid Peace Walker save decrypter 0.2.0 - (c) 2021 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{
@@ -174,10 +221,18 @@ int main(int argc, char **argv)
 
 	printf("[*] MGS PW Total File Size Is 0x%X (%d bytes)\n", (int)len, (int)len);
 
+	if (len < PW_MIN_SAVE_SIZE)
+	{
+		printf("[*] Not A MGS PW Save File (%s)\n", argv[2]);
+		free(bak);
+		free(data);
+		return -1;
+	}
+
 	if (*opt == 'd')
-		PW_Decrypt((u32*)data);
+		PW_Decrypt((u32*)data, len);
 	else
-		PW_Encrypt((u32*)data);
+		PW_Encrypt((u32*)data, len);
 
 	write_buffer(argv[2], data, len);
 
