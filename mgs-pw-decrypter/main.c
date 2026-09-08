@@ -9,20 +9,54 @@
 #include "../common/iofile.c"
 
 /*
-* Save layout (word offsets/byte sizes)
+* Save layout
 *
 * The PS3 (HD Edition) save holds two encrypted blocks: the main save data,
 * followed by a second block with the online/comrade data. The PSP save only
 * has the main block, so the second one is skipped when it's not present.
+*
+* Releases do not all use the same offsets. An array near 0xC0 is four u32
+* shorter in some builds, which takes 0x10 bytes off the first checksummed
+* region and shifts every later boundary down to match, making the whole save
+* that much smaller. The length of that first region therefore pins the entire
+* layout, and everything else below is derived from it.
+*
+*   standard: first region 0x1AF24, main block 0x35998, PSP save 0x3D9D0
+*             -> PSP US/EU (ULUS10509, ULES01372) and every PS3 save
+*   compact:  first region 0x1AF14, main block 0x35988, PSP save 0x3D9C0
+*             -> PSP JP digital (NPJH50045)
 */
-#define PW_BLOCK1_OFF		16			/* 0x40   */
-#define PW_BLOCK1_SIZE		0x35998
+#define PW_BLOCK1_OFF		16			/* word offset; 0x40 bytes */
+#define PW_BLOCK1_BYTE_OFF	0x40
 #define PW_HEADER2_OFF		0xD676		/* 0x359D8 */
 #define PW_BLOCK2_OFF		0xD686		/* 0x35A18 */
+#define PW_BLOCK2_BYTE_OFF	0x35A18
 #define PW_BLOCK2_SIZE		0xF0D0
+#define PW_BLOCK2_CSUM_WORD	0xD683
+
+#define PW_REGION1_STANDARD	0x1AF24
+#define PW_REGION1_COMPACT	0x1AF14
+#define PW_REGION2_SIZE		0x1C00
+#define PW_REGION3_SIZE		0x18E68
+#define PW_BLOCK1_TAIL		8			/* unchecksummed tail of the main block */
+#define PW_PSP_TRAILER		0x7FF8		/* bytes after the main block on PSP */
+
+#define PW_BLOCK1_LEN(r1)	(0x44 + (r1) + PW_REGION2_SIZE + PW_REGION3_SIZE \
+							 + PW_BLOCK1_TAIL - PW_BLOCK1_BYTE_OFF)
+#define PW_PSP_SAVE_SIZE(r1)	(PW_BLOCK1_BYTE_OFF + PW_BLOCK1_LEN(r1) + PW_PSP_TRAILER)
 
 #define PW_MIN_SAVE_SIZE	(PW_HEADER2_OFF * 4)
 #define PW_PS3_SAVE_SIZE	((PW_BLOCK2_OFF * 4) + PW_BLOCK2_SIZE)
+
+typedef struct
+{
+	int region1;		/* length of the first checksummed region */
+	int block1_size;	/* encrypted main block, in bytes */
+	int swap_words;		/* words covered by the byte-order swaps */
+	int csum_off[3];	/* start of each checksummed range */
+	int csum_len[3];	/* and its length */
+	int csum_word[3];	/* header word holding each checksum */
+} pw_layout_t;
 
 const uint32_t PW_TABLE[256] = { 
 	0x50b85761, 0x27bf67f7, 0xbeb6364d, 0xc9b106db, 0x57d59378, 0x20d2a3ee, 0xb9dbf254, 0xcedcc2c2, 
@@ -110,35 +144,71 @@ int HasSecondBlock(const u32* data, size_t len)
 	return (((ES32(data[PW_HEADER2_OFF + 1]) | 0xAD47DE8F) ^ ES32(data[PW_HEADER2_OFF])) < 0x10);
 }
 
+/*
+* Work out which layout a save uses and derive its offsets. A PS3 save always
+* uses the standard one; for a PSP save the total size settles it, since the
+* variants differ in size by exactly the amount their first region differs by.
+* An unrecognised size falls back to the standard layout, and the checksum
+* check below then says so.
+*/
+void PW_GetLayout(pw_layout_t* lay, size_t len, int ps3)
+{
+	lay->region1 = (!ps3 && len == PW_PSP_SAVE_SIZE(PW_REGION1_COMPACT))
+					? PW_REGION1_COMPACT : PW_REGION1_STANDARD;
+
+	lay->block1_size = PW_BLOCK1_LEN(lay->region1);
+	lay->swap_words = PW_BLOCK1_OFF + (lay->block1_size / 4);
+
+	lay->csum_off[0] = 0x44;
+	lay->csum_len[0] = lay->region1;
+	lay->csum_word[0] = 14;
+
+	lay->csum_off[1] = lay->csum_off[0] + lay->region1;
+	lay->csum_len[1] = PW_REGION2_SIZE;
+	lay->csum_word[1] = 15;
+
+	lay->csum_off[2] = lay->csum_off[1] + PW_REGION2_SIZE;
+	lay->csum_len[2] = PW_REGION3_SIZE;
+	lay->csum_word[2] = 12;
+}
+
+const char* PW_LayoutName(const pw_layout_t* lay)
+{
+	return (lay->region1 == PW_REGION1_COMPACT) ? "compact" : "standard";
+}
+
 void PW_Decrypt(u32* data, size_t len)
 {
     u32 salts[2] = {0, 0};
     int ps3 = HasSecondBlock(data, len);
+    pw_layout_t lay;
 
-    printf("[*] Save Type: %s\n", ps3 ? "PS3 (HD Edition)" : "PSP");
+    PW_GetLayout(&lay, len, ps3);
+    printf("[*] Save Type: %s (%s layout)\n", ps3 ? "PS3 (HD Edition)" : "PSP",
+    		PW_LayoutName(&lay));
 
-    SwapBlock(data, PW_HEADER2_OFF);
+    SwapBlock(data, lay.swap_words);
     SetSalts(salts, data);
-    DeEncryptBlock(data + PW_BLOCK1_OFF, PW_BLOCK1_SIZE, salts);
+    DeEncryptBlock(data + PW_BLOCK1_OFF, lay.block1_size, salts);
 
     if (ps3)
     {
         SetSalts(salts, data + PW_HEADER2_OFF);
         DeEncryptBlock(data + PW_BLOCK2_OFF, PW_BLOCK2_SIZE, salts);
     }
-	SwapBlock(data + 17, PW_HEADER2_OFF - 17);
+	SwapBlock(data + 17, lay.swap_words - 17);
 
-    if (CalculateChecksum((u8*)data + 68, 0x1af24) != ES32(data[14]))
-        printf("[!] Checksum error (%x)\n", 68);
+    for (int i = 0; i < 3; i++)
+        if (CalculateChecksum((u8*)data + lay.csum_off[i], lay.csum_len[i]) != ES32(data[lay.csum_word[i]]))
+            printf("[!] Checksum error (%x)\n", lay.csum_off[i]);
 
-    if (CalculateChecksum((u8*)data + 0x1af68, 0x1c00) != ES32(data[15]))
-        printf("[!] Checksum error (%x)\n", 0x1af68);
+    if (ps3 && CalculateChecksum((u8*)data + PW_BLOCK2_BYTE_OFF, PW_BLOCK2_SIZE) != ES32(data[PW_BLOCK2_CSUM_WORD]))
+        printf("[!] Checksum error (%x)\n", PW_BLOCK2_BYTE_OFF);
 
-    if (CalculateChecksum((u8*)data + 0x1cb68, 0x18e68) != ES32(data[12]))
-        printf("[!] Checksum error (%x)\n", 0x1cb68);
-
-    if (ps3 && CalculateChecksum((u8*)data + 0x35a18, 0xf0d0) != ES32(data[0xD683]))
-        printf("[!] Checksum error (%x)\n", 0x35a18);
+	// The decrypted header is left in the save's native byte order: big-endian
+	// for PS3, little-endian for PSP (matching the `transfarmer` PSP tool)
+	if (!ps3)
+		SwapBlock(data, PW_BLOCK1_OFF + 1);
 
 	printf("[*] Decrypted File Successfully!\n\n");
 	return;
@@ -148,22 +218,27 @@ void PW_Encrypt(u32* data, size_t len)
 {
     u32 salts[2] = {0, 0};
     int ps3 = HasSecondBlock(data, len);
+    pw_layout_t lay;
 
-    printf("[*] Save Type: %s\n", ps3 ? "PS3 (HD Edition)" : "PSP");
+    PW_GetLayout(&lay, len, ps3);
+    printf("[*] Save Type: %s (%s layout)\n", ps3 ? "PS3 (HD Edition)" : "PSP",
+    		PW_LayoutName(&lay));
+
+	if (!ps3)
+		SwapBlock(data, PW_BLOCK1_OFF + 1);
 
     if (ps3)
-        data[0xD683] = ES32(CalculateChecksum((u8*)data + 0x35a18, 0xf0d0));
+        data[PW_BLOCK2_CSUM_WORD] = ES32(CalculateChecksum((u8*)data + PW_BLOCK2_BYTE_OFF, PW_BLOCK2_SIZE));
 
-    data[12] = ES32(CalculateChecksum((u8*)data + 0x1cb68, 0x18e68));
-    data[15] = ES32(CalculateChecksum((u8*)data + 0x1af68, 0x1c00));
-    data[14] = ES32(CalculateChecksum((u8*)data + 68, 0x1af24));
+    for (int i = 2; i >= 0; i--)
+        data[lay.csum_word[i]] = ES32(CalculateChecksum((u8*)data + lay.csum_off[i], lay.csum_len[i]));
 
     printf("[*] New Checksums: %08X %08X %08X", data[12], data[14], data[15]);
     if (ps3)
-        printf(" %08X", data[0xD683]);
+        printf(" %08X", data[PW_BLOCK2_CSUM_WORD]);
     printf("\n");
 
-	SwapBlock(data + 17, PW_HEADER2_OFF - 17);
+	SwapBlock(data + 17, lay.swap_words - 17);
 
     if (ps3)
     {
@@ -172,8 +247,8 @@ void PW_Encrypt(u32* data, size_t len)
     }
 
     SetSalts(salts, data);
-    DeEncryptBlock(data + PW_BLOCK1_OFF, PW_BLOCK1_SIZE, salts);
-	SwapBlock(data, PW_HEADER2_OFF);
+    DeEncryptBlock(data + PW_BLOCK1_OFF, lay.block1_size, salts);
+	SwapBlock(data, lay.swap_words);
 
 	printf("[*] Encrypted File Successfully!\n\n");
 	return;
@@ -194,7 +269,7 @@ int main(int argc, char **argv)
 	u8* data;
 	char *opt, *bak;
 
-	printf("\nMetal Gear Solid Peace Walker save decrypter 0.2.0 - (c) 2021 by Bucanero\n\n");
+	printf("\nMetal Gear Solid Peace Walker save decrypter 0.3.0 - (c) 2021 by Bucanero\n\n");
 
 	if (--argc < 2)
 	{
