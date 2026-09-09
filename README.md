@@ -92,6 +92,7 @@ Tools to decrypt specific PSP save-games:
 | Monster Hunter Freedom Unite (PSP) | [monsterhunter-psp-decrypter](./monsterhunter-psp-decrypter) |
 | Monster Hunter Portable 2nd G (PSP) | [monsterhunter-psp-decrypter](./monsterhunter-psp-decrypter) |
 | Monster Hunter Portable 3rd (PSP) | [monsterhunter-psp-decrypter](./monsterhunter-psp-decrypter) |
+| Metal Gear Solid: Peace Walker (PSP) | [mgs-pw-decrypter](./mgs-pw-decrypter) |
 
 ## PS Vita Decrypters
 
