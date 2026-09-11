@@ -1,0 +1,167 @@
+# Publish the web save tools, and gate them on the samples in this repository.
+#
+# The tools themselves live in bucanero/apollo-patcher (web/). They are built
+# and deployed from HERE because this is where the evidence is: `make verify`
+# needs real encrypted saves with their decrypted twins, and those are the
+# */samples/ directories in this repo. Nowhere else can run that check.
+#
+# So this workflow is two things at once:
+#
+#   a gate       every listed tool is applied to a real save and its output
+#                compared byte-for-byte against the reference plaintext the C
+#                decrypters in this repo produce. A mismatch fails the build,
+#                so a patch that regresses upstream cannot reach the site.
+#   a publisher  only what passed gets listed, because dist/tools.json is
+#                generated from the verification result rather than from a
+#                checked-in claim.
+#
+# It runs on pushes here (a sample changed), on a schedule (apollo-patches and
+# apollo-lib move on their own), and on demand.
+
+name: Deploy web save tools
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '**/samples/**'
+      - '.github/workflows/pages.yml'
+  schedule:
+    # Mondays 06:00 UTC — catches drift in apollo-patches/apollo-lib, which is
+    # exactly the class of breakage that has bitten this engine before (an
+    # engine fix landing without its savepatch half).
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # This repo is both the samples and the deploy source.
+      - uses: actions/checkout@v4
+        with:
+          path: save-decrypters
+
+      - name: Checkout apollo-lib
+        uses: actions/checkout@v4
+        with:
+          repository: bucanero/apollo-lib
+          path: apollo-lib
+
+      - name: Checkout apollo-patcher
+        uses: actions/checkout@v4
+        with:
+          repository: bucanero/apollo-patcher
+          path: apollo-patcher
+
+      # The patch database. Fetched at run time by the page too, from
+      # jsDelivr @main — so verifying against this checkout only means
+      # anything because it is the same branch the CDN serves.
+      - name: Checkout apollo-patches
+        uses: actions/checkout@v4
+        with:
+          repository: bucanero/apollo-patches
+          path: apollo-patches
+
+      - name: Set up Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: latest
+          actions-cache-folder: emsdk-cache
+
+      - name: Fetch mbedTLS sources
+        working-directory: apollo-lib
+        run: |
+          curl -sL https://src.fedoraproject.org/repo/pkgs/mbedtls/mbedtls-2.16.12.tar.gz/sha512/8d96d8cd906cc0999134320e4e1f550631426d166eab5da6e65469ee7286093810fcc6ac4bd5500ee55972d159f8bef7f9e53245f7f0eec72f72c35265b4313b/mbedtls-2.16.12.tar.gz | tar xz -C ./
+
+      - name: Build libapollo for wasm
+        working-directory: apollo-lib
+        run: |
+          make -f Makefile.wasm mbedtls
+          make -f Makefile.wasm
+
+      # Guards the MicroPython path specifically: under wasm the conservative
+      # GC needs --spill-pointers (applied post-link by the web Makefile), and
+      # bignum-to-bytes has to zero-fill. Both are only visible on a 32-bit
+      # target, which is why this runs the suite compiled to wasm rather than
+      # trusting the native one.
+      - name: Test libapollo under wasm
+        working-directory: apollo-lib
+        run: make -f Makefile.wasm test
+
+      # apollo-patcher's web/Makefile looks for apollo-lib and apollo-patches
+      # as siblings; they are checked out one level above it here.
+      - name: Build the site
+        working-directory: apollo-patcher/web
+        run: make APOLLO_LIB=../../apollo-lib APOLLO_PATCHES=../../apollo-patches
+
+      # THE GATE. Rewrites ../tools/verified.json from what actually passes,
+      # so the catalog rebuilt below describes this run and not a stale claim.
+      # Any regression in a listed tool fails the job here.
+      - name: Verify every listed tool against a real save
+        working-directory: apollo-patcher/web
+        run: |
+          make verify \
+            APOLLO_LIB=../../apollo-lib \
+            APOLLO_PATCHES=../../apollo-patches \
+            SAMPLES=../../save-decrypters
+
+      # Report drift rather than hiding it: if the fresh result differs from
+      # what apollo-patcher has committed, the committed file wants updating.
+      # Not fatal — the site publishes the fresh result either way.
+      # Comparing the list, not the file: verified.json carries a `generated`
+      # timestamp that changes on every run, and diffing the whole thing would
+      # warn every time and mean nothing.
+      - name: Note any drift from the committed verified.json
+        working-directory: apollo-patcher
+        run: |
+          before=$(git show HEAD:tools/verified.json | jq -cS '.verified')
+          after=$(jq -cS '.verified' tools/verified.json)
+          if [ "$before" = "$after" ]; then
+            echo "verified list matches the committed copy ($(jq '.verified|length' tools/verified.json) tools)"
+          else
+            echo "::warning::the verified list changed — update tools/verified.json in apollo-patcher"
+            diff <(jq -r '.[]|@tsv' <<<"$before") <(jq -r '.[]|@tsv' <<<"$after") || true
+          fi
+
+      - name: Rebuild the catalog from this run's result
+        working-directory: apollo-patcher/web
+        run: |
+          rm -f dist/tools.json
+          make APOLLO_LIB=../../apollo-lib APOLLO_PATCHES=../../apollo-patches
+
+      # The tools are the point of THIS site, so they get the root. The patcher
+      # ships alongside as patcher.html, which the web Makefile always emits
+      # and which tools.html already links to — no link rewriting needed.
+      - name: Make the tools page the landing page
+        working-directory: apollo-patcher/web
+        run: |
+          cp dist/tools.html dist/index.html
+          rm -rf dist/node
+          echo "--- published files ---"
+          ls -la dist
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: apollo-patcher/web/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

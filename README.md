@@ -2,6 +2,28 @@
 
 A collection of custom save-game decrypters and checksum fixers for PS3, PSP, and PS4.
 
+## In your browser
+
+Many of these tools also run as a web page, with no download and no upload:
+
+**https://bucanero.github.io/save-decrypters/**
+
+Pick a game, drop the save in, get it back decrypted — and the same page puts
+the edited one back together, checksums included. It is the
+[Apollo engine](https://github.com/bucanero/apollo-lib) compiled to WebAssembly
+(see [apollo-patcher](https://github.com/bucanero/apollo-patcher)) driving the
+`.savepatch` files from
+[apollo-patches](https://github.com/bucanero/apollo-patches), so there is one
+implementation of each format rather than two.
+
+Every game listed there has been checked against the samples in this
+repository: CI applies the patch to a real encrypted save and compares the
+result byte-for-byte with the plaintext the C tool below produces. A tool that
+stops matching does not get published — see
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml). The site
+therefore covers fewer games than this repository does; the rest are being
+worked through, and the CLI tools here remain the complete set.
+
 ## PS3 Decrypters
 
 Tools to decrypt specific PS3 save-games:
