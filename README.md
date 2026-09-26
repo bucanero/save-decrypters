@@ -16,10 +16,13 @@ the edited one back together, checksums included. It is the
 [apollo-patches](https://github.com/bucanero/apollo-patches), so there is one
 implementation of each format rather than two.
 
-Every game listed there has been checked against the samples in this
-repository: CI applies the patch to a real encrypted save and compares the
-result byte-for-byte with the plaintext the C tool below produces. A tool that
-stops matching does not get published — see
+Every tool listed there has been checked against the samples in this
+repository. CI applies each patch to a real save: a decrypter has to reproduce
+the plaintext the C tool below produces, byte for byte, and a checksum fixer
+has to leave a valid save untouched while still reacting when a byte under it
+changes. Patches carrying byte-identical code inherit that proof, which is how
+a game's other regions get covered. A tool that stops matching does not get
+published — see
 [`.github/workflows/pages.yml`](.github/workflows/pages.yml). The site
 therefore covers fewer games than this repository does; the rest are being
 worked through, and the CLI tools here remain the complete set.

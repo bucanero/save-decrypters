@@ -13,7 +13,7 @@
 #define DS2_CSUM_OFFSET    0x04
 #define DS2_SIZE_OFFSET    0x6C
 #define DS3_CSUM_OFFSET    0x08
-#define DS3_SIZE_OFFSET    0x4C
+#define DS3_SIZE_OFFSET    0x0C
 #define DS3_HED_SIZE       0x80
 
 
