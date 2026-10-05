@@ -183,8 +183,7 @@ int main(int argc, char **argv)
 	asprintf(&bak, "%s.bak", argv[2]);
 	write_buffer(bak, data, len);
 
-	// Detect endianness from the first block size: only the right byte order gives a size that fits in the file
-	isPS3 = ES32(((u32*)data)[1]) <= len && ((u32*)data)[1] > len;
+	isPS3 = (data[0] == 0 && data[1] == 0 && data[2] == 0 && data[4] == 0 && data[5] == 0);
 
 	if (*opt == 'd')
 		decrypt_data(data, len);
