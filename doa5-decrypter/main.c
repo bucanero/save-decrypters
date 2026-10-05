@@ -54,7 +54,8 @@ void decrypt_data(u8* data, u32 size)
 
 	printf("[*] Total Decrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-	for (u32 i = 0; i < size; i += header.size)
+	// Stop when there is no room left for a block header (DOA5 Last Round PS3 saves have a 4-byte trailer)
+	for (u32 i = 0; i + sizeof(block_header) <= size; i += header.size)
 	{
 		printf("[*] Decrypting Block At Offset 0x%X\n", i);
 
@@ -66,6 +67,12 @@ void decrypt_data(u8* data, u32 size)
 			header.size = ES32(header.size);
 			header.checksum = ES32(header.checksum);
 			header.seed = ES32(header.seed);
+		}
+
+		if (header.size && (header.size < sizeof(block_header) || header.size > size - i))
+		{
+			printf("[!] Invalid Block Size 0x%X\n", header.size);
+			break;
 		}
 
 		block_size = (header.size) ? header.size - sizeof(block_header) : (size - i - sizeof(block_header));
@@ -95,7 +102,8 @@ void encrypt_data(u8* data, u32 size)
 
 	printf("[*] Total Encrypted Size Is 0x%X (%d bytes)\n", size, size);
 
-	for (u32 i = 0; i < size; i += header.size)
+	// Stop when there is no room left for a block header (DOA5 Last Round PS3 saves have a 4-byte trailer)
+	for (u32 i = 0; i + sizeof(block_header) <= size; i += header.size)
 	{
 		printf("[*] Encrypting Block At Offset 0x%X\n", i);
 
@@ -106,6 +114,12 @@ void encrypt_data(u8* data, u32 size)
 		{
 			header.size = ES32(header.size);
 			header.seed = ES32(header.seed);
+		}
+
+		if (header.size && (header.size < sizeof(block_header) || header.size > size - i))
+		{
+			printf("[!] Invalid Block Size 0x%X\n", header.size);
+			break;
 		}
 
 		block_size = (header.size) ? header.size - sizeof(block_header) : (size - i - sizeof(block_header));
@@ -169,7 +183,8 @@ int main(int argc, char **argv)
 	asprintf(&bak, "%s.bak", argv[2]);
 	write_buffer(bak, data, len);
 
-	isPS3 = memcmp(data, "\0\0\0\0\0", 6) == 0;
+	// Detect endianness from the first block size: only the right byte order gives a size that fits in the file
+	isPS3 = ES32(((u32*)data)[1]) <= len && ((u32*)data)[1] > len;
 
 	if (*opt == 'd')
 		decrypt_data(data, len);

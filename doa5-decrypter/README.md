@@ -2,6 +2,8 @@
 
 A tool to decrypt Dead or Alive 5 PS3, PS4, and PS Vita save-games.
 
+Supports both Dead or Alive 5 and Dead or Alive 5 Last Round saves. The save format (PS3 big-endian, or PS4/Vita little-endian) is detected automatically.
+
 ```
 USAGE: ./doa5-decrypter [option] filename
 
