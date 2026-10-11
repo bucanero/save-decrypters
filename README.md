@@ -24,6 +24,11 @@ stops matching does not get published — see
 therefore covers fewer games than this repository does; the rest are being
 worked through, and the CLI tools here remain the complete set.
 
+The MC4 and ShnExt cheat file tools have their own pages, built from each
+tool's `web/` folder (shared code in [`common/web`](common/web)):
+[MC4](https://bucanero.github.io/save-decrypters/mc4-cheat-decrypter/web/) and
+[ShnExt](https://bucanero.github.io/save-decrypters/shnext-cheat-decrypter/web/).
+
 ## PS3 Decrypters
 
 Tools to decrypt specific PS3 save-games:

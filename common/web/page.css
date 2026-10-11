@@ -1,0 +1,126 @@
+/* Shared styles for the browser versions of the tools — same palette as the Apollo save tools pages. */
+
+:root {
+    --bg: #f6f7f9;
+    --panel: #ffffff;
+    --panel-2: #f0f2f5;
+    --ink: #16191d;
+    --ink-dim: #5b636e;
+    --line: #dce0e6;
+    --accent: #2f6fdd;
+    --accent-ink: #ffffff;
+    --good: #1c7c4a;
+    --bad: #b3261e;
+    --radius: 10px;
+    color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #14171b;
+        --panel: #1c2027;
+        --panel-2: #23282f;
+        --ink: #e8eaed;
+        --ink-dim: #9aa3ae;
+        --line: #313841;
+        --accent: #6098f0;
+        --accent-ink: #10131a;
+        --good: #58c98b;
+        --bad: #f2837c;
+        color-scheme: dark;
+    }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+a { color: var(--accent); }
+
+.topbar, main { max-width: 760px; margin: 0 auto; padding-left: 16px; padding-right: 16px; }
+.topbar { padding-top: 32px; padding-bottom: 20px; }
+main { padding-bottom: 64px; display: grid; gap: 16px; }
+
+.back { font-size: 14px; text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.topbar h1 { margin: 8px 0 0; font-size: 26px; letter-spacing: -0.02em; }
+.tagline { margin: 6px 0 0; color: var(--ink-dim); max-width: 62ch; }
+
+.drop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 36px 20px;
+    text-align: center;
+    background: var(--panel);
+    border: 1.5px dashed var(--line);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+}
+.drop:hover, .drop.over { border-color: var(--accent); background: var(--panel-2); }
+.drop:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.drop strong { font-size: 16px; }
+.drop span { color: var(--ink-dim); font-size: 14px; }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+
+.panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    min-width: 0;
+}
+
+.file-row { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: baseline; }
+.file-name { font-weight: 600; overflow-wrap: anywhere; }
+.file-meta { color: var(--ink-dim); font-size: 14px; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+button, .button {
+    font: inherit;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    color: var(--ink);
+    cursor: pointer;
+    text-decoration: none;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+button:hover, .button:hover { border-color: var(--accent); }
+button.primary, .button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+button:disabled { opacity: .5; cursor: default; }
+
+.status { margin: 0; font-weight: 600; }
+.status.ok { color: var(--good); }
+.status.err { color: var(--bad); }
+
+.summary { margin: 10px 0 0; padding: 0; list-style: none; font-size: 14px; }
+.summary li { padding: 2px 0; }
+.summary .k { color: var(--ink-dim); }
+.summary ol { margin: 4px 0 0; padding-left: 22px; }
+
+pre.preview {
+    margin: 14px 0 0;
+    max-height: 360px;
+    overflow: auto;
+    padding: 12px;
+    background: var(--panel-2);
+    border-radius: 8px;
+    font: 12.5px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    white-space: pre;
+    tab-size: 2;
+}
+
+.note { color: var(--ink-dim); font-size: 13.5px; margin: 0; }

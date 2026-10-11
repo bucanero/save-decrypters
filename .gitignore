@@ -59,6 +59,7 @@ dkms.conf
 /*/*-cheat-decrypter
 /*/*-unpacker
 /*/*-checksum
+/*/*.exe
 
 # CodeQL artifacts
 _codeql_detected_source_root
