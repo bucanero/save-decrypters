@@ -4,6 +4,6 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o naughtydog-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o naughtydog-decrypter main.c $(LDFLAGS)
 clean:
-	-rm -f naughtydog-decrypter
+	-rm -f naughtydog-decrypter naughtydog-decrypter.exe

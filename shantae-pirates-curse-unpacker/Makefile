@@ -1,8 +1,8 @@
 all: unpacker
 
 unpacker:
-	gcc -D _GNU_SOURCE -D NDEBUG -o shantae-pirates-curse-unpacker main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -D NDEBUG -o shantae-pirates-curse-unpacker main.c $(LDFLAGS)
 
 clean:
-	-rm -f shantae-pirates-curse-unpacker
+	-rm -f shantae-pirates-curse-unpacker shantae-pirates-curse-unpacker.exe
 

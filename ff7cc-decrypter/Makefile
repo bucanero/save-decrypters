@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o ff7cc-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o ff7cc-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f ff7cc-decrypter
+	-rm -f ff7cc-decrypter ff7cc-decrypter.exe

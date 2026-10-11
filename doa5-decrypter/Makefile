@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o doa5-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o doa5-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f doa5-decrypter
+	-rm -f doa5-decrypter doa5-decrypter.exe

@@ -1,8 +1,8 @@
 all: checksum-fixer
 
 checksum-fixer:
-	gcc -D _GNU_SOURCE -o far-cry-5-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o far-cry-5-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f far-cry-5-checksum-fixer
+	-rm -f far-cry-5-checksum-fixer far-cry-5-checksum-fixer.exe
 

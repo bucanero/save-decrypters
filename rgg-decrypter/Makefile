@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o rgg-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o rgg-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f rgg-decrypter
+	-rm -f rgg-decrypter rgg-decrypter.exe

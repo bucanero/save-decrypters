@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o mgs5-tpp-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o mgs5-tpp-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f mgs5-tpp-decrypter
+	-rm -f mgs5-tpp-decrypter mgs5-tpp-decrypter.exe

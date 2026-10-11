@@ -1,7 +1,7 @@
 all: checksum-fixer
 
 checksum-fixer:
-	gcc -D _GNU_SOURCE -o re7-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o re7-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f re7-checksum-fixer
+	-rm -f re7-checksum-fixer re7-checksum-fixer.exe

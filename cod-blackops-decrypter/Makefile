@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o cod-blackops-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o cod-blackops-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f cod-blackops-decrypter
+	-rm -f cod-blackops-decrypter cod-blackops-decrypter.exe

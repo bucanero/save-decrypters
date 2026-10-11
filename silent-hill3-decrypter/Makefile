@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o silent-hill3-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o silent-hill3-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f silent-hill3-decrypter
+	-rm -f silent-hill3-decrypter silent-hill3-decrypter.exe

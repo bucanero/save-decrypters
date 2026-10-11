@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o mgs-hd-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o mgs-hd-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f mgs-hd-decrypter
+	-rm -f mgs-hd-decrypter mgs-hd-decrypter.exe

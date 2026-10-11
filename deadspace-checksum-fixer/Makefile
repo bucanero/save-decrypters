@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o deadspace-checksum-fixer main.c
+	$(CC) $(CFLAGS) -o deadspace-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f deadspace-checksum-fixer
+	-rm -f deadspace-checksum-fixer deadspace-checksum-fixer.exe

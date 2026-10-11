@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o trails-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o trails-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f trails-checksum-fixer
+	-rm -f trails-checksum-fixer trails-checksum-fixer.exe

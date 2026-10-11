@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o shnext-cheat-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o shnext-cheat-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f shnext-cheat-decrypter
+	-rm -f shnext-cheat-decrypter shnext-cheat-decrypter.exe

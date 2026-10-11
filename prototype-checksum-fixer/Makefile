@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -o prototype-checksum-fixer main.c
+	$(CC) $(CFLAGS) -o prototype-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f prototype-checksum-fixer
+	-rm -f prototype-checksum-fixer prototype-checksum-fixer.exe

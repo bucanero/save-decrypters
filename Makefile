@@ -18,7 +18,7 @@ $(MAKEFILE_DIRS):
 clean:
 	@for dir in $(MAKEFILE_DIRS); do \
 		echo "Cleaning $$dir..."; \
-		@$(MAKE) -C $$dir clean || true; \
+		$(MAKE) -C $$dir clean || true; \
 	done
 
 # Clean all subdirectories
@@ -28,9 +28,10 @@ release:
 	@for dir in $(MAKEFILE_DIRS); do \
 		base=$$(basename $$dir); \
 		file="$$dir/$$base"; \
+		if [ -f "$$file.exe" ]; then file="$$file.exe"; fi; \
 		if [ -f "$$file" ]; then \
 			echo "✓ Adding $$file"; \
-			7z a release.zip "$$file*" >/dev/null; \
+			7z a release.zip "$$file" >/dev/null; \
 		else \
 			echo "✗ Skipping $$file (not found)"; \
 		fi; \

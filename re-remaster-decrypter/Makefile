@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o re-remaster-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o re-remaster-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f re-remaster-decrypter
+	-rm -f re-remaster-decrypter re-remaster-decrypter.exe
