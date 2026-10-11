@@ -25,6 +25,10 @@ on:
     branches: [master]
     paths:
       - '**/samples/**'
+      - '*/web/**'
+      - 'mc4-cheat-decrypter/**'
+      - 'shnext-cheat-decrypter/**'
+      - '.github/scripts/test-cheat-pages.mjs'
       - '.github/workflows/pages.yml'
   schedule:
     # Mondays 06:00 UTC — catches drift in apollo-patches/apollo-lib, which is
@@ -50,6 +54,19 @@ jobs:
       - uses: actions/checkout@v4
         with:
           path: save-decrypters
+
+      # Gate for the standalone cheat pages in web/: their JS must agree with
+      # the C tools on this repo's samples. Cheap, so it runs first.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Verify the cheat file pages against the C tools
+        working-directory: save-decrypters
+        run: |
+          make -C mc4-cheat-decrypter
+          make -C shnext-cheat-decrypter
+          node .github/scripts/test-cheat-pages.mjs
 
       - name: Checkout apollo-lib
         uses: actions/checkout@v4
@@ -147,6 +164,29 @@ jobs:
         run: |
           cp dist/tools.html dist/index.html
           rm -rf dist/node
+
+      # Standalone tool pages from this repo (MC4, ShnExt): common/web plus each
+      # <tool>/web/, plain JS with no build step. Published with the same
+      # layout as the repo, so their relative imports work unchanged — e.g.
+      # mc4-cheat-decrypter/web/index.html. Refuse to overwrite anything
+      # apollo-patcher shipped.
+      - name: Add the standalone tool pages
+        working-directory: save-decrypters
+        run: |
+          dist=../apollo-patcher/web/dist
+          for dir in common/web $(ls -d */web | grep -v '^common/'); do
+            # the tool folder must be new; common/ only needs common/web to be
+            if [ -e "$dist/$dir" ] || { [ "$dir" != common/web ] && [ -e "$dist/${dir%%/*}" ]; }; then
+              echo "::error::$dir would overwrite apollo-patcher's dist/${dir%%/*}"; exit 1
+            fi
+            mkdir -p "$dist/$dir"
+            cp -R "$dir/." "$dist/$dir/"
+            echo "added $dir"
+          done
+
+      - name: List published files
+        working-directory: apollo-patcher/web
+        run: |
           echo "--- published files ---"
           ls -la dist
 

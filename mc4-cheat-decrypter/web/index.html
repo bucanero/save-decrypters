@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MC4 Cheat Decrypter</title>
+<meta name="description" content="Decrypt and encrypt MC4 cheat files in your browser. Files never leave your device.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>&#128273;</text></svg>">
+<link rel="stylesheet" href="../../common/web/page.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="back" href="../../">&larr; All save tools</a>
+  <h1>MC4 Cheat Decrypter</h1>
+  <p class="tagline">Decrypt an MC4 cheat file to its XML, edit it, then encrypt it back.
+    Everything runs in this tab — your files are never uploaded.</p>
+</header>
+
+<main>
+  <label class="drop" id="drop">
+    <input type="file" id="file">
+    <strong>Choose a .mc4 file</strong>
+    <span>or drop it here — an encrypted <code>.mc4</code> or a decrypted XML</span>
+  </label>
+
+  <section class="panel" id="file-panel" hidden>
+    <div class="file-row">
+      <span class="file-name" id="file-name"></span>
+      <span class="file-meta" id="file-meta"></span>
+    </div>
+    <p class="note" id="file-guess"></p>
+    <div class="actions">
+      <button type="button" id="decrypt">Decrypt</button>
+      <button type="button" id="encrypt">Encrypt</button>
+    </div>
+  </section>
+
+  <section class="panel" id="result-panel" hidden aria-live="polite">
+    <p class="status" id="status"></p>
+    <ul class="summary" id="summary"></ul>
+    <div class="actions"><a class="button primary" id="download" hidden></a></div>
+    <pre class="preview" id="preview" hidden></pre>
+  </section>
+
+  <p class="note">MC4 files are base64-encoded AES-256-CBC. Decrypting gives the cheat XML, padded with blank lines to a 16-byte boundary as in the original file.
+    Command-line version: <a href="https://github.com/bucanero/save-decrypters/tree/master/mc4-cheat-decrypter">mc4-cheat-decrypter</a>.</p>
+</main>
+
+<script type="module">
+import { mc4Decrypt, mc4Encrypt } from './mc4.js';
+import { setupPage, swapExt } from '../../common/web/page.js';
+
+setupPage({
+    // encrypted files are a single base64 string
+    detect: (bytes) => /^[A-Za-z0-9+/=\s]+$/.test(new TextDecoder().decode(bytes.subarray(0, 4096))) ? 'decrypt' : 'encrypt',
+    decrypt: async (bytes) => ({ data: await mc4Decrypt(bytes) }),
+    encrypt: async (bytes) => ({ data: await mc4Encrypt(bytes) }),
+    decryptedName: (name) => swapExt(name, '.xml', '.mc4', true),
+    encryptedName: (name) => swapExt(name, '.xml', '.mc4', false),
+});
+</script>
+</body>
+</html>

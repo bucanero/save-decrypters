@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ShnExt Cheat Decrypter</title>
+<meta name="description" content="Decrypt and encrypt ShnExt cheat files in your browser. Files never leave your device.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='14'>&#128273;</text></svg>">
+<link rel="stylesheet" href="../../common/web/page.css">
+</head>
+<body>
+
+<header class="topbar">
+  <a class="back" href="../../">&larr; All save tools</a>
+  <h1>ShnExt Cheat Decrypter</h1>
+  <p class="tagline">Decrypt a ShnExt cheat file to readable JSON, edit it, then encrypt it back.
+    Everything runs in this tab — your files are never uploaded.</p>
+</header>
+
+<main>
+  <label class="drop" id="drop">
+    <input type="file" id="file">
+    <strong>Choose a .ShnExt file</strong>
+    <span>or drop it here — an encrypted <code>.ShnExt</code> or a decrypted JSON</span>
+  </label>
+
+  <section class="panel" id="file-panel" hidden>
+    <div class="file-row">
+      <span class="file-name" id="file-name"></span>
+      <span class="file-meta" id="file-meta"></span>
+    </div>
+    <p class="note" id="file-guess"></p>
+    <div class="actions">
+      <button type="button" id="decrypt">Decrypt</button>
+      <button type="button" id="encrypt">Encrypt</button>
+    </div>
+  </section>
+
+  <section class="panel" id="result-panel" hidden aria-live="polite">
+    <p class="status" id="status"></p>
+    <ul class="summary" id="summary"></ul>
+    <div class="actions"><a class="button primary" id="download" hidden></a></div>
+    <pre class="preview" id="preview" hidden></pre>
+  </section>
+
+  <p class="note">Decrypting expands the process name and every patch entry into plain JSON. Encrypting re-packs them; the process name gets a fresh random IV, so the file will not be byte-identical to the original, but it decrypts to the same content.
+    Command-line version: <a href="https://github.com/bucanero/save-decrypters/tree/master/shnext-cheat-decrypter">shnext-cheat-decrypter</a>.</p>
+</main>
+
+<script type="module">
+import { shnextDecrypt, shnextEncrypt } from './shnext.js';
+import { setupPage, swapExt } from '../../common/web/page.js';
+
+const summary = (info) => [['Game', info.game || '(none)'], ['Process', info.process || '(none)'], ['Patch entries', info.entries]];
+
+setupPage({
+    // decrypted files are JSON; encrypted ones are raw deflate data
+    detect: (bytes) => new TextDecoder().decode(bytes.subarray(0, 64)).trimStart().startsWith('{') ? 'encrypt' : 'decrypt',
+    decrypt: async (bytes) => {
+        const { json, info } = await shnextDecrypt(bytes);
+        return { data: json, summary: summary(info) };
+    },
+    encrypt: async (bytes) => {
+        const { data, info } = await shnextEncrypt(bytes);
+        return { data, summary: summary(info) };
+    },
+    decryptedName: (name) => swapExt(name, '.json', '.ShnExt', true),
+    encryptedName: (name) => swapExt(name, '.json', '.ShnExt', false),
+});
+</script>
+</body>
+</html>
