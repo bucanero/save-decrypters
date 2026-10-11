@@ -149,7 +149,11 @@ static char* decrypt_process_name(const char *b64)
 		}
 
 		if (pos + str_len <= 16 + len)
-			str = strndup((char*) raw + pos, str_len);
+		{
+			str = malloc(str_len + 1);
+			memcpy(str, raw + pos, str_len);
+			str[str_len] = 0;
+		}
 	}
 
 	free(raw);
