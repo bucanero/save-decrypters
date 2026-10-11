@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o dmc-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o dmc-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f dmc-decrypter
+	-rm -f dmc-decrypter dmc-decrypter.exe

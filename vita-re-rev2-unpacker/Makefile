@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o vita-re-rev2-unpacker main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o vita-re-rev2-unpacker main.c $(LDFLAGS)
 
 clean:
-	-rm -f vita-re-rev2-unpacker
+	-rm -f vita-re-rev2-unpacker vita-re-rev2-unpacker.exe

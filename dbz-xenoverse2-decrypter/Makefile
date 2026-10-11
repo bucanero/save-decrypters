@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o dbz-xenoverse2-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o dbz-xenoverse2-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f dbz-xenoverse2-decrypter
+	-rm -f dbz-xenoverse2-decrypter dbz-xenoverse2-decrypter.exe

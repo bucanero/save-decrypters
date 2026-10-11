@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o alien-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o alien-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f alien-checksum-fixer
+	-rm -f alien-checksum-fixer alien-checksum-fixer.exe

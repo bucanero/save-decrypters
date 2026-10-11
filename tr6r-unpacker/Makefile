@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o tr6r-unpacker main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o tr6r-unpacker main.c $(LDFLAGS)
 
 clean:
-	-rm -f tr6r-unpacker
+	-rm -f tr6r-unpacker tr6r-unpacker.exe

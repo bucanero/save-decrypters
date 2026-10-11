@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o la-noire-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o la-noire-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f la-noire-decrypter
+	-rm -f la-noire-decrypter la-noire-decrypter.exe

@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o patapon3-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o patapon3-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f patapon3-decrypter
+	-rm -f patapon3-decrypter patapon3-decrypter.exe

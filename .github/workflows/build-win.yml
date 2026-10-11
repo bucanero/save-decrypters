@@ -7,48 +7,51 @@ on:
     types: [run_build]
 
 jobs:
-  msys:
-    runs-on: windows-2022
+  mingw:
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        mingw: ["MINGW32", "MINGW64"]
         include:
-          - mingw: "MINGW32"
-            package: "mingw-w64-i686"
-          - mingw: "MINGW64"
-            package: "mingw-w64-x86_64"
-    defaults:
-      run:
-        shell: bash.exe --login -eo pipefail "{0}"
-    env:
-      MSYSTEM: ${{ matrix.mingw }}
-      CHERE_INVOKING: 1
-    name: MSYS2 ${{ matrix.mingw }}
+          - arch: win32
+            cross: i686-w64-mingw32
+          - arch: win64
+            cross: x86_64-w64-mingw32
+    name: MinGW ${{ matrix.arch }}
+
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up shell
-        run: echo "C:\msys64\usr\bin\" >> $GITHUB_PATH
-        shell: pwsh
-      - name: Print system version
-        run: |
-          uname
-      - name: Install MinGW requirements
-        run: |
-          echo "$GITHUB_WORKSPACE"
-          # build the project
-          #python3 setup.py install
-      - name: Build binaries
-        run: |
-          make
+    - uses: actions/checkout@v4
 
-      - name: Get short SHA
-        run: echo "sha_name=$(echo ${GITHUB_SHA} | cut -c1-8)" >> $GITHUB_ENV
-    
-      - name: Pack release
-        run: |
-          make release
+    - name: Install MinGW-w64 cross compiler and Wine
+      run: |
+        sudo dpkg --add-architecture i386
+        sudo apt-get update
+        sudo apt-get -y install mingw-w64 p7zip-full
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ env.sha_name }}-${{matrix.mingw}}
-          path: release.zip
+    - name: Build binaries
+      run: |
+        ${{ matrix.cross }}-gcc --version
+        make CC=${{ matrix.cross }}-gcc LDFLAGS=-static
+
+    - name: Check binaries
+      run: |
+        # every tool must produce a .exe, and it must not depend on MinGW runtime DLLs
+        for dir in $(find . -mindepth 2 -maxdepth 2 -name Makefile | xargs dirname | sort); do
+          exe="$dir/$(basename $dir).exe"
+          test -f "$exe" || { echo "::error::missing $exe"; exit 1; }
+          if ${{ matrix.cross }}-objdump -p "$exe" | grep -iE "DLL Name: (libgcc|libwinpthread|libstdc)"; then
+            echo "::error::$exe depends on MinGW runtime DLLs"; exit 1
+          fi
+        done
+        file shnext-cheat-decrypter/shnext-cheat-decrypter.exe
+
+    - name: Get short SHA
+      run: echo "sha_name=$(echo ${GITHUB_SHA} | cut -c1-8)" >> $GITHUB_ENV
+
+    - name: Pack release
+      run: |
+        make release
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: build-${{ env.sha_name }}-${{ matrix.arch }}
+        path: release.zip

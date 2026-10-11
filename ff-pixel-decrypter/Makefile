@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o ff-pixel-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o ff-pixel-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f ff-pixel-decrypter
+	-rm -f ff-pixel-decrypter ff-pixel-decrypter.exe

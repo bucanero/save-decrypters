@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o cod-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o cod-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f cod-checksum-fixer
+	-rm -f cod-checksum-fixer cod-checksum-fixer.exe

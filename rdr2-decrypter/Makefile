@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o rdr2-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o rdr2-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f rdr2-decrypter
+	-rm -f rdr2-decrypter rdr2-decrypter.exe

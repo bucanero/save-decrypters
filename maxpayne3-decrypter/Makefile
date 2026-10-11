@@ -3,7 +3,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o maxpayne3-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o maxpayne3-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f maxpayne3-decrypter
+	-rm -f maxpayne3-decrypter maxpayne3-decrypter.exe

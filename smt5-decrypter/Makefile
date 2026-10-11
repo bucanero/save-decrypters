@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o smt5-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o smt5-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f smt5-decrypter
+	-rm -f smt5-decrypter smt5-decrypter.exe

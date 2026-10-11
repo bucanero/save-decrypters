@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o mc4-cheat-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o mc4-cheat-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f mc4-cheat-decrypter
+	-rm -f mc4-cheat-decrypter mc4-cheat-decrypter.exe

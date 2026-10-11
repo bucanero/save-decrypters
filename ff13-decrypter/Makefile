@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o ff13-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o ff13-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f ff13-decrypter
+	-rm -f ff13-decrypter ff13-decrypter.exe

@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o ps4-borderlands3-decrypter main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o ps4-borderlands3-decrypter main.c $(LDFLAGS)
 
 clean:
-	-rm -f ps4-borderlands3-decrypter
+	-rm -f ps4-borderlands3-decrypter ps4-borderlands3-decrypter.exe

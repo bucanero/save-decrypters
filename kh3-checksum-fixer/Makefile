@@ -1,8 +1,8 @@
 all: checksum-fixer
 
 checksum-fixer:
-	gcc -D _GNU_SOURCE -o kh3-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o kh3-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f kh3-checksum-fixer
+	-rm -f kh3-checksum-fixer kh3-checksum-fixer.exe
 

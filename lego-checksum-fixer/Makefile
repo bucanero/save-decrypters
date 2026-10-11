@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o lego-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o lego-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f lego-checksum-fixer
+	-rm -f lego-checksum-fixer lego-checksum-fixer.exe

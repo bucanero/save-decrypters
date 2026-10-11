@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o digimon-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o digimon-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f digimon-checksum-fixer
+	-rm -f digimon-checksum-fixer digimon-checksum-fixer.exe

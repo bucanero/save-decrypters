@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o ps4-digimon-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o ps4-digimon-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f ps4-digimon-checksum-fixer
+	-rm -f ps4-digimon-checksum-fixer ps4-digimon-checksum-fixer.exe

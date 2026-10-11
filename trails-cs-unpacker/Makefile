@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o trails-cs-unpacker main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o trails-cs-unpacker main.c $(LDFLAGS)
 
 clean:
-	-rm -f trails-cs-unpacker
+	-rm -f trails-cs-unpacker trails-cs-unpacker.exe

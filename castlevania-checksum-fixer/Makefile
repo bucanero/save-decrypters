@@ -4,7 +4,7 @@
 all: decrypter
 
 decrypter:
-	gcc -D _GNU_SOURCE -o castlevania-checksum-fixer main.c
+	$(CC) $(CFLAGS) -D _GNU_SOURCE -o castlevania-checksum-fixer main.c $(LDFLAGS)
 
 clean:
-	-rm -f castlevania-checksum-fixer
+	-rm -f castlevania-checksum-fixer castlevania-checksum-fixer.exe
