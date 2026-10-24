@@ -7,43 +7,143 @@
 #define AES128 1
 #define AES256 0
 
+#include <inttypes.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "../common/iofile.c"
 #include "../common/aes.c"
 #include "../common/miniz.h"
 
-const uint8_t SECRET_KEY[] = {
-    0x68, 0x00, 0x33, 0x00, 0x79, 0x00, 0x5F, 0x00, 
+const u8 SECRET_KEY[] = {
+    0x68, 0x00, 0x33, 0x00, 0x79, 0x00, 0x5F, 0x00,
     0x67, 0x00, 0x55, 0x00, 0x79, 0x00, 0x5A, 0x00
 };
-const uint32_t COMP_MAGIC = 0x1AA2227E; 
+const u8 COMP_MAGIC[] = {
+	0x7E, 0x22, 0xA2, 0x1A
+};
+const u8 DEC_MAGIC[] = {
+	'r', 'e', 'l', 'o', 'g', 'i', 'c'
+};
 
-void decrypt_data(uint8_t* data, size_t size)
+int decompress_data(u8 **data, size_t *len)
 {
-	struct AES_ctx ctx;
-	AES_init_ctx_iv(&ctx, SECRET_KEY, SECRET_KEY);
+	if (*len < sizeof(COMP_MAGIC))
+		return -1;
+	if ( memcmp(*data, &COMP_MAGIC, sizeof(COMP_MAGIC)) != 0 )
+		return 0;
 
-	printf("[*] Total Decrypted Size Is 0x%lX (%zu bytes)\n", size, size);
+	u32 size;
+	int n = sizeof(COMP_MAGIC) + sizeof(size);
+	if (*len < n)
+		return -2;
+	size = U_U32_LE(*data, sizeof(COMP_MAGIC));
 
-	AES_CBC_decrypt_buffer(&ctx, data, size);
+	size_t in_len = *len - n;
+	size_t out_len;
+	void *out = tinfl_decompress_mem_to_heap(
+		*data + n, in_len,
+		&out_len, TINFL_FLAG_PARSE_ZLIB_HEADER
+	);
+	if (out == NULL)
+		return -3;
+	if (out_len != size) {
+		free(out);
+		return -4;
+	}
 
-	printf("[*] Decrypted File Successfully!\n\n");
-	return;
+	void *p = realloc(*data, size);
+	if (p == NULL) {
+		free(out);
+		return -5;
+	}
+	*data = p;
+	*len = size;
+	memcpy(*data, out, size);
+	free(out);
+
+	printf("[*] Decompressed %zu bytes into %" PRIu32 " bytes.\n", in_len, size);
+	return 0;
 }
 
-void encrypt_data(uint8_t* data, size_t size)
+int compress_data(u8 **data, size_t *len)
 {
+	u32 size = *len;
+	if (size != *len)
+		return -1;
+
+	size_t out_len;
+	void *out = tdefl_compress_mem_to_heap(*data, size, &out_len, TDEFL_WRITE_ZLIB_HEADER);
+	int n = sizeof(COMP_MAGIC) + sizeof(size);
+	if (out == NULL)
+		return -2;
+	if (out_len >= SIZE_MAX - n)
+		return -3;
+
+	void *p = realloc(*data, n + out_len);
+	if (p == NULL) {
+		free(out);
+		return -4;
+	}
+	*data = p;
+	*len = n + out_len;
+	memcpy(*data, &COMP_MAGIC, sizeof(COMP_MAGIC));
+	P_U32_LE(*data, sizeof(COMP_MAGIC), size);
+	memcpy(*data + n, out, out_len);
+	free(out);
+
+	printf("[*] Compressed %" PRIu32 " bytes into %zu bytes.\n", size, out_len);
+	return 0;
+}
+
+int decrypt_data(u8 *data, size_t size)
+{
+	if (size < 4 + sizeof(DEC_MAGIC))
+		return -1;
+	if ( memcmp(data + 4, &DEC_MAGIC, sizeof(DEC_MAGIC)) == 0 )
+		return 0;
+	if (size % AES_BLOCKLEN != 0)
+		return -2;
+
+	size_t i = size;
+	u8 pad[AES_BLOCKLEN] = {0};
+	for (size_t j = size; j > AES_BLOCKLEN - 1; j -= AES_BLOCKLEN) {
+		if ( memcmp(data + (j - AES_BLOCKLEN), pad, AES_BLOCKLEN) != 0 )
+			break;
+		i -= AES_BLOCKLEN;
+	}
+	if (i == 0)
+		return 0;
+
 	struct AES_ctx ctx;
 	AES_init_ctx_iv(&ctx, SECRET_KEY, SECRET_KEY);
 
-	printf("[*] Total Encrypted Size Is 0x%lX (%zu bytes)\n", size, size);
+	printf("[*] Total decrypted size is 0x%lX (%zu bytes).\n", i, i);
+
+	AES_CBC_decrypt_buffer(&ctx, data, i);
+
+	printf("[*] Decrypted file successfully.\n\n");
+	return 0;
+}
+
+int encrypt_data(u8 *data, size_t size)
+{
+	if (size % AES_BLOCKLEN != 0)
+		return -1;
+
+	struct AES_ctx ctx;
+	AES_init_ctx_iv(&ctx, SECRET_KEY, SECRET_KEY);
+
+	printf("[*] Total encrypted size is 0x%lX (%zu bytes).\n", size, size);
 
 	AES_CBC_encrypt_buffer(&ctx, data, size);
 
-	printf("[*] Encrypted File Successfully!\n\n");
-	return;
+	printf("[*] Encrypted file successfully.\n\n");
+	return 0;
 }
 
-void print_usage(const char* argv0)
+void print_usage(const char *argv0)
 {
 	printf("USAGE: %s [option] [type] filename\n\n", argv0);
 	printf("OPTIONS        Explanation:\n");
@@ -52,112 +152,97 @@ void print_usage(const char* argv0)
 	printf("TYPES          Explanation:\n");
 	printf(" 1             .plr\n");
 	printf(" 2             .wld\n\n");
-	return;
 }
 
 int main(int argc, char **argv)
 {
-	uint8_t *data;
+	u8 *data;
 	size_t len;
-	char *opt, *bak, type;
+	char *opt;
+	char type;
+	char *filename;
+	char *bak;
 
 	printf("\nTerraria (PS4) decrypter\n\n");
- 
-	if (--argc < 3)
-	{
+
+	if (argc - 1 < 3) {
 		print_usage(argv[0]);
-		return -1;
+		return 1;
 	}
-	char *filename = argv[3];
 
 	opt = argv[1];
-	if (*opt++ != '-' || (*opt != 'd' && *opt != 'e'))
-	{
+	if (*opt++ != '-' || (*opt != 'd' && *opt != 'e')) {
 		print_usage(argv[0]);
-        return -1;
+        return 1;
 	}
 
 	type = *argv[2];
 	if (type != '1' && type != '2') {
 		print_usage(argv[0]);
-		return -1;
+		return 1;
 	}
 
-	if (read_buffer(filename, &data, &len) != 0)
-	{
-		printf("[*] Could Not Access The File (%s)\n", filename);
-		return -1;
+	filename = argv[3];
+	if (read_buffer(filename, &data, &len) != 0) {
+		printf("[!] Could not access the file (%s).\n", filename);
+		return 1;
 	}
+
 	// Save a file backup
 	asprintf(&bak, "%s.bak", filename);
 	write_buffer(bak, data, len);
+	free(bak);
 
-    switch (type)
-    {
-        case '1':
-        {
-            len &= ~15; // just to be safe
-            if (*opt++ == 'd') 
-                decrypt_data(data, len);
-            
-            else 
-                encrypt_data(data, len);
+	if (*opt == 'd') {
+		int ret = decompress_data(&data, &len);
+		if (ret < 0) {
+			free(data);
+			if (ret == -5)
+				printf("[!] Memory allocation error.\n");
+			else
+				printf("[!] Failed to decompress.\n");
+			return 1;
+		}
 
-            write_buffer(filename, data, len);
+		if ( decrypt_data(data, len) < 0 ) {
+			free(data);
+			printf("[!] Failed to decrypt.\n");
+			return 1;
+		}
 
-            break;
-        }
-        
-        case '2':
-        {
-            if (*opt++ == 'd') 
-            {
-                if (memcmp(data, &COMP_MAGIC, 4) != 0) {
-                    printf("This .wld file is incompatible!\n");
-                    break;
-                }
-                uint32_t expected_len;
-                memcpy(&expected_len, data + 4, sizeof(uint32_t));
+		goto success;
+	}
 
-                uint8_t *decomp;
-                size_t decomp_len;
+	switch (type) {
+		case '1':
+			if ( encrypt_data(data, len) < 0 ) {
+				free(data);
+				printf("[!] Failed to encrypt.\n");
+				return 1;
+			}
+			break;
 
-                decomp = tinfl_decompress_mem_to_heap(data + 0x08, len - 0x08, &decomp_len, TINFL_FLAG_PARSE_ZLIB_HEADER);
-                if (!decomp || decomp_len != expected_len) {
-                    printf("Decompression failed! Expected size: %u, decompressed size: %zu\n", expected_len, decomp_len);
-                    break;
-                }
+		case '2': {
+			int ret = compress_data(&data, &len);
+			if (ret < 0) {
+				free(data);
+				if (ret == -4)
+					printf("[!] Memory allocation error.\n");
+				else
+					printf("[!] Failed to compress.\n");
+				return 1;
+			}
+			break;
+		}
+	}
 
-                write_buffer(filename, decomp, decomp_len);
-                free(decomp);
-            }
-            else 
-            {
-                uint8_t *comp;
-                size_t comp_len;
-
-                comp = tdefl_compress_mem_to_heap(data, len, &comp_len, TDEFL_WRITE_ZLIB_HEADER);
-                if (!comp) {
-                    printf("Compression failed!\n");
-                    break;
-                }
-
-                data = (uint8_t *)realloc(data, (4 + 4) + comp_len);
-                len = (uint32_t)len;
-
-                memcpy(data, &COMP_MAGIC, 4);
-                memcpy(data + 4, &len, 4);
-                memcpy(data + 8, comp, comp_len);
-
-                write_buffer(filename, data, (4 + 4) + comp_len);
-                free(comp);
-            }
-
-            break;
-        }
-
-    }
-
-    free(data);
-    free(bak);
+success:
+	if ( write_buffer(filename, data, len) != 0 ) {
+		free(data);
+		printf("[!] Failed to write the file: %s.\n", filename);
+		return 1;
+	}
+	free(data);
+	return 0;
 }
+
