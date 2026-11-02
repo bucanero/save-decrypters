@@ -17,7 +17,7 @@ Pass `savename` to override it.
 ### Encryption
 
 AES-256-CBC with PKCS#7 padding over the whole file. Key and IV depend only on
-the file name, so saves are not tied to an account or console:
+the file name:
 
 ```
 R   = MD5(name zero padded to 32 bytes)
