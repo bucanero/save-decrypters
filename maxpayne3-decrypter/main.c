@@ -22,6 +22,7 @@
 #define MODE_ENCRYPT 1
 #define MODE_DECRYPT 0
 #define MAX_DECOMP_BUF_SIZE 0x0C800
+#define LZ_WINDOW_SIZE 1024
 
 //- 0x18~0x37 = Blob_1, HMACSHA1(0x14) [encrypted]
 //- 0x38~0x3B = Integer_7, Salt (The manipulated Nanoseconds Part of Time/Date)
@@ -314,10 +315,12 @@ uint8_t* lz77_CompressData(uint8_t* data, uint32_t in_size, uint32_t *out_size)
 			int best_len = 0;
 			int best_off = 0;
 			
-			// Search for matches in the sliding window (up to 4096 bytes back)
-			// The offset is stored in 12 bits, allowing values 0-4095, which represents
-			// actual offsets of 1-4096 bytes back
-			int search_start = (ip_pos > 4096) ? ip_pos - 4096 : 0;
+			// Search for matches in the sliding window. The offset field has 12 bits
+			// (up to 4096 bytes back), but the game's compressor only searches the last
+			// 1024 bytes. Scanning from the farthest position and only accepting strictly
+			// longer matches reproduces the game's tie-break (farthest wins), giving a
+			// byte-exact match with the original compressed data.
+			int search_start = (ip_pos > LZ_WINDOW_SIZE) ? ip_pos - LZ_WINDOW_SIZE : 0;
 			
 			for (int j = search_start; j < (int)ip_pos; j++)
 			{
@@ -512,6 +515,8 @@ int main(int argc, char **argv)
 
 		// Copy compressed data back
 		memcpy(data + 0x44, compressedData, compressedSize);
+		// The game pads the file after the secure block with zeros
+		memset(data + 0x44 + compressedSize, 0, len - 0x44 - compressedSize);
 		free(compressedData);
 		
 		// Update the save buffer length

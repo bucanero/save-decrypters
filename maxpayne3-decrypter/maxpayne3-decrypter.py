@@ -301,8 +301,9 @@ def lz77_compress_data(data: bytes) -> Optional[bytes]:
             best_len = 0
             best_off = 0
             
-            # Search window:  up to 4096 bytes back
-            search_start = max(0, ip_pos - 4096)
+            # Search window: the offset field allows 4096, but the game only searches 1024 bytes back
+            # (farthest match wins ties) - this reproduces the original output byte-exact
+            search_start = max(0, ip_pos - 1024)
             
             for j in range(search_start, ip_pos):
                 match_len = 0
@@ -474,6 +475,8 @@ def main():
         
         # Update data
         data[0x44:0x44 + compressed_size] = compressed_data
+        # The game pads the file after the secure block with zeros
+        data[0x44 + compressed_size:] = bytes(len(data) - 0x44 - compressed_size)
         save_buffer_len = compressed_size
         data[8:12] = struct.pack('>I', save_buffer_len)
         save_data_len = save_buffer_len + header_length
